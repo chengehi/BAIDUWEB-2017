@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>3D-box</title>
+	<style>
+		html,body,pre{margin:0;padding:0;border:0;}
+		body{font:12px/1.14 "Consolas",monospace;color:#333;background:#fff;}
+		/*基本样式*/
+		.box{width: 200px;height: 200px;margin: 200px auto;position: relative;}
+		.box .face{
+			border: 1px solid;
+			position: absolute;top: 0;left: 0;
+			height: 100%;width: 100%;
+			font: 20px/200px "Consolas",monospace;text-align: center;
+		}
+		/*动画*/
+		.m-box{perspective: 1000px;}
+		.box{transform-style: preserve-3d;}
+
+		/*.box .left{transform: rotateY(-90deg);transform-origin: left;}
+		.box .right{transform: rotateY(90deg);transform-origin: right;}
+		.box .front{transform: rotateX(-90deg);transform-origin: bottom;}
+		.box .back{transform: rotateX(90deg);transform-origin: top;}
+		.box .top{transform: translateZ(200px);}*/
+
+		.box .left{
+			-webkit-animation: aaa 2s both;
+		}
+		.box .right{
+			-webkit-animation: aab 2s both 2s;
+		}
+		.box .front{
+			-webkit-animation: aac 2s both 4s;
+		}
+		.box .back{
+			-webkit-animation: aad 2s both 6s;
+		}
+		.box .bottom{
+			-webkit-animation: aae 2s both 8s linear;
+		}
+		.box .top{
+			-webkit-animation: aaf 2s both 10s;
+		}
+		.box{
+			-webkit-animation: aag 2s both 12s infinite linear;
+		}
+		/*hover时暂停，出颜色*/
+		.box:hover{animation-play-state: paused;}
+
+
+		@-webkit-keyframes aaa {
+			100%{transform: rotateY(-90deg) translate(-50%);transform-origin: left;}
+		}
+		@-webkit-keyframes aab {
+			100%{transform: rotateY(90deg) translate(50%);transform-origin: right;}
+		}
+		@-webkit-keyframes aac {
+			100%{transform: rotateX(-90deg) translate(0,50%);transform-origin: bottom;}
+		}
+		@-webkit-keyframes aad {
+			100%{transform: rotateX(90deg) translate(0,-50%);transform-origin: top;}
+		}
+		@-webkit-keyframes aae {
+			50%{transform: rotateY(90deg) translateZ(50px);}
+			100%{transform: rotateY(180deg) translateZ(100px);}
+		}
+		@-webkit-keyframes aaf {
+			100%{transform: translateZ(100px);}
+		}
+		@-webkit-keyframes aag {
+			100%{transform: rotate3d(1,1,1,360deg);}
+		}
+
+	</style>
+</head>
+<body>
+	<div class="m-box">
+		<div class="box">
+			<pre class="face left">left</pre>
+			<pre class="face right">right</pre>
+			<pre class="face front">front</pre>
+			<pre class="face back">back</pre>
+			<pre class="face top">top</pre>
+			<pre class="face bottom">bottom</pre>
+		</div>
+	</div>
+</body>
+</html>
