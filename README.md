@@ -4,4 +4,8 @@
 [3D盒子](https://chengehi.github.io/BAIDUWEB-2017/3D-box.html)
 
 ##小薇学院
+<<<<<<< HEAD
 * [任务一：零基础HTML编码](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_1_1/任务一：零基础HTML编码.html)
+=======
+* [任务一：零基础HTML编码](https://chengehi.github.io/BAIDUWEB-2017/小薇学院/任务一：零基础HTML编码/任务一：零基础HTML编码.html)
+>>>>>>> c1ca233a85e86c3894e6a37af5dc559f9c024f46
