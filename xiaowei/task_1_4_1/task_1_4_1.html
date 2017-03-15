@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务四：定位和居中问题</title>
+	<link rel="stylesheet" href="../css/base.css">
+	<style>
+		html,body{width: 100%;height: 100%;}
+		.m-pp{width: 400px;height: 200px;background-color: #ccc;top: 50%;left: 50%;transform: translate(-50%,-50%);overflow: hidden;}
+		.m-pp .u-zs{width: 100px;height: 100px;background-color: #fc0;border-radius: 50%;}
+		.m-pp .lt{top: 0;left: 0;transform: translate(-50%,-50%);}
+		.m-pp .rb{right: 0;bottom: 0;transform: translate(50%,50%);}
+	</style>
+</head>
+<body>
+<!-- 	灰色元素水平垂直居中，有两个四分之一圆位于其左上角和右下角。
+ -->
+	<div class="m-pp f-pf">
+		<span class="u-zs lt f-pa f-db"></span>
+		<span class="u-zs rb f-pa f-db"></span>
+	</div>
+ </body>
+</html>
