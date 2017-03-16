@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务六：通过HTML及CSS模拟报纸排版</title>
+	<link rel="stylesheet" href="../css/base.css">
+	<style>
+		.paper{width: 980px;height: 1386px;padding: 0 44px;/*主要内容宽892px*/}
+		/*报纸头*/
+		.g-head{border-bottom: 2px solid #938e8c;}
+		.g-head .head{width: 110px;height: 61px;background-color: #D55D5C;}
+		.g-head .head a{font: 12px "黑体";color: #fff;left: 0;bottom: 0;text-indent: 6px;}
+		.g-head .date{font: 12px "黑体";color: #d45d5c;right: 0;bottom: 0;}
+
+		/*报纸内容*/
+		/*第一部分*/
+		.u-pic{width: 641px;height: 301px;margin: 35px 0;}
+		.u-pic .p1{width: 191px;height: 301px;left: 0;top:0;background-color:#a0c6ac;opacity: 0.5}
+		.u-pic .p2{width: 191px;height: 301px;right: 0;top:0;background-color: #e6bac0;opacity: 0.5}
+
+		.u-cot{width:263px;height: 299px;border-top: 2px solid #cc8091; right: 0;top: 0;}
+		.u-cot .p1{font: 24px "微软雅黑";color: #000000;text-decoration: underline;font-variant: small-caps;line-height: 40px;text-transform: capitalize;}
+		.u-cot .p2{font: 12px "楷体";color: #676767;line-height: 10px;}
+		.u-cot .p3{font:oblique 116px/1.14 "微软雅黑";color: #75b86b;}
+		.u-cot .p4{font:55px/1 "微软雅黑";color: #cc8091;bottom: 0;}
+		.u-cot .p5{font:21px "微软雅黑";color: #cc8091;bottom: 17px;left: 85px;}
+		.u-cot .p6{font:12px "微软雅黑";color: #aaa;bottom: 2px;left: 85px;}
+		.u-cot .p456{height: 71px;}
+		/*第二部分*/
+		.m-cot h1{font: bold 16px "微软雅黑";text-decoration: underline;text-transform: capitalize;}
+		.m-cot .hd1{color: #418c59;}
+		.m-cot .hd2{color: #d2994f;}
+		.m-cot .hd3{color: #cc7680;}
+		.m-cot p{font: 12px/16px "宋体";color: #767777;}
+		.m-cot .act{width: 200px;}
+		.m-cot .act+.act{margin-left: 20px;}
+		.m-cot #nums{margin-top: 20px;}
+		.m-cot #nums li{text-transform: capitalize;font: 12px/16px "微软雅黑"}
+		.m-cot #nums .num{color: #cd4a48;opacity: 0.7;font-style: italic;}
+		/*第三部分*/
+		.m-art{margin: 35px 0;}
+		.m-art .u-art{width: 455px;}
+		.u-art .hd{border-bottom: 2px solid #11456b;}
+		.u-art .hd1{font: bold italic 72px/1 "黑体";color: #f5e327; text-transform: uppercase;margin-right: 0.5em}
+		.u-art .hd2{font: bold 42px/1 "黑体";color:#11456b ; text-transform: uppercase;}
+		.u-art .hd3{font: bold 33px/1.5 "黑体";color:#11456b ; }
+		.u-art p{font: 12px/16px "宋体";color: #767777;}
+		.u-art .fleeter{font:70px/1 "微软雅黑";color: #f5e327;}
+		.u-art .bd{margin-top: 25px;}
+		.u-art .bd p{text-align: justify;}
+		.u-art .bd p+p{text-indent: 2em;}
+		.u-art .img{clear: left;margin: 18px 0 18px 18px;}
+
+		.u-side .img .hd{border-left: 3px solid #72b16a;bottom: 5px;left: 30px;}
+		.u-side .img .hd1{font: 26px/44px "微软雅黑";color: #fff;}
+		.u-side .img .hd2{font: italic 12px "微软雅黑";color: #72b16a;}
+
+		.u-side .art{width: 459px;background-color: #eeedd6;margin-top: 28px;}
+		.u-side .list{font:16px/36px "宋体";color: #5a5b5b;padding:30px;}
+		.u-side .d1{width: 260px;height: 160px;background-color: #d45d5c;color: #fff;padding: 37px 0;box-sizing: border-box;}
+		.u-side .p1{font: 110px/86px "微软雅黑";}
+		.u-side .ps{height: 86px;border-left: 2px solid #fff; width: 170px;padding-left: 15px;}
+		.u-side .p2{font: oblique 21px/24px "黑体";text-transform: uppercase;}
+		.u-side .p3{font:12px/18px "黑体";}
+		.u-side .d2{width: 180px;margin: 8px;}
+		/*报纸底*/
+		.g-foot{border-top: 1px solid #938e8c;}
+		.g-foot .foot{text-align: right;font: 12px "黑体";color: #d45d5c}
+
+
+
+	</style>
+</head>
+<body>
+	<div class="paper">
+
+		<div class="g-head f-cb f-pr">
+			<div class="head f-fl"><a class="f-pa" href="http://ife.baidu.com">ife.baidu.com</a></div>
+			<div class="date f-pa">2016.03</div>
+		</div>
+
+		<div class="g-body">
+			<div class="m-pic f-pr">
+				<div class="u-pic f-pr">
+					<img src="img/img01.jpg" alt="img01">
+					<div class="p1 f-pa"></div>
+					<div class="p2 f-pa"></div>
+				</div>
+				<div class="u-cot f-pa">
+					<p class="p1">about</p>
+					<p class="p1">technologe</p>
+					<p class="p2">about technologe about technologeabout technologe</p>
+					<p class="p3">700</p>
+					<div class="p456 f-pr">
+						<div class="p4 f-pa">3.2</div class="f-fl">
+						<div class="p56">
+							<p class="p5 f-pa">css</p>
+							<p class="p6 f-pa">csscsscsscss</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="m-cot f-cb">
+				<div class="f-fl act">
+					<h1 class="hd1">what</h1>
+					<p>前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端</p>	
+				</div>
+				<div class="f-fl act">
+					<h1 class="hd2">when</h1>
+					<p>前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端</p>	
+				</div>
+				<div class="f-fl act">
+					<div>
+						<h1 class="hd3">how</h1>
+						<p>前端前端前端前端前端前端前端前端前端前端前端前端前</p>
+					</div>
+					<div id="nums">
+						<ul>
+							<li>what-------<span class="num">40%</span></li>
+							<li>what-------<span class="num">30%</span></li>
+							<li>what-------<span class="num">30%</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="m-art f-cb">
+				<div class="u-art f-fl">
+					<div class="hd">
+						<span class="hd1">the</span> <span class="hd2">technologe og front</span>
+						<p class="hd3">前沿技术领域</p>
+					</div>
+					<div class="bd">
+						<span class="fleeter f-fl">前</span>
+						<div class="img f-fr"><img src="img/img03.jpg" alt="img03"></div>
+						<p>端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端</p>
+						<p>前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端前端</p>
+						
+					</div>
+				</div>
+				<div class="u-side f-fr">
+					<div class="img f-pr">
+						<img src="img/img02.jpg" alt="img02">
+						<div class="hd f-pa">
+							<span class="hd1">前端技术</span><span class="hd2">前端技术前端技术</span>
+						</div>
+					</div>
+					<div class="art f-cb">
+						<ul class="list">
+							<li>前段前段前段前段前段前段前段前段</li>
+							<li>前段前段前段前段前段前段前段前段</li>
+							<li>前段前段前段前段前段前段前段前段</li>
+						</ul>
+						<div class="f-fl d1">
+							<p class="f-fl p1">0</p>
+							<div class="f-fl ps">
+								<p class="p2">one two</p>
+								<p class="p2">three fore five</p>
+								<p class="p3">hello world hello world hello world hello world</p>
+							</div>
+						</div>
+						<div class="f-fl d2">
+							<span>“</span>
+							<span>hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world</span>
+							<span>”</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="g-foot">
+			<p class="foot">ife.baidu.com</p>
+		</div>
+	</div>
+</body>
+</html>
