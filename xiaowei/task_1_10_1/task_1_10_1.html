@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务十：Flexbox 布局练习</title>
+	<style>
+		.container{padding: 20px;border: 1px solid #eee;display: flex;flex-wrap: wrap;align-items: center;justify-content:space-between;width: 780px;}
+		[class*="span"]{width: 150px;border: 1px solid #f00;margin: 20px 0;}
+		.span1{height: 120px;}
+		.span2{height: 100px;}
+		.span3{height: 40px;}
+		.span4{height: 200px; border-color: #1010FD;}
+
+		@media(max-width: 640px){
+			.container{align-items: flex-start;width: 550px;}
+			.span4{order: -1;}
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="span1"></div>
+		<div class="span2"></div>
+		<div class="span3"></div>
+		<div class="span4"></div>
+	</div>
+</body>
+</html>
