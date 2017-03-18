@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务八：响应式网格（栅格化）布局</title>
+	<style>
+		.container{width:700px;outline: 1px solid #999;padding: 10px;box-sizing: border-box;}
+		.container:after{display: block;clear: both;content: ".";visibility: hidden;overflow: hidden;height: 0;}
+		[class*="span"]{margin:10px;outline: 1px solid #999;background-color: #eee;height: 50px;float: left;}
+		.span1,.span2{width: 320px;}
+			.span3{width: 660px;}
+			.span4,.span6,.span10,.span11{width: 155px;}
+			.span5{width: 310px;}
+			.span7,.span8{width: 103.3px;}
+			.span9{width: 413.3px;}
+	
+		@media(min-width: 768px){
+			.container{width: 1000px;}
+			.span1,.span2,.span3{width: 306px;}
+			.span4,.span6{width: 230px;}
+			.span5{width: 460px;}
+			.span7,.span8{width: 73.3px;}
+			.span9,.span10{width: 146.6px;}
+			.span11{width: 440px;}
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="span1"></div>
+		<div class="span2"></div>
+		<div class="span3"></div>
+		<div class="span4"></div>
+		<div class="span5"></div>
+		<div class="span6"></div>
+		<div class="span7"></div>
+		<div class="span8"></div>
+		<div class="span9"></div>
+		<div class="span10"></div>
+		<div class="span11"></div>
+	</div>
+</body>
+</html>
