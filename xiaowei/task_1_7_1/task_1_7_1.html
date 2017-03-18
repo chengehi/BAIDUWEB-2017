@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务七：实现常见的技术产品官网的页面架构及样式布局</title>
+	<link rel="stylesheet" href="../css/base.css">
+	<style>
+		.g-head,.g-body,.g-foot{width: 1280px; margin: 0 auto;}
+	/*导航*/
+		.g-head{height: 57px;}
+		.m-nav{padding:0 66px 0 56px;}
+		/*图标*/
+		.m-nav .u-hd{height: 31px;padding: 8px 0;}
+		.m-nav .u-hd .hd{font: 21px/31px "黑体";color: #e74f4d;}
+		.m-nav .u-hd .icon{height: 31px;width: 40px;background: url(img/spirit.png) -25px -49px;}
+		/*登陆*/
+		.m-land{padding: 16px 0 20px;}
+		.m-land .land{font: 14px/20px "微软雅黑";color: #e74f4d;}
+		.m-land .icon{height: 20px;width: 20px;background: url(img/spirit.png) -1px -45px;}
+		/*导航*/
+		.m-nav .u-nav{font: 14px/1 "微软雅黑";}
+		.m-nav .u-nav li{padding: 19px;margin-right: 10px;}
+		.m-nav .u-nav .z-sct{border-bottom: 5px solid #e74f4d;}
+		.m-nav .u-nav .z-sct a{color: #e74f4d;}
+		/*body1*/
+		.m-body1{height: 690px;overflow: hidden;}
+		.m-body1 .mask{background-color: #cdcccc;top: 0;left: 0;bottom: 0;right: 0;opacity: 0.1;}
+		.m-body1 .hd{top:230px;left: 118px;}
+		.m-body1 .hd1{font: 60px "微软雅黑";color: #fff;}
+		.m-body1 .hd2{font:21px/35px "微软雅黑";color: #fff;width: 295px;padding-left: 8px;}
+		.m-body1 .btn{top:429px;left: 125px;width: 330px;height: 64px;font:30px/64px "微软雅黑";color: #fff;background: url(img/button00.png);text-align: center;}
+		/*body2*/
+		.m-body2{height: 252px;}
+		.m-body2 .u-bnav{width: 320px;font: 14px/18px "微软雅黑";color: #767777;}
+		.m-body2 .hd{width:154px;text-align: center;padding: 0 82px;border-right: 2px solid #767777;}
+		.m-body2 .u-bnav:last-of-type .hd{border-right-width: 0;}
+		.m-body2 .icon{width: 45px;height: 45px;margin: 45px 137px;}
+		.m-body2 .icon1{background: url(img/spirit.png) 1px 0;}
+		.m-body2 .icon2{background: url(img/spirit.png) -45px 0;}
+		.m-body2 .icon3{background: url(img/spirit.png) -90px 0;}
+		.m-body2 .icon4{background: url(img/spirit.png) -145px 0;}
+		/*body3*/
+		.m-body3{height: 360px;background-color: #ededec;text-align: center;}
+		.m-body3 .hd{font: 54px "黑体";color: #a0a1a1}
+		.m-body3 .icon{display: inline-block;height: 95px;width: 95px;margin: 88px 0 40px 0;background: url(img/spirit.png) 0 -85px;}
+		/*body4*/
+		.m-body4{height: 340px;background: url(img/mask01.png),url(img/img01.jpg);color: #fff;text-align: center;padding: 50px 125px;box-sizing: border-box;}
+		.m-body4 .hd1{font: 21px/32px "微软雅黑";}
+		.m-body4 .hd2{display: inline-block;border-top: 2px solid #fff;width: 32px;}
+		.m-body4 .hd3{font: 12px/42px "微软雅黑";}
+		.m-body4 .sel,.m-body4 .btn{width: 235px;height: 35px;}
+		.m-body4 .sel{margin-right: 26px;}
+		.m-body4 .btn{background: url(img/button01.png);border-width: 0;color: #fff;font: 14px "微软雅黑"}
+		.m-body4 .sels{margin-top: 30px;}
+		/*body5*/
+		.m-body5{height: 605px;background-color: #f7f7f7;padding: 100px 145px 110px;box-sizing: border-box;text-align: center;}
+		.m-body5 .pic{height: 337px;width: 219px;border:1px solid #dadada; padding-top: 10px;box-sizing: border-box;background-color: #fff;}
+		.m-body5 .u-pic+.u-pic{margin-left: 35px;}
+		.m-body5 .h1{font:14px/2em "微软雅黑";color: #323333;}
+		.m-body5 .h2{font:12px/1.5 "微软雅黑";color: #9f9f9f;}
+		/*body6*/
+		.m-body6{height: 565px;}
+		.m-body6 .u-bl{height: 565px;width: 850px;background: url(img/img02.jpg); color: #fff;text-align: center;}
+		.m-body6 .u-bl .hd1{font: 50px/76px "微软雅黑";margin-top: 130px;}
+		.m-body6 .u-bl .hd2{font:157.79px/120px "微软雅黑";}
+		.m-body6 .u-bl .hd3,.m-body6 .u-bl .hd4{font:22px/43px "微软雅黑";}
+		.m-body6 .u-bl .hd3{padding-top: 20px;}
+		.m-body6 .u-br{width: 430px;height: 405px;text-align: center;margin-top: 160px;}
+		.m-body6 .u-br .hd1{font: 20px/30px "微软雅黑";}
+		.m-body6 .u-br .hd1 .num{color: #ed7c7a;}
+		.m-body6 .u-br .bd{text-align: left;padding: 0 72px;font: 12px/30px "宋体";color: #aaaaaa}
+		.m-body6 .u-br .btn{width: 104px;height: 32px;border: 1px solid #e5676a;color: #e5676a;background-color: #fff;margin: 40px 0 25px;}
+		.m-body6 .u-br .icon{text-align: center;}
+		.m-body6 .u-br .icon span{height: 10px;width: 10px;border-radius: 50% 50%;border:1px solid #929292;display: inline-block;}
+		.m-body6 .u-br .icon span:hover{background-color: #929292;}
+		/*body7*/
+		.m-body7 .u-bk{width: 425px;height: 360px;font: 21px/31px "黑体";text-align: center;padding-top: 160px;}
+		.m-body7 .u-bk1{background-color: #e74f4d;color: #fff;}
+		.m-body7 .u-bk .line{border-top: 2px solid #fff;display: inline-block;width: 33px;}
+		.m-body7 .u-bk .btn{border: 1px solid #fff;width: 168px;height: 42px;line-height: 42px;display: inline-block;margin-top: 15px;}
+		.m-body7 .u-bk2 .btn{color: #e74f4d;border-color: #e74f4d;}
+		.m-body7 .u-bk2 .line{border-color: #ababab;}
+		.m-body7 .u-bk3{height: 520px;padding-top: 0;background: url(img/mask02.png),url(img/img03.jpg);}
+		/*body8*/
+		.m-body8 .u-bd1{text-align: center;margin: 115px 0;}
+		.m-body8 .u-bd1 .hd1{font: 21px/31px "黑体";}
+		.m-body8 .u-bd1 .line{border-top: 2px solid #ea6563;width: 30px;display: inline-block;margin-bottom: 10px;}
+		.m-body8 .u-bd1 .hd2{font:12px/18px "微软雅黑";color: #aaaaaa;width: 420px;display: inline-block;}
+		.m-body8 .u-bd2{width: 290px;margin-left: 135px;}
+		.m-body8 .u-bd2 .bd{margin-bottom: 30px;}
+		.m-body8 .u-bd2 .bd .hd1{font:14px "黑体";}
+		.m-body8 .u-bd2 .bd .hd2{font:12px/21px "宋体";color: #aaa;padding: 8px 0;}
+		.m-body8 .u-bd2 .bd .more{font:12px/20px "宋体";display: block;text-align: right;}
+		.m-body8 .u-bd3{width: 670px;margin:0 0 150px 70px;}
+		.m-body8 .u-bd3 input{width: 290px;height: 40px;background-color: #ededee;border: 0;margin:0 20px 20px 0;padding-left: 20px;}
+		.m-body8 .u-bd3 textarea{width: 640px;height: 118px;border: 0;background-color: #ededee;padding: 8px 10px;box-sizing: border-box;}
+		.m-body8 .u-bd3 button{width: 640px;height: 40px;background-color: #ededee;font: 14px/40px "黑体";text-align: center;margin-top: 15px;border: 0;}
+	/*底部*/
+		.g-ft{background-color: #32353e;padding: 70px 0 ;}
+		.m-foot1{width: 510px;margin: 0 auto;text-align: center;color: #fff}
+		.m-foot1 .h1{font: 21px/48px "黑体"}
+		.m-foot1 .h2{font: 12px/18px "宋体"}
+		.m-foot1 .btn{margin: 30px 0;}
+		.m-foot1 .btn input{height: 40px;border: 0;}
+		.m-foot1 .btn .con{width: 430px;line-height: 40px;text-indent: 1em}
+		.m-foot1 .btn .button{width: 80px;font-size: 15px;line-height: 40px;background-color: #6f7278;color: #fff;}
+		.m-foot1 .icons{width: 188px;margin: 35px auto;}
+		.m-foot1 .icons .icon{width: 35px;height: 35px;display: inline-block;}
+		.m-foot1 .icons .icon+.icon{margin-left: 16px;}
+		.m-foot1 .icons .icon1{background: url(img/spirit.png) -62px -40px;}
+		.m-foot1 .icons .icon2{background: url(img/spirit.png) -91px -40px;}
+		.m-foot1 .icons .icon3{background: url(img/spirit.png) -126px -40px;}
+		.m-foot1 .icons .icon4{background: url(img/spirit.png) -160px -40px;}
+		.u-version1{height: 57px;background-color: #2f2f38;padding: 0 55px;color: #fff;}
+		.u-version1 .left{line-height: 57px;}
+		.u-version1 .right a{color: #fff;line-height: 57px;}
+
+	</style>
+</head>
+<body>
+	<!-- 导航栏 -->
+	<div class="g-head">
+		<div class="m-nav f-cb">
+			<!-- 图标 -->
+			<div class="u-hd f-fl f-cb">
+				<span class="icon f-db f-fl"></span>
+				<div class="hd f-fl">新世界</div>
+			</div>
+			<!-- 登陆 -->
+			<div class="m-land f-fr f-cb">
+				<span class="icon f-fl f-db"></span>
+				<div class="land f-fl">登陆</div>
+			</div>
+			<!-- 导航 -->
+			<ul class="u-nav f-fr f-cb">
+				<li class="f-fl z-sct"><a href="">首页</a></li>
+				<li class="f-fl"><a href="">最新活动</a></li>
+				<li class="f-fl"><a href="">项目介绍</a></li>
+				<li class="f-fl"><a href="">爱心社区</a></li>
+				<li class="f-fl"><a href="">关于我们</a></li>
+			</ul>			
+		</div>
+	</div>
+
+	<div class="g-body">
+		<div class="m-body1 f-pr">
+			<div class="img"><img src="img/img00.jpg" alt="img00"></div>
+			<div class="mask f-pa"></div>
+			<div class="hd f-pa">
+				<div class="hd1">Time of new life</div>
+				<div class="hd2">新时代，年轻的人们让我们一起体验新生活，享受新生活</div>
+			</div>
+			<div class="btn f-pa">开始体验</div>
+		</div>
+		<div class="m-body2 f-cb">
+			<div class="u-bnav f-fl">
+				<div class="icon icon1"></div>
+				<div class="hd">打造全新世界观，让你更爱你的生活</div>
+			</div>
+			<div class="u-bnav f-fl">
+				<div class="icon icon2"></div>
+				<div class="hd">丰富多彩的公益活动，发挥新世界的主人公意识</div>
+			</div>
+			<div class="u-bnav f-fl">
+				<div class="icon icon3"></div>
+				<div class="hd">时尚的新理念，超前体验未知的生活</div>
+			</div>
+			<div class="u-bnav f-fl">
+				<div class="icon icon4"></div>
+				<div class="hd">完善的培养机制，培养你的全新的世界观</div>
+			</div>
+		</div>
+		<div class="m-body3">
+			<div class="icon"></div>
+			<div class="hd">关于新世界，你不知道的还有什么？</div>
+		</div>
+		<div class="m-body4">
+			<form action="">
+				<div class="hd1">查找新世界城市活动信息</div>
+				<div class="hd2"></div>
+				<div class="hd3">每个城市的不同的活动信息，请自主查询您所需了解的城市</div>
+				<div class="sels">
+					<select name="country" id="country" class="sel"><option value="">中国</option></select>
+					<select name="province" id="province" class="sel" >
+						<option value="">北京市</option>
+						<option value="">天津市</option>
+						<option value="">河北省</option>
+						<option value="">陕西省</option>
+						<option value="">内蒙古自治区</option>
+						<option value="">辽宁省</option>
+					</select>
+					<select name="city" id="city" class="sel"><option value=""></option></select>
+					<button class="btn">搜 索</button>
+				</div>
+			</form>
+		</div>
+		<div class="m-body5 f-cb">
+			<div class="u-pic f-fl">
+				<div class="pic"><img src="img/img11.jpg" alt=""></div>
+				<div class="h1">北京活动</div>
+				<div class="h2">新社区大联盟</div>
+			</div>
+			<div class="u-pic f-fl">
+				<div class="h1">上海活动</div>
+				<div class="h2">夜上海新景观探索</div>
+				<div class="pic"><img src="img/img12.jpg" alt=""></div>
+			</div>
+			<div class="u-pic f-fl">
+				<div class="pic"><img src="img/img13.jpg" alt=""></div>
+				<div class="h1">深圳活动</div>
+				<div class="h2">全新海岸线观点站</div>
+			</div>
+			<div class="u-pic f-fl">
+				<div class="pic"><img src="img/img14.jpg" alt=""></div>
+				<div class="h1">香港活动</div>
+				<div class="h2">奢侈消费大派送</div>
+			</div>
+		</div>
+		<div class="m-body6 f-cb">
+			<div class="u-bl f-fl">
+				<div class="hd1">新世界</div>
+				<div class="hd2">TIME</div>
+				<div class="hd3">@新世界-北京</div>
+				<div class="hd4">2016.04.01</div>
+			</div>
+			<div class="u-br f-fl">
+				<div class="art">
+					<h1 class="hd1">新世界/<span class="num">01</span></h1>
+					<p class="bd">新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界新世界</p>
+					<button class="btn">更多详情</button>
+				</div>
+				<div class="icon"><span></span> <span></span> <span></span> </div> </div>
+		</div>
+		<div class="m-body7 f-cb">
+			<div class="u-bk u-bk1 f-fl">
+				<div class="h1">新时代</div>
+				<div class="h2">关于爱生活的我们</div>
+				<span class="line"></span><br>
+				<buttion class="btn">查看更多</buttion>
+			</div>
+			<div class="u-bk u-bk2 f-fl">
+				<div class="h1">新时代</div>
+				<div class="h2">关于爱生活的我们</div>
+				<span class="line"></span><br>
+				<buttion class="btn">查看更多</buttion>
+			</div>
+			<div class="u-bk u-bk3 f-fl">
+			</div>
+		</div>
+		<div class="m-body8 f-cb">
+			<div class="u-bd1">
+				<div class="hd1">成为我们的志愿者</div>
+				<div class="line"></div><br>
+				<div class="hd2">新世界的大家庭需要每一个爱生活的人的加入，如果你够年轻，有梦想，有激情 那就不要犹豫，快来加入我们，成为改变所有人生活的人 </div>
+			</div>
+			<div class="u-bd2 f-fl">
+				<div class="bd">
+					<div class="hd1">新世界志愿者协议</div>
+					<div class="hd2">加入新世界志愿者的人员必须遵守中华人民共共和国的 相关法律法规，并且本着平等资源的原则 ......</div>
+					<span class="more">v more</span>
+				</div>
+				<div class="bd">
+					<div class="hd1">新世界志愿者权利</div>
+					<div class="hd2">加入新世界志愿者的人员必须遵守中华人民共共和国的 相关法律法规，并且本着平等资源的原则 ......</div>
+					<span class="more">v more</span>
+				</div>
+				<div class="bd">
+					<div class="hd1">更多条款</div>
+					<span class="more">v more</span>
+				</div>
+			</div>
+			<div class="u-bd3 f-fl">
+				<form action="">
+					<input type="text" placeholder="姓名：">
+					<input type="text" placeholder="年龄：">
+					<input type="text" placeholder="联系方式:">
+					<input type="text" placeholder="联系地址：">
+					<textarea name="" id="" cols="30" rows="10" placeholder="请简单描述您梦想的生活："></textarea>
+					<button>提交申请</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="g-foot">
+		<div class="g-ft">
+			<div class="m-foot1">
+				<div class="h1">联系我们</div>
+				<div class="h2">为了更好的获取我们最新的产品资讯，您可以留下您的电子邮箱快速订阅我们的产品资讯 也可以通过以下任何方式关注我们动态</div>
+				<div class="btn">
+					<form action=""><input type="text" placeholder="someone@email.com" class="con"><input type="submit" class="button"></form>
+				</div>
+				<ul class="icons f-cb">
+					<li class="icon icon1 f-fl"><a href=""></a></li>
+					<li class="icon icon2 f-fl"><a href=""></a></li>
+					<li class="icon icon3 f-fl"><a href=""></a></li>
+					<li class="icon icon4 f-fl"><a href=""></a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="u-version1 f-cb">
+			<div class="left f-fl">@2016新世界</div>
+			<div class="right f-fr"><a href="">Back to top</a></div>
+		</div>
+	</div>
+</body>
+</html>

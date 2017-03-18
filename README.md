@@ -9,3 +9,4 @@
 * [任务四：定位和居中问题](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_4_1/task_1_4_1.html)
 * [任务五：零基础HTML及CSS编码（二）](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_5_1/task_1_5_1.html)
 * [任务六：通过HTML及CSS模拟报纸排版](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_6_1/task_1_6_1.html)
+* [任务七：实现常见的技术产品官网的页面架构及样式布局](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_7_1/task_1_7_1.html)
