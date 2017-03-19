@@ -1,0 +1,106 @@
+h1,h1,h3,h4{
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+}
+h3{
+	font: 1em/1 "黑体";
+}
+a{
+	text-decoration: none;
+	color:#000;
+}
+li{
+	list-style: none;
+}
+
+section{
+	background-color: #F5F5F5;
+}
+header{
+	position: relative;
+	padding: 1rem;
+	line-height: 1;
+	text-align: center;
+	background-color:#91D4DA;
+	color: #fff; 
+}
+header .back{
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+	line-height: 1.5rem;
+	font-weight: bold;
+}
+nav{
+	text-align: center;
+	background-color: #fff;
+	overflow: hidden;	
+}
+nav a{
+	float: left;
+	width: 20%;
+	padding: 1rem 0;
+	border-bottom: 0.2rem solid #fff;
+	font:1.5rem/1 "黑体";
+	color: #000;
+}
+nav a:hover{
+	border-bottom-color: #91D4DA;
+}
+.homeimg00 img{
+	max-width: 100%;
+}
+
+.taps{
+	overflow: hidden;
+	background-color: #fff;
+}
+.taps .tap{
+	float:left;
+	width: 20%;
+}
+.taps .tap a{
+	margin: 0 auto;
+	text-align: center;
+}
+.taps .tap span{
+	display: block;
+	margin: 0 auto;
+	width: 90px;
+	height: 90px;
+	border-radius: 50% 50%;
+	background: url(img/icon00.png) 8px 7px;
+	background-color: #00C7D6;
+}
+.taps .tap h2{
+	font: 1.5em/2 "黑体";
+}
+
+.fenlan{
+	margin-top: 2px;
+	padding: 1rem 0;
+	overflow: hidden;
+	background-color: #fff;
+}
+.fenlan a+a{
+	border-left: 2px solid #F2F2F2;
+}
+.fenlan a{
+	float: left;
+	display: block;
+	width: 33%;
+	padding: 0.5rem 0;
+	text-align: center;
+}
+.fenlan a img{
+	width: 80px;
+	height:80px;
+}
+.fenlan a h2{
+	font: 1.5em/2 "黑体";
+}
+.fenlan a h3{
+	color: #5C5C5C;
+}
+
