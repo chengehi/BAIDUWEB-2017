@@ -15,5 +15,5 @@
 * [任务十一：移动Web页面布局实践](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_11_1/task_1_11_1.html)
 
 ### 导师斌斌
-* [任务一：零基础JavaScript编码（一）](https://chengehi.github.io/BAIDUWEB-2017/binbin/IFE JavaScript Task 01.html)
-* [任务一：零基础JavaScript编码（二）](https://chengehi.github.io/BAIDUWEB-2017/binbin/IFE JavaScript Task 02.html)
+* [任务一：零基础JavaScript编码（一）](https://chengehi.github.io/BAIDUWEB-2017/binbin/IFE_JavaScript_Task_01.html)
+* [任务一：零基础JavaScript编码（二）](https://chengehi.github.io/BAIDUWEB-2017/binbin/IFE_JavaScript_Task_02.html)
