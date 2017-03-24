@@ -12,3 +12,8 @@
 * [任务七：实现常见的技术产品官网的页面架构及样式布局](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_7_1/task_1_7_1.html)
 * [任务八：响应式网格（栅格化）布局](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_8_1/task_1_8_1.html)
 * [任务十：Flexbox 布局练习](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_10_1/task_1_10_1.html)
+* [任务十一：移动Web页面布局实践](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_11_1/task_1_11_1.html)
+
+### 导师斌斌
+* [任务一：零基础JavaScript编码（一）](https://chengehi.github.io/BAIDUWEB-2017/binbin/IFE JavaScript Task 01.html)
+* [任务一：零基础JavaScript编码（二）](https://chengehi.github.io/BAIDUWEB-2017/binbin/IFE JavaScript Task 02.html)
