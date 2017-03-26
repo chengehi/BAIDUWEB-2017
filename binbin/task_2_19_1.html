@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task_2_18_1</title>
+	<style>
+		#lists li{width: 0;padding: 10px;margin: 1px;overflow: hidden;list-style: none;background-color: red;color: red;}
+		#lists{display: flex;align-items: flex-end;height: 220px;}
+	</style>
+</head>
+<body>
+	<div class="demo" id="demo">
+		<textarea name="" id="input" cols="30" rows="10"></textarea>
+		<button id="inLift">左侧入</button>
+		<button id="inRight">右侧入</button>
+		<button id="delLift">左侧出</button>
+		<button id="delRight">右侧出</button>
+		<br>
+		<input type="text" class="searchIpt">
+		<button id="searchBtn">查询</button>
+
+	<ul id="lists">
+<!-- 	<li></li>
+		<li></li>
+		<li></li>
+		<li></li> -->
+	</ul>
+	</div>
+	<script>
+
+	function $(id){
+		return document.getElementById(id);
+	}
+
+	var ul = $("lists"),
+		count = 0;
+
+
+	// 检测数字
+	function getNum(){
+		var a = Number($('input').value);
+		if(a&&a>=10&&a<=100){
+			return a;
+		}else{
+			alert("请输入10-100数字！")
+		}
+	}
+
+	// 判断count<=60
+	function judge(){
+		if(count>60){
+			alert("队列最多60！！！")
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+
+	// 高度根据数字变
+	function histogram(ele,num){
+		var ht = num*2;
+		ele.style.height = ht +"px";
+	}
+
+	// 从左侧入
+	function inLift(){
+		var num = getNum();
+		if(num&&judge()){
+			var li = document.createElement("li");
+			histogram(li,num);
+			ul.insertAdjacentElement("afterBegin",li);
+			count++;
+		};
+	}
+
+	// 从右侧入
+	function inRight(){
+		var num = getNum();
+		if(num&&judge()){
+			var li = document.createElement("li");
+			histogram(li,num);
+			ul.appendChild(li);
+			count++;
+		};
+	}
+
+	// 从左侧删除
+	function delLift(){
+		var a = ul.firstElementChild;
+		var n = parseInt(a.style.height)/2;
+		ul.removeChild(a);
+		count--;
+		alert(n);
+	}
+
+	// 从右侧删除
+	function delRight(){	
+		var a = ul.lastElementChild;
+		var n = parseInt(a.style.height)/2;
+		ul.removeChild(a);
+		count--;
+		alert(n);
+	}
+
+	// 排序，从低到高
+	function order(){
+		var s = ul.children;
+		var arr = [];
+		for(var i=0;i<s.length;i++){
+			arr[i]=parseInt(s[i].style.height);
+		}
+		arr.sort();
+		for(var i=0;i<s.length;i++){
+			s[i].style.height = arr[i] + "px";
+		}
+	}
+
+	function search(str){
+		var reg = /[\n\s\.,，。、]+/;
+		var a = $("input").value;
+		var arr = a.split(reg);
+		arr.forEach(function(item){
+			if(item.search(str)!=-1){
+				var b ="<span color='green'>" + item + "</span>"
+				$("input").innerHTML = a.replace(item,b);
+			}
+		})
+
+	}
+
+
+
+	// 添加事件
+	function  init(){
+		$("inLift").onclick = function(){inLift()};
+		$("inRight").onclick = function(){inRight()};
+		$("delLift").onclick = function(){delLift()};
+		$("delRight").onclick = function(){delRight()};
+		ul.onclick = function(event){
+			ul.removeChild(event.target);
+		}
+	}
+
+	init();
+	// order();
+	</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task_2_18_1</title>
+	<style>
+		#lists li{float: left; list-style: none;margin-right: 20px;background-color: red;color: #fff;padding: 10px;}
+	</style>
+</head>
+<body>
+	<div class="demo" id="demo">
+		<input type="text" id="input">
+		<button id="inLift">左侧入</button>
+		<button id="inRight">右侧入</button>
+		<button id="delLift">左侧出</button>
+		<button id="delRight">右侧出</button>
+
+	<ul id="lists">
+<!-- 	<li></li>
+		<li></li>
+		<li></li>
+		<li></li> -->
+	</ul>
+	</div>
+	<script>
+
+	function $(id){
+		return document.getElementById(id);
+	}
+
+	var ul = $("lists");
+
+	// 将数字插入左边
+	function renderLift(num){
+		var li = document.createElement("li");
+			li.innerText= num;
+			ul.insertAdjacentElement("afterBegin",li);
+	}
+
+	// 将数字插入右边
+	function renderRight(num){
+		var li = document.createElement("li");
+			li.innerText=num;
+			ul.appendChild(li);
+	}
+
+
+	// 从左侧入
+	function inLift(){
+		var num = $('input').value;
+		renderLift(num);
+	}
+
+	// 从右侧入
+	function inRight(){
+		var num = $('input').value;
+		renderRight(num);
+	}
+
+	// 从左侧删除
+	function delLift(){
+		var a = ul.firstElementChild;
+		ul.removeChild(a);
+		alert(a.textContent);
+	}
+
+	// 从右侧删除
+	function delRight(){	
+		var a = ul.lastElementChild;
+		ul.removeChild(a);
+		alert(a.textContent);
+	}
+
+	// 添加事件
+	function  init(){
+		$("inLift").onclick = function(){inLift()};
+		$("inRight").onclick = function(){inRight()};
+		$("delLift").onclick = function(){delLift()};
+		$("delRight").onclick = function(){delRight()};
+		ul.onclick = function(event){
+			ul.removeChild(event.target);
+		}
+	}
+
+	init();
+	</script>
+</body>
+</html>
