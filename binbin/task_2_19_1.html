@@ -6,17 +6,38 @@
 	<style>
 		#lists li{width: 0;padding: 10px;margin: 1px;overflow: hidden;list-style: none;background-color: red;color: red;}
 		#lists{display: flex;align-items: flex-end;height: 220px;}
+
+		.textarea{
+			position: relative;
+			display: inline-block;
+			font:1rem "微软雅黑";
+		}
+		#textarea-bg{
+			position: absolute;
+			top: 1px;left: 1px;
+			padding: 2px;
+			z-index: 1;
+			background-color: #fff;
+		}
+		#input{
+			font:1rem "微软雅黑";
+			background-color: #fff;
+		}
+
 	</style>
 </head>
 <body>
 	<div class="demo" id="demo">
-		<textarea name="" id="input" cols="30" rows="10"></textarea>
+		<div class="textarea">
+			<div class="textarea-bg" id="textarea-bg" contenteditable="true"></div>
+			<textarea name="" id="input" cols="30" rows="10" contenteditable="true"></textarea>
+		</div>
 		<button id="inLift">左侧入</button>
 		<button id="inRight">右侧入</button>
 		<button id="delLift">左侧出</button>
 		<button id="delRight">右侧出</button>
 		<br>
-		<input type="text" class="searchIpt">
+		<input type="text" class="searchIpt" id="searchIpt">
 		<button id="searchBtn">查询</button>
 
 	<ul id="lists">
@@ -115,20 +136,24 @@
 		}
 	}
 
+	// 查询
 	function search(str){
-		var reg = /[\n\s\.,，。、]+/;
-		var a = $("input").value;
-		var arr = a.split(reg);
-		arr.forEach(function(item){
-			if(item.search(str)!=-1){
-				var b ="<span color='green'>" + item + "</span>"
-				$("input").innerHTML = a.replace(item,b);
-			}
-		})
-
+		if(str!=""){
+			var reg = /[\n\s\.,，。、]+/;
+			var a = $("input").value;
+			var c = a;
+			var b = $("textarea-bg");
+			b.innerHTML="";	
+			var arr = a.split(reg);
+			arr.forEach(function(item){
+				if(item.search(str)!=-1){
+					var d ="<span style =\"color:red\">" + item + "</span>";
+					c = c.replace(eval('/'+item+'/g'),d);
+				}
+			})
+			b.innerHTML = c.replace(/\n/g,"<br>");
+		}
 	}
-
-
 
 	// 添加事件
 	function  init(){
@@ -138,6 +163,9 @@
 		$("delRight").onclick = function(){delRight()};
 		ul.onclick = function(event){
 			ul.removeChild(event.target);
+		}
+		$("searchBtn").onclick = function(){
+			search($("searchIpt").value);
 		}
 	}
 
