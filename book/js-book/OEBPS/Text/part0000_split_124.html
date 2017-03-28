@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_136">18.4　小结</h2>
+
+  <p class="calibre2">JavaScript对XML及其相关技术有相当大的支持。然而，由于缺乏规范，共同的功能却存在一些不同的实现。DOM2级提供了创建空XML文档的API，但没有涉及解析和序列化。既然规范没有对这些功能作出规定，浏览器提供商就各行其是，拿出了自己的实现方案。IE采取了下列方式。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">通过ActiveX对象来支持处理XML，而相同的对象也可以用来构建桌面应用程序。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">Windows携带了MSXML库，JavaScript能够访问这个库。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">这个库中包含对基本XML解析和序列化的支持，同时也支持XPath和XSLT等技术。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">Firefox为处理XML的解析和序列化，实现了两个新类型，简介如下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">DOMParser</code>类型比较简单，其对象可以将XML字符串解析为DOM文档。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XMLSerializer</code>类型执行相反的操作，即将DOM文档序列化为XML字符串。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">由于Firefox中的类型比较简单，用户众多，IE9、Opera、Chrome和Safari都相继实现了相同的类型。因此，这些类型也就成为了Web开发中的事实标准。</p>
+
+  <p class="calibre2">DOM3级引入了一个针对XPath API的规范，该规范已经由Firefox、Safari、Chrome和Opera实现。这些API可以让JavaScript基于DOM文档运行任何XPath查询，并且能够返回任何数据的结果。IE以自己的方式实现了对XPath的支持；具体来说，就是两个方法：<code class="calibre15">selectSingleNode()</code>和<code class="calibre15">selectNodes()</code>。虽然与DOM3级API相比还存在诸多限制，但使用这两个方法仍然能够执行基本的XPath功能，即在DOM文档中查找节点或节点集合。</p>
+
+  <p class="calibre2">与XML相关的最后一种技术是XSLT，没有公开发布的标准针对这种技术的功能定义相应的API。Firefox为通过JavaScript处理转换创建了<code class="calibre15">XSLTProcessor</code>类型；此后不久，Safari、Chrome、和Opera也都实现了同样的类型。IE则针对XSLT提供了自己的方案，一个是简单的<code class="calibre15">transformNode()</code>方法，另一个是较为复杂的模板/处理器手段。</p>
+
+  <p class="calibre2">目前，IE、Firefox、Chrome和Opera都能够较好地支持XML。虽然IE的实现与其他浏览器相比差异比较大，但仍然还是有较多的公共功能可供我们实现跨浏览器的方案。</p>
+
+  <p class="calibre5" id="calibre_pb_169" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

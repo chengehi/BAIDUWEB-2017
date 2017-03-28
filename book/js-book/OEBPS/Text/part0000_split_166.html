@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_182">25.6　Web Workers</h2>
+
+  <p class="calibre2">随着Web应用复杂性的与日俱增，越来越复杂的计算在所难免。长时间运行的JavaScript进程会导致浏览器冻结用户界面，让人感觉屏幕“冻结”了。Web Workers规范通过让JavaScript在后台运行解决了这个问题。浏览器实现Web Workers规范的方式有很多种，可以使用线程、后台进程或者运行在其他处理器核心上的进程，等等。具体的实现细节其实没有那么重要，重要的是开发人员现在可以放心地运行JavaScript，而不必担心会影响用户体验了。</p>
+
+  <p class="calibre2">目前支持Web Workers的浏览器有IE10+、Firefox 3.5+、Safari 4+、Opera 10.6+、Chrome和iOS版的Safari。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_297"><strong class="calibre10">25.6.1　使用Worker</strong></h3>
+
+  <p class="calibre2">实例化Worker对象并传入要执行的JavaScript文件名就可以创建一个新的Web Worker。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var worker = new Worker("stufftodo.js");
+</code></pre>
+
+  <p class="calibre2">这行代码会导致浏览器下载<code class="calibre15">stufftodo.js</code>，但只有Worker接收到消息才会实际执行文件中的代码。要给Worker传递消息，可以使用<code class="calibre15">postMessage()</code>方法（与XDM中的<code class="calibre15">postMessage()</code>方法类似）：</p>
+  <pre class="calibre18"><code class="calibre15">worker.postMessage(“start! ");
+</code></pre>
+
+  <p class="calibre2">消息内容可以是任何能够被序列化的值，不过与XDM不同的是，在所有支持的浏览器中，<code class="calibre15">postMessage()</code>都能接收对象参数（Safari 4是支持Web Workers的浏览器中最后一个只支持字符串参数的）。因此，可以随便传递任何形式的对象数据，如下面的例子所示：</p>
+  <pre class="calibre18"><code class="calibre15">worker.postMessage({
+    type: "command", 
+    message: "start! "
+});
+</code></pre>
+
+  <p class="calibre2">一般来说，可以序列化为JSON结构的任何值都可以作为参数传递给<code class="calibre15">postMessage()</code>。换句话说，这就意味着传入的值是被复制到Worker中，而非直接传过去的（与XDM类似）。</p>
+
+  <p class="calibre2">Worker是通过<code class="calibre15">message</code>和<code class="calibre15">error</code>事件与页面通信的。这里的<code class="calibre15">message</code>事件与XDM中的<code class="calibre15">message</code>事件行为相同，来自Worker的数据保存在<code class="calibre15">event.data</code>中。Worker返回的数据也可以是任何能够被序列化的值：</p>
+  <pre class="calibre18"><code class="calibre15">worker.onmessage = function(event){
+    var data = event.data;
+
+    //对数据进行处理
+}
+</code></pre>
+
+  <p class="calibre2">Worker不能完成给定的任务时会触发<code class="calibre15">error</code>事件。具体来说，Worker内部的JavaScript在执行过程中只要遇到错误，就会触发<code class="calibre15">error</code>事件。发生<code class="calibre15">error</code>事件时，事件对象中包含三个属性：<code class="calibre15">filename</code>、<code class="calibre15">lineno</code>和<code class="calibre15">message</code>，分别表示发生错误的文件名、代码行号和完整的错误消息。</p>
+  <pre class="calibre18"><code class="calibre15">worker.onerror = function(event){
+    console.log("ERROR: " + event.filename + " (" + event.lineno + "): " +
+                event.message);
+};
+</code></pre>
+
+  <p class="calibre2">建议大家在使用Web Workers时，始终都要使用<code class="calibre15">onerror</code>事件处理程序，即使这个函数（像上面例子所示的）除了把错误记录到日志中什么也不做都可以。否则，Worker就会在发生错误时，悄无声息地失败了。</p>
+
+  <p class="calibre2">任何时候，只要调用<code class="calibre15">terminate()</code>方法就可以停止Worker的工作。而且，Worker中的代码会立即停止执行，后续的所有过程都不会再发生（包括<code class="calibre15">error</code>和<code class="calibre15">message</code>事件也不会再触发）。</p>
+  <pre class="calibre18"><code class="calibre15">worker.terminate();    //立即停止Worker的工作
+</code></pre>
+
+  <h3 class="calibre22" id="sigil_toc_id_298"><strong class="calibre10">25.6.2　Worker全局作用域</strong></h3>
+
+  <p class="calibre2">关于Web Worker，最重要的是要知道它所执行的JavaScript代码完全在另一个作用域中，与当前网页中的代码不共享作用域。在Web Worker中，同样有一个全局对象和其他对象以及方法。但是，Web Worker中的代码不能访问DOM，也无法通过任何方式影响页面的外观。</p>
+
+  <p class="calibre2">Web Worker中的全局对象是<code class="calibre15">worker</code>对象本身。也就是说，在这个特殊的全局作用域中，<code class="calibre15">this</code>和<code class="calibre15">self</code>引用的都是<code class="calibre15">worker</code>对象。为便于处理数据，Web Worker本身也是一个最小化的运行环境。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">最小化的<code class="calibre15">navigator</code>对象，包括<code class="calibre15">onLine</code>、<code class="calibre15">appName</code>、<code class="calibre15">appVersion</code>、<code class="calibre15">userAgent</code>和<code class="calibre15">platform</code>属性；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">只读的<code class="calibre15">location</code>对象；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">setTimeout()</code>、<code class="calibre15">setInterval()</code>、<code class="calibre15">clearTimeout()</code>和<code class="calibre15">clearInterval()</code>方法；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XMLHttpRequest</code>构造函数。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">显然，Web Worker的运行环境与页面环境相比，功能是相当有限的。</p>
+
+  <p class="calibre2">当页面在<code class="calibre15">worker</code>对象上调用<code class="calibre15">postMessage()</code>时，数据会以异步方式被传递给<code class="calibre15">worker</code>，进而触发<code class="calibre15">worker</code>中的<code class="calibre15">message</code>事件。为了处理来自页面的数据，同样也需要创建一个<code class="calibre15">onmessage</code>事件处理 程序。</p>
+  <pre class="calibre18"><code class="calibre15">//Web Worker内部的代码
+self.onmessage = function(event){
+    var data = event.data;
+
+    //处理数据
+};
+</code></pre>
+
+  <p class="calibre2">大家看清楚，这里的<code class="calibre15">self</code>引用的是Worker全局作用域中的<code class="calibre15">worker</code>对象（与页面中的<code class="calibre15">Worker</code>对象不同一个对象）。Worker完成工作后，通过调用<code class="calibre15">postMessage()</code>可以把数据再发回页面。例如，下面的例子假设需要Worker对传入的数组进行排序，而Worker在排序之后又将数组发回了页面：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">//Web Worker内部的代码
+self.onmessage = function(event){
+    var data = event.data;
+
+    //别忘了，默认的sort()方法只比较字符串
+    <b class="calibre3">data.sort(function(a, b){</b>
+       <b class="calibre3">return a – b;</b>
+    <b class="calibre3">});</b>
+    <b class="calibre3">self.postMessage(data);</b>
+};
+</pre>
+
+  <p class="calibre8"><i class="calibre7">WebWorkerExample01.js</i></p>
+
+  <p class="calibre2">传递消息就是页面与Worker相互之间通信的方式。在Worker中调用<code class="calibre15">postMessage()</code>会以异步方式触发页面中Worker实例的<code class="calibre15">message</code>事件。如果页面想要使用这个Worker，可以这样：</p>
+  <pre class="calibre18"><code class="calibre15">//在页面中
+var data = [23,4,7,9,2,14,6,651,87,41,7798,24],
+    worker = new Worker("WebWorkerExample01.js");
+
+worker.onmessage = function(event){
+    var data = event.data;
+
+    //对排序后的数组进行操作
+};
+
+//将数组发送给worker排序
+worker.postMessage(data);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">WebWorkerExample01.htm</i></p>
+
+  <p class="calibre2">排序的确是比较消耗时间的操作，因此转交给Worker做就不会阻塞用户界面了。另外，把彩色图像转换成灰阶图像以及加密解密之类的操作也是相当费时的。</p>
+
+  <p class="calibre2">在Worker内部，调用<code class="calibre15">close()</code>方法也可以停止工作。就像在页面中调用<code class="calibre15">terminate()</code>方法一样，Worker停止工作后就不会再有事件发生了。</p>
+  <pre class="calibre18"><code class="calibre15">//Web Worker内部的代码
+self.close();
+</code></pre>
+
+  <h3 class="calibre22" id="sigil_toc_id_299"><strong class="calibre10">25.6.3　包含其他脚本</strong></h3>
+
+  <p class="calibre2">既然无法在Worker中动态创建新的<code class="calibre15">&lt;script&gt;</code>元素，那是不是就不能向Worker中添加其他脚本了呢？不是，Worker的全局作用域提供这个功能，即我们可以调用<code class="calibre15">importScripts()</code>方法。这个方法接收一个或多个指向JavaScript文件的URL。每个加载过程都是异步进行的，因此所有脚本加载并执行之后，<code class="calibre15">importScripts()</code>才会执行。例如：</p>
+  <pre class="calibre18"><code class="calibre15">//Web Worker内部的代码
+importScripts("file1.js", "file2.js");
+</code></pre>
+
+  <p class="calibre2">即使<code class="calibre15">file2.js</code>先于<code class="calibre15">file1.js</code>下载完，执行的时候仍然会按照先后顺序执行。而且，这些脚本是在Worker的全局作用域中执行，如果脚本中包含与页面有关的JavaScript代码，那么脚本可能无法正确运行。请记住，Worker中的脚本一般都具有特殊的用途，不会像页面中的脚本那么功能宽泛。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_300"><strong class="calibre10">25.6.4　Web Workers的未来</strong></h3>
+
+  <p class="calibre2">Web Workers规范还在继续制定和改进之中。本节所讨论的Worker目前被称为“专用Worker”（dedicated worker），因为它们是专门为某个特定的页面服务的，不能在页面间共享。该规范的另外一个概念是“共享Worker”（shared worker），这种Worker可以在浏览器的多个标签中打开的同一个页面间共享。虽然Safari 5、Chrome和Opera 10.6都实现了共享Worker，但由于该规范尚未完稿，因此很可能还会有变动。</p>
+
+  <p class="calibre2">另外，关于在Worker内部能访问什么不能访问什么，到如今仍然争论不休。有人认为Worker应该像页面一样能够访问任意数据，不光是XHR，还有<code class="calibre15">localStroage</code>、<code class="calibre15">sessionStorage</code>、Indexed DB、Web Sockets、Server-Send Events等。好像支持这个观点的人更多一些，因此未来的Worker全局作用域很可能会有更大的空间。</p>
+</body>
+</html>

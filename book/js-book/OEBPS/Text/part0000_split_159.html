@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_175">24.4　小结</h2>
+
+  <p class="calibre2">随着JavaScript开发的成熟，也出现了很多最佳实践。过去一度认为只是一种爱好的东西现在变成了正当的职业，同时还需要经历过去其他编程语言要做的一些研究，如可维护性、性能和部署。</p>
+
+  <p class="calibre2">JavaScript中的可维护性部分涉及到下面的代码约定。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">来自其他语言中的代码约定可以用于决定何时进行注释，以及如何进行缩进，不过JavaScript需要针对其松散类型的性质创造一些特殊的约定。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">由于JavaScript必须与HTML和CSS共存，所以让各自完全定义其自己的目的非常重要：JavaScript应该定义行为，HTML应该定义内容，CSS应该定义外观。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">这些职责的混淆会导致难以调试的错误和维护上的问题。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">随着Web应用中的JavaScript数量的增加，性能变得更加重要，因此，你需要牢记以下事项。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">JavaScript执行所花费的时间直接影响到整个Web页面的性能，所以其重要性是不能忽略的。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">针对基于C的语言的很多性能的建议也适用于JavaScript，如有关循环性能和使用<code class="calibre15">switch</code>语句替代<code class="calibre15">if</code>语句。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">还有一个要记住的重要事情，即DOM交互开销很大，所以需要限制DOM操作的次数。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">流程的最后一步是部署。本章讨论了以下一些关键点。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">为了协助部署，推荐设置一个可以将JavaScript合并为较少文件（理想情况是一个）的构建过程。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">有了构建过程也可以对源代码自动运行额外的处理和过滤。例如，你可以运行JavaScript验证器来确保没有语法错误或者是代码没有潜在的问题。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">在部署前推荐使用压缩器将文件尽可能变小。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">和HTTP压缩一起使用可以让JavaScript文件尽可能小，因此对整体页面性能的影响也会最小。</p>
+    </li>
+  </ul>
+
+  <p class="calibre5" id="calibre_pb_216" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

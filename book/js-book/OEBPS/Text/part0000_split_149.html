@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_161">22.6　小结</h2>
+
+  <p class="calibre2">JavaScript中的函数非常强大，因为它们是第一类对象。使用闭包和函数环境切换，还可以有很多使用函数的强大方法。可以创建作用域安全的构造函数，确保在缺少<code class="calibre15">new</code>操作符时调用构造函数不会改变错误的环境对象。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">可以使用惰性载入函数，将任何代码分支推迟到第一次调用函数的时候。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">函数绑定可以让你创建始终在指定环境中运行的函数，同时函数柯里化可以让你创建已经填了某些参数的函数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">将绑定和柯里化组合起来，就能够给你一种在任意环境中以任意参数执行任意函数的方法。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">ECMAScript 5允许通过以下几种方式来创建防篡改对象。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">不可扩展的对象，不允许给对象添加新的属性或方法。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">密封的对象，也是不可扩展的对象，不允许删除已有的属性和方法。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">冻结的对象，也是密封的对象，不允许重写对象的成员。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">JavaScript中可以使用<code class="calibre15">setTimeout()</code>和<code class="calibre15">setInterval()</code>如下创建定时器。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">定时器代码是放在一个等待区域，直到时间间隔到了之后，此时将代码添加到JavaScript的处理队列中，等待下一次JavaScript进程空闲时被执行。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">每次一段代码执行结束之后，都会有一小段空闲时间进行其他浏览器处理。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">这种行为意味着，可以使用定时器将长时间运行的脚本切分为一小块一小块可以在以后运行的代码段。这种做法有助于Web应用对用户交互有更积极的响应。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">JavaScript中经常以事件的形式应用观察者模式。虽然事件常常和DOM一起使用，但是你也可以通过实现自定义事件在自己的代码中应用。使用自定义事件有助于将不同部分的代码相互之间解耦，让维护更加容易，并减少引入错误的机会。</p>
+
+  <p class="calibre2">拖放对于桌面和Web应用都是一个非常流行的用户界面范例，它能够让用户非常方便地以一种直观的方式重新排列或者配置东西。在JavaScrip中可以使用鼠标事件和一些简单的计算来实现这种功能类型。将拖放行为和自定义事件结合起来可以创建一个可重复使用的框架，它能应用于各种不同的情况下。</p>
+
+  <p class="calibre5" id="calibre_pb_202" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

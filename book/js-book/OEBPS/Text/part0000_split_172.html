@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_232"><strong class="calibre10">A.4　新对象类型</strong></h2>
+
+  <p class="calibre2">Harmony为JavaScript定义了几个新的对象类型。这几个新类型提供了以前只有JavaScript引擎才能使用的功能。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_309"><strong class="calibre10">A.4.1　代理对象</strong></h3>
+
+  <p class="calibre2">Harmony为JavaScript引入了代理的概念。所谓代理（proxy），就是一个表示接口的对象，对它的操作不一定作用在代理对象本身。举个例子，设置代理对象的一个属性，实际上可能会在另一个对象上调用一个函数。代理是一种非常有用的抽象机制，能够通过API只公开部分信息，同时还能对数据源进行全面控制。</p>
+
+  <p class="calibre2">要创建代理对象，可以使用<code class="calibre15">Proxy.create()</code>方法，传入一个<code class="calibre15">handler</code>（处理程序）对象和一个可选的<code class="calibre15">prototype</code>（原型）对象：</p>
+  <pre class="calibre18"><code class="calibre15">var proxy = Proxy.create(handler);
+
+//创建一个以myObject为原型的代理对象
+var proxy = Proxy.create(handler, myObject);
+</code></pre>
+
+  <p class="calibre2">其中，<code class="calibre15">handler</code>对象包含用于定义<strong class="calibre3">捕捉器</strong>（trap）的属性。捕捉器本身是函数，用于处理（捕捉）原生功能，以便该功能能够以另一种方式来处理。要确保代理对象能够按照预期工作，至少要实现以下7种基本的捕捉器。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">getOwnPropertyDescriptor</code>：当在代理对象上调用<code class="calibre15">Object.getOwnPropertyDescriptor()</code>时调用的函数。这个函数以接收到的属性名作为参数，返回属性描述符，或者在属性不存在时返回<code class="calibre15">null</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">getPropertyDescriptor</code>：当在代理对象上调用<code class="calibre15">Object.getPropertyDescriptor()</code>时调用的函数。（这是Harmony中的新方法。）这个函数以接收到的属性名作为参数，返回属性描述符，或者在属性不存在时返回<code class="calibre15">null</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">getOwnPropertyNames</code>：当在代理对象上调用<code class="calibre15">Object.getOwnPropertyNames ()</code>时调用的函数。这个函数以接收到的属性名作为参数，应该返回一个字符串数组。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">getPropertyNames</code>：当在代理对象上调用<code class="calibre15">Object.getPropertyNames ()</code>时调用的函数。（这是Harmony中的新方法。）这个函数以接收到的属性名作为参数，应该返回一个字符串数组。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">defineProperty</code>：当在代理对象上调用<code class="calibre15">Object.defineProperty()</code>时调用的函数。这个函数以接收到的属性名和属性描述符作为参数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">delete</code>：定义在对象属性上使用<code class="calibre15">delete</code>操作符时调用的函数。属性名以参数形式传进来，如果删除成功则返回<code class="calibre15">true</code>，删除失败返回<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">fix</code>：当调用<code class="calibre15">Object.freeze()</code>、<code class="calibre15">Object.seal()</code>或<code class="calibre15">Object.preventExtensions()</code>时调用的函数。当在代理对象上调用这几个方法时，返回<code class="calibre15">undefined</code>以抛出错误。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">除了这7个基本的捕捉器，还有6个<strong class="calibre3">派生的捕捉器</strong>（derived trap）。与基本捕捉器不同，少定义一个或几个派生捕捉器不会导致错误。每个派生的捕捉器都会覆盖一种默认的JavaScript行为。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">has</code>在对象上使用<code class="calibre15">in</code>操作符（例如<code class="calibre15">"name" in object</code>）时调用的函数。以接收到的属性名作为参数，返回<code class="calibre15">true</code>表示对象包含该属性，否则返回<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">hasOwn</code>：在代理对象上调用<code class="calibre15">hasOwnProperty()</code>方法时调用的函数。以接收到的属性名作为参数，返回<code class="calibre15">true</code>表示对象包含该属性，否则返回<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">get</code>：在读取属性时调用的函数。这个函数接收两个参数，即包含被读属性的对象的引用及属性名。这个对象引用可能是代理对象本身，也可能是继承了代理对象的对象。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">set</code>：在写入属性时调用的函数。这个函数接收三个参数，即包含被写属性的对象的引用、属性名和属性值。与<code class="calibre15">get</code>类似，这个对象引用可能是代理对象本身，也可能是继承了代理对象的对象。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">enumerate</code>：当代理对象被放在<code class="calibre15">for-in</code>循环中时调用的函数。这个函数必须返回一个字符串数组，其中包含在<code class="calibre15">for-in</code>循环中使用的相应属性名。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">keys</code>：当在代理对象上调用<code class="calibre15">Object.keys()</code>时调用的函数。与<code class="calibre15">enumerate</code>类似，这个函数也必须返回一个字符串数组。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">在需要公开API，而同时又要避免使用者直接操作底层数据的时候，可以使用代理。例如，假设你想实现一个传统的栈数据类型。虽然数组可以作为栈来使用，但你想保证人们只使用<code class="calibre15">push()</code>、<code class="calibre15">pop()</code>和<code class="calibre15">length</code>。在这种情况下，就可以基于数组创建一个代理对象，只对外公开这三个对象成员。</p>
+  <pre class="calibre18"><code class="calibre15">/*
+ *实验ES 6代理对象。这个实验在数组的基础上创建一个栈数据结构。
+*代理在此用于从接口过滤"push"、"pop"和"length"之外的成员，让数组成为一个纯粹的栈，
+*任何人不能直接操作其内容。
+ */
+
+var Stack = (function(){
+
+    var stack = [],
+        allowed = ["push", "pop", "length" ];
+
+    return Proxy.create({
+        get: function(receiver, name){;
+            if (allowed.indexOf(name) &gt; -1){
+                if(typeof stack[name] == "function"){
+                    return stack[name].bind(stack);
+                } else {
+                    return stack[name];
+                }
+            } else {
+                return undefined;
+            }
+        }
+    });
+
+});
+
+var mystack = new Stack();
+
+mystack.push("hi");
+mystack.push("goodbye");
+
+console.log(mystack.length);    //1
+
+console.log(mystack[0]);        //未定义
+console.log(mystack.pop());     //"goodbye"
+</code></pre>
+
+  <p class="calibre2">以上代码创建了一个构造函数<code class="calibre15">Stack</code>。但它没有使用<code class="calibre15">this</code>，而是返回了一个对数组操作进行包装的代理对象。这个代理对象只定义了一个<code class="calibre15">get</code>捕捉器，该函数检测了一组允许的属性，然后才返回相应的值。如果引用的是不被允许的属性，那么捕捉器就返回<code class="calibre15">undefined</code>；如果引用的是<code class="calibre15">push()</code>、<code class="calibre15">pop()</code>和<code class="calibre15">length</code>，则一切正常。这里的关键是<code class="calibre15">get</code>捕捉器，它根据允许的成员过滤了对象的成员。如果该成员是函数，就返回一个与底层数组对象绑定的函数，这样操作针对的就是数组而非代理对象。</p>
+</body>
+</html>

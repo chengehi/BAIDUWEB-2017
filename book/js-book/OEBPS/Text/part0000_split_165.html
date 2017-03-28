@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_181">25.5　Web计时</h2>
+
+  <p class="calibre2">页面性能一直都是Web开发人员最关注的领域。但直到最近，度量页面性能指标的唯一方式，就是提高代码复杂程度和巧妙地使用JavaScript的<code class="calibre15">Date</code>对象。Web Timing API改变了这个局面，让开发人员通过JavaScript就能使用浏览器内部的度量结果，通过直接读取这些信息可以做任何想做的分析。与本章介绍过的其他API不同，Web Timing API实际上已经成为了W3C的建议标准，只不过目前支持它的浏览器还不够多。</p>
+
+  <p class="calibre2">Web计时机制的核心是<code class="calibre15">window.performance</code>对象。对页面的所有度量信息，包括那些规范中已经定义的和将来才能确定的，都包含在这个对象里面。Web Timing规范一开始就为<code class="calibre15">performance</code>对象定义了两个属性。</p>
+
+  <p class="calibre2">其中，<code class="calibre15">performance.navigation</code>属性也是一个对象，包含着与页面导航有关的多个属性，如下所示。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">redirectCount</code>：页面加载前的重定向次数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">type</code>：数值常量，表示刚刚发生的导航类型。</p>
+
+      <ul class="calibre33">
+        <li class="calibre12">
+          <p class="calibre2"><code class="calibre15">performance.navigation.TYPE_NAVIGATE</code> (0)：页面第一次加载。</p>
+        </li>
+
+        <li class="calibre12">
+          <p class="calibre2"><code class="calibre15">performance.navigation.TYPE_RELOAD</code> (1)：页面重载过。</p>
+        </li>
+
+        <li class="calibre12">
+          <p class="calibre2"><code class="calibre15">performance.navigation.TYPE_BACK_FORWARD</code> (2)：页面是通过“后退”或“前进”按钮打开的。</p>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <p class="calibre2">另外，<code class="calibre15">performance.timing</code>属性也是一个对象，但这个对象的属性都是时间戳（从软件纪元开始经过的毫秒数），不同的事件会产生不同的时间值。这些属性如下所示。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">navigationStart</code>：开始导航到当前页面的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">unloadEventStart</code>：前一个页面的<code class="calibre15">unload</code>事件开始的时间。但只有在前一个页面与当前页面来自同一个域时这个属性才会有值；否则，值为0。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">unloadEventEnd</code>：前一个页面的<code class="calibre15">unload</code>事件结束的时间。但只有在前一个页面与当前页面来自同一个域时这个属性才会有值；否则，值为0。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">redirectStart</code>：到当前页面的重定向开始的时间。但只有在重定向的页面来自同一个域时这个属性才会有值；否则，值为0。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">redirectEnd</code>：到当前页面的重定向结束的时间。但只有在重定向的页面来自同一个域时这个属性才会有值；否则，值为0。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">fetchStart</code>：开始通过HTTP GET取得页面的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">domainLookupStart</code>：开始查询当前页面DNS的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">domainLookupEnd</code>：查询当前页面DNS结束的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">connectStart</code>：浏览器尝试连接服务器的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">connectEnd</code>：浏览器成功连接到服务器的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">secureConnectionStart</code>：浏览器尝试以SSL方式连接服务器的时间。不使用SSL方式连接时，这个属性的值为0。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">requestStart</code>：浏览器开始请求页面的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">responseStart</code>：浏览器接收到页面第一字节的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">responseEnd</code>：浏览器接收到页面所有内容的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">domLoading</code>：<code class="calibre15">document.readyState</code>变为<code class="calibre15">"loading"</code>的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">domInteractive</code>：<code class="calibre15">document.readyState</code>变为<code class="calibre15">"interactive"</code>的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">domContentLoadedEventStart</code>：发生<code class="calibre15">DOMContentLoaded</code>事件的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">domContentLoadedEventEnd</code>：<code class="calibre15">DOMContentLoaded</code>事件已经发生且执行完所有事件处理程序的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">domComplete</code>：<code class="calibre15">document.readyState</code>变为<code class="calibre15">"complete"</code>的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">loadEventStart</code>：发生<code class="calibre15">load</code>事件的时间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">loadEventEnd</code>：<code class="calibre15">load</code>事件已经发生且执行完所有事件处理程序的时间。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">通过这些时间值，就可以全面了解页面在被加载到浏览器的过程中都经历了哪些阶段，而哪些阶段可能是影响性能的瓶颈。给大家推荐一个使用Web Timing API的绝好示例，地址是<a class="calibre6" href="http://webtimingdemo.appspot.com/">http://webtimingdemo.appspot.com/</a>。</p>
+
+  <p class="calibre2">支持Web Timing API的浏览器有IE10+和Chrome。</p>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_90">12.5　小结</h2>
+
+  <p class="calibre2">DOM2级规范定义了一些模块，用于增强DOM1级。“DOM2级核心”为不同的DOM类型引入了一些与XML命名空间有关的方法。这些变化只在使用XML或XHTML文档时才有用；对于HTML文档没有实际意义。除了与XML命名空间有关的方法外，“DOM2级核心”还定义了以编程方式创建<code class="calibre15">Document</code>实例的方法，也支持了创建<code class="calibre15">DocumentType</code>对象。</p>
+
+  <p class="calibre2">“DOM2级样式”模块主要针对操作元素的样式信息而开发，其特性简要总结如下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">每个元素都有一个关联的<code class="calibre15">style</code>对象，可以用来确定和修改行内的样式。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">要确定某个元素的计算样式（包括应用给它的所有CSS规则），可以使用<code class="calibre15">getComputedStyle()</code>方法。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">IE不支持<code class="calibre15">getComputedStyle()</code>方法，但为所有元素都提供了能够返回相同信息currentStyle属性。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">可以通过<code class="calibre15">document.styleSheets</code>集合访问样式表。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">除IE之外的所有浏览器都支持针对样式表的这个接口，IE也为几乎所有相应的DOM功能提供了自己的一套属性和方法。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">“DOM2级遍历和范围”模块提供了与DOM结构交互的不同方式，简要总结如下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">遍历即使用<code class="calibre15">NodeIterator</code>或<code class="calibre15">TreeWalker</code>对DOM执行深度优先的遍历。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">NodeIterator</code>是一个简单的接口，只允许以一个节点的步幅前后移动。而<code class="calibre15">TreeWalker</code>在提供相同功能的同时，还支持在DOM结构的各个方向上移动，包括父节点、同辈节点和子节点等方向。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">范围是选择DOM结构中特定部分，然后再执行相应操作的一种手段。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">使用范围选区可以在删除文档中某些部分的同时，保持文档结构的格式良好，或者复制文档中的相应部分。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">IE8及更早版本不支持“DOM2级遍历和范围”模块，但它提供了一个专有的文本范围对象，可以用来完成简单的基于文本的范围操作。IE9完全支持DOM遍历。</p>
+    </li>
+  </ul>
+
+  <p class="calibre5" id="calibre_pb_120" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

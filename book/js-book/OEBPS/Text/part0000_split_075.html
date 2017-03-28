@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_78">10.3　小结</h2>
+
+  <p class="calibre2">DOM是语言中立的API，用于访问和操作HTML和XML文档。DOM1级将HTML和XML文档形象地看作一个层次化的节点树，可以使用JavaScript来操作这个节点树，进而改变底层文档的外观和结构。</p>
+
+  <p class="calibre2">DOM由各种节点构成，简要总结如下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">最基本的节点类型是<code class="calibre15">Node</code>，用于抽象地表示文档中一个独立的部分；所有其他类型都继承自<code class="calibre15">Node</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Document</code>类型表示整个文档，是一组分层节点的根节点。在JavaScript中，<code class="calibre15">document</code>对象是<code class="calibre15">Document</code>的一个实例。使用<code class="calibre15">document</code>对象，有很多种方式可以查询和取得节点。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Element</code>节点表示文档中的所有HTML或XML元素，可以用来操作这些元素的内容和特性。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">另外还有一些节点类型，分别表示文本内容、注释、文档类型、CDATA区域和文档片段。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">访问DOM的操作在多数情况下都很直观，不过在处理<code class="calibre15">&lt;script&gt;</code>和<code class="calibre15">&lt;style&gt;</code>元素时还是存在一些复杂性。由于这两个元素分别包含脚本和样式信息，因此浏览器通常会将它们与其他元素区别对待。这些区别导致了在针对这些元素使用<code class="calibre15">innerHTML</code>时，以及在创建新元素时的一些问题。</p>
+
+  <p class="calibre2">理解DOM的关键，就是理解DOM对性能的影响。DOM操作往往是JavaScript程序中开销最大的部分，而因访问<code class="calibre15">NodeList</code>导致的问题为最多。<code class="calibre15">NodeList</code>对象都是“动态的”，这就意味着每次访问<code class="calibre15">NodeList</code>对象，都会运行一次查询。有鉴于此，最好的办法就是尽量减少DOM操作。</p>
+
+  <p class="calibre5" id="calibre_pb_104" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_45">7.1　递归</h2>
+
+  <p class="calibre2">递归函数是在一个函数通过名字调用自身的情况下构成的，如下所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function factorial(num){
+    if (num &lt;= 1){
+        return 1;
+    } else {
+        return num * factorial(num-1);
+    }
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">RecursionExample01.htm</i></p>
+
+  <p class="calibre2">这是一个经典的递归阶乘函数。虽然这个函数表面看来没什么问题，但下面的代码却可能导致它出错。</p>
+  <pre class="calibre18"><code class="calibre15">var anotherFactorial = factorial;
+factorial = null;
+alert(anotherFactorial(4)); //出错！
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">RecursionExample01.htm</i></p>
+
+  <p class="calibre2">以上代码先把<code class="calibre15">factorial()</code>函数保存在变量<code class="calibre15">anotherFactorial</code>中，然后将<code class="calibre15">factorial</code>变量设置为<code class="calibre15">null</code>，结果指向原始函数的引用只剩下一个。但在接下来调用<code class="calibre15">anotherFactorial()</code>时，由于必须执行<code class="calibre15">factorial()</code>，而<code class="calibre15">factorial</code>已经不再是函数，所以就会导致错误。在这种情况下，使用<code class="calibre15">arguments.callee</code>可以解决这个问题。</p>
+
+  <p class="calibre2">我们知道，<code class="calibre15">arguments.callee</code>是一个指向正在执行的函数的指针，因此可以用它来实现对函数的递归调用，例如：</p>
+  <pre class="calibre18">function factorial(num){
+    if (num &lt;= 1){
+        return 1;
+    } else {
+        <b class="calibre3">return num * arguments.callee(num-1);</b>
+    }
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">RecursionExample02.htm</i></p>
+
+  <p class="calibre2">加粗的代码显示，通过使用<code class="calibre15">arguments.callee</code>代替函数名，可以确保无论怎样调用函数都不会出问题。因此，在编写递归函数时，使用<code class="calibre15">arguments.callee</code>总比使用函数名更保险。</p>
+
+  <p class="calibre2">但在严格模式下，不能通过脚本访问<code class="calibre15">arguments.callee</code>，访问这个属性会导致错误。不过，可以使用命名函数表达式来达成相同的结果。例如：</p>
+  <pre class="calibre18">var factorial = (function f(num){
+    if (num &lt;= 1){ 
+        return 1;
+    } else {
+        <b class="calibre3">return num * f(num-1);</b>
+    }
+});
+</pre>
+
+  <p class="calibre2">以上代码创建了一个名为<code class="calibre15">f()</code>的命名函数表达式，然后将它赋值给变量<code class="calibre15">factorial</code>。即便把函数赋值给了另一个变量，函数的名字<code class="calibre15">f</code>仍然有效，所以递归调用照样能正确完成。这种方式在严格模式和非严格模式下都行得通。</p>
+</body>
+</html>

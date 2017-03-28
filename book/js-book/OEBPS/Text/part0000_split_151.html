@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_163">23.1　离线检测</h2>
+
+  <p class="calibre2">开发离线应用的第一步是要知道设备是在线还是离线，HTML5为此定义了一个<code class="calibre15">navigator.onLine</code>属性，这个属性值为<code class="calibre15">true</code>表示设备能上网，值为<code class="calibre15">false</code>表示设备离线。这个属性的关键是浏览器必须知道设备能否访问网络，从而返回正确的值。实际应用中，<code class="calibre15">navigator.onLine</code>在不同浏览器间还有些小的差异。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">IE6+和Safari 5+能够正确检测到网络已断开，并将<code class="calibre15">navigator.onLine</code>的值转换为<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">Firefox 3+和Opera 10.6+支持<code class="calibre15">navigator.onLine</code>属性，但你必须手工选中菜单项“文件 → Web开发人员（设置）→ 脱机工作”才能让浏览器正常工作。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">Chrome 11及之前版本始终将<code class="calibre15">navigator.onLine</code>属性设置为<code class="calibre15">true</code>。这是一个有待修复的bug<sup class="calibre13">1</sup>。</p>
+    </li>
+  </ul>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><sup class="calibre13">1</sup> 这个bug在2011年10月已被修复（<a class="calibre6" href="http://code.google.com/p/chromium/issues/detail?id=7469">http://code.google.com/p/chromium/issues/detail?id=7469</a>）。</p>
+  </blockquote>
+
+  <p class="calibre2">由于存在上述兼容性问题，单独使用<code class="calibre15">navigator.onLine</code>属性不能确定网络是否连通。即便如此，在请求发生错误的情况下，检测这个属性仍然是管用的。以下是检测该属性状态的示例。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">if (navigator.onLine){
+    //正常工作
+} else {
+    //执行离线状态时的任务
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">OnLineExample01.htm</i></p>
+
+  <p class="calibre2">除<code class="calibre15">navigator.onLine</code>属性之外，为了更好地确定网络是否可用，HTML5还定义了两个事件：<code class="calibre15">online</code>和<code class="calibre15">offline</code>。当网络从离线变为在线或者从在线变为离线时，分别触发这两个事件。这两个事件在<code class="calibre15">window</code>对象上触发。</p>
+  <pre class="calibre18"><code class="calibre15">EventUtil.addHandler(window, "online", function(){
+    alert("Online");
+});
+EventUtil.addHandler(window, "offline", function(){
+    alert("Offline");
+});
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">OnlineEventsExample01.htm</i></p>
+
+  <p class="calibre2">为了检测应用是否离线，在页面加载后，最好先通过<code class="calibre15">navigator.onLine</code>取得初始的状态。然后，就是通过上述两个事件来确定网络连接状态是否变化。当上述事件触发时，<code class="calibre15">navigator.onLine</code>属性的值也会改变，不过必须要手工轮询这个属性才能检测到网络状态的变化。</p>
+
+  <p class="calibre2">支持离线检测的浏览器有IE 6+（只支持<code class="calibre15">navigator.onLine</code>属性）、Firefox 3、Safari 4、Opera 10.6、Chrome、iOS 3.2版Safari和Android版WebKit。</p>
+</body>
+</html>

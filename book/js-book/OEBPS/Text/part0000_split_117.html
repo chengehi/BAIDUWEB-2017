@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_129">17.3　调试技术</h2>
+
+  <p class="calibre2">在不那么容易找到JavaScript调试程序的年代，开发人员不得不发挥自己的创造力，通过各种方法来调试自己的代码。结果，就出现了以这样或那样的方式置入代码，从而输出调试信息的做法。其中，最常见的做法就是在要调试的代码中随处插入<code class="calibre15">alert()</code>函数。但这种做法一方面比较麻烦（调试之后还需要清理），另一方面还可能引入新问题（想象一下把某个<code class="calibre15">alert()</code>函数遗留在产品代码中的结果）。如今，已经有了很多更好的调试工具，因此我们也不再建议在调试中使用<code class="calibre15">alert()</code>了。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_208"><strong class="calibre10">17.3.1　将消息记录到控制台</strong></h3>
+
+  <p class="calibre2">IE8、Firefox、Opera、Chrome和Safari都有JavaScript控制台，可以用来查看JavaScript错误。而且，在这些浏览器中，都可以通过代码向控制台输出消息。对Firefox而言，需要安装Firebug（<a class="calibre6" href="http://www.getfirebug.com">www.getfirebug.com</a>），因为Firefox要使用Firebug的控制台。对IE8、Firefox、Chrome和Safari来说，则可以通过<code class="calibre15">console</code>对象向JavaScript控制台中写入消息，这个对象具有下列方法。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">error(<em class="calibre7">message</em>)</code>：将错误消息记录到控制台</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">info(<em class="calibre7">message</em>)</code>：将信息性消息记录到控制台</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">log(<em class="calibre7">message</em>)</code>：将一般消息记录到控制台</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">warn(<em class="calibre7">message</em>)</code>：将警告消息记录到控制台</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">在IE8、Firebug、Chrome和Safari中，用来记录消息的方法不同，控制台中显示的错误消息也不一样。错误消息带有红色图标，而警告消息带有黄色图标。以下函数展示了使用控制台输出消息的一个示例。</p>
+  <pre class="calibre18"><code class="calibre15">function sum(num1, num2){
+    console.log("Entering sum(), arguments are " + num1 + "," + num2);
+
+    console.log("Before calculation");
+    var result = num1 + num2;
+    console.log("After calculation");
+
+    console.log("Exiting sum()");
+    return result;
+}
+</code></pre>
+
+  <p class="calibre2">在调用这个<code class="calibre15">sum()</code>函数时，控制台中会出现一些消息，可以用来辅助调试。在Safari中，通过“Develop”（开发）菜单可以打开其JavaScript控制台（前面讨论过）；在Chrome中，单击“Control this page”（控制当前页）按钮并选择“Developer”（开发人员）和“JavaScript console”（JavaScript控制台）即可；而在Firefox中，要打开控制台需要单击Firefox状态栏右下角的图标。IE8的控制台是其Developer Tools（开发人员工具）扩展的一部分，通过“Tools”（工具）菜单可以找到，其控制台在“Script”（脚本）选项卡中。</p>
+
+  <p class="calibre2">Opera 10.5之前的版本中，JavaScript控制台可以通过<code class="calibre15">opera.postError()</code>方法来访问。这个方法接受一个参数，即要写入到控制台中的参数，其用法如下。</p>
+  <pre class="calibre18">function sum(num1, num2){
+    <b class="calibre3">opera.postError("Entering sum(), arguments are " + num1 + "," + num2);</b>
+
+    <b class="calibre3">opera.postError("Before calculation");</b>
+    var result = num1 + num2;
+    <b class="calibre3">opera.postError("After calculation");</b>
+
+    <b class="calibre3">opera.postError("Exiting sum()");</b>
+    return result;
+}
+</pre>
+
+  <p class="calibre2">别看<code class="calibre15">opera.postError()</code>方法的名字好像是只能输出错误，但实际上能通过它向JavaScript控制台中写入任何信息。</p>
+
+  <p class="calibre2">还有一种方案是使用LiveConnect，也就是在JavaScript中运行Java代码。Firefox、Safari和Opera都支持LiveConnect，因此可以操作Java控制台。例如，通过下列代码就可以在JavaScript中把消息写入到Java控制台。</p>
+  <pre class="calibre18"><code class="calibre15">java.lang.System.out.println("Your message");
+</code></pre>
+
+  <p class="calibre2">可以用这行代码替代<code class="calibre15">console.log()</code>或<code class="calibre15">opera.postError()</code>，如下所示。</p>
+  <pre class="calibre18">function sum(num1, num2){
+    <b class="calibre3">java.lang.System.out.println("Entering sum(), arguments are " + num1 + "," + num2);</b>
+
+    <b class="calibre3">java.lang.System.out.println("Before calculation");</b>
+    var result = num1 + num2;
+    <b class="calibre3">java.lang.System.out.println("After calculation");</b>
+
+    <b class="calibre3">java.lang.System.out.println("Exiting sum()");</b>
+    return result;
+}
+</pre>
+
+  <p class="calibre2">如果系统设置恰当，可以在调用LiveConnect时就立即显示Java控制台。在Firefox中，通过“Tools”（工具）菜单可以打开Java控制台；在Opera中，要打开Java控制台，可以选择菜单“Tools”（工具）及“Advanced”（高级）。Safari没有内置对Java控制台的支持，必须单独运行。</p>
+
+  <p class="calibre2">不存在一种跨浏览器向JavaScript控制台写入消息的机制，但下面的函数倒可以作为统一的接口。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function log(message){
+    if (typeof console == "object"){
+        console.log(message);
+    } else if (typeof opera == "object"){
+        opera.postError(message);
+    } else if (typeof java == "object" &amp;&amp; typeof java.lang == "object"){
+        java.lang.System.out.println(message);
+    }
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ConsoleLoggingExample01.htm</i></p>
+
+  <p class="calibre2">这个<code class="calibre15">log()</code>函数检测了哪个JavaScript控制台接口可用，然后使用相应的接口。可以在任何浏览器中安全地使用这个函数，不会导致任何错误，例如：</p>
+  <pre class="calibre18">function sum(num1, num2){
+    <b class="calibre3">log("Entering sum(), arguments are " + num1 + "," + num2);</b>
+
+    <b class="calibre3">log("Before calculation");</b>
+    var result = num1 + num2;
+    <b class="calibre3">log("After calculation");</b>
+
+    <b class="calibre3">log("Exiting sum()");</b>
+    return result;
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">ConsoleLoggingExample01.htm</i></p>
+
+  <p class="calibre2">向JavaScript控制台中写入消息可以辅助调试代码，但在发布应用程序时，还必须要移除所有消息。在部署应用程序时，可以通过手工或通过特定的代码处理步骤来自动完成清理工作。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 记录消息要比使用<code class="calibre15">alert()</code>函数更可取，因为警告框会阻断程序的执行，而在测定异步处理对时间的影响时，使用警告框会影响结果。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_209"><strong class="calibre10">17.3.2　将消息记录到当前页面</strong></h3>
+
+  <p class="calibre2">另一种输出调试消息的方式，就是在页面中开辟一小块区域，用以显示消息。这个区域通常是一个元素，而该元素可以总是出现在页面中，但仅用于调试目的；也可以是一个根据需要动态创建的元素。例如，可以将<code class="calibre15">log()</code>函数修改为如下所示：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function log(message){
+    var console = document.getElementById("debuginfo");
+    if (console === null){
+        console = document.createElement("div");
+        console.id = "debuginfo";
+        console.style.background = "#dedede";
+        console.style.border = "1px solid silver";
+        console.style.padding = "5px";
+        console.style.width = "400px";
+        console.style.position = "absolute";
+        console.style.right = "0px";
+        console.style.top = "0px";
+        document.body.appendChild(console);
+    }
+    console.innerHTML += "&lt;p&gt;" + message + "&lt;/p&gt;";
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">PageLoggingExample01.htm</i></p>
+
+  <p class="calibre2">这个修改后的<code class="calibre15">log()</code>函数首先检测是否已经存在调试元素，如果没有则会新创建一个<code class="calibre15">&lt;div&gt;</code>元素，并为该元素应用一些样式，以便与页面中的其他元素区别开。然后，又使用<code class="calibre15">innerHTML</code>将消息写入到这个<code class="calibre15">&lt;div&gt;</code>元素中。结果就是页面中会有一小块区域显示错误消息。这种技术在不支持JavaScript控制台的IE7及更早版本或其他浏览器中十分有用。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 与把错误消息记录到控制台相似，把错误消息输出到页面的代码也要在发布前删除。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_210"><strong class="calibre10">17.3.3　抛出错误</strong></h3>
+
+  <p class="calibre2">如前所述，抛出错误也是一种调试代码的好办法。如果错误消息很具体，基本上就可以把它当作确定错误来源的依据。但这种错误消息必须能够明确给出导致错误的原因，才能省去其他调试操作。来看下面的函数：</p>
+  <pre class="calibre18"><code class="calibre15">function divide(num1, num2){
+    return num1 / num2;
+}
+</code></pre>
+
+  <p class="calibre2">这个简单的函数计算两个数的除法，但如果有一个参数不是数值，它会返回<code class="calibre15">NaN</code>。类似这样简单的计算如果返回<code class="calibre15">NaN</code>，就会在Web应用程序中导致问题。对此，可以在计算之前，先检测每个参数是否都是数值。例如：</p>
+  <pre class="calibre18">function divide(num1, num2){
+    <b class="calibre3">if (typeof num1 != "number" || typeof num2 != "number"){</b>
+        <b class="calibre3">throw new Error("divide(): Both arguments must be numbers.");</b>
+    <b class="calibre3">}</b>
+    return num1 / num2;
+}
+</pre>
+
+  <p class="calibre2">在此，如果有一个参数不是数值，就会抛出错误。错误消息中包含了函数的名字，以及导致错误的真正原因。浏览器只要报告了这个错误消息，我们就可以立即知道错误来源及问题的性质。相对来说，这种具体的错误消息要比那些泛泛的浏览器错误消息更有用。</p>
+
+  <p class="calibre2">对于大型应用程序来说，自定义的错误通常都使用<code class="calibre15">assert()</code>函数抛出。这个函数接受两个参数，一个是求值结果应该为<code class="calibre15">true</code>的条件，另一个是条件为<code class="calibre15">false</code>时要抛出的错误。以下就是一个非常基本的<code class="calibre15">assert()</code>函数。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function assert(condition, message){
+    if (!condition){
+        throw new Error(message);
+    }
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">AssertExample01.htm</i></p>
+
+  <p class="calibre2">可以用这个<code class="calibre15">assert()</code>函数代替某些函数中需要调试的<code class="calibre15">if</code>语句，以便输出错误消息。下面是使用这个函数的例子。</p>
+  <pre class="calibre18">function divide(num1, num2){
+    <b class="calibre3">assert(typeof num1 == "number" &amp;&amp; typeof num2 == "number",</b>
+           <b class="calibre3">"divide(): Both arguments must be numbers.");</b>
+    return num1 / num2;
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">AssertExample01.htm</i></p>
+
+  <p class="calibre2">可见，使用<code class="calibre15">assert()</code>函数可以减少抛出错误所需的代码量，而且也比前面的代码更容易看懂。</p>
+</body>
+</html>

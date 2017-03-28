@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_144">20.1　语法</h2>
+
+  <p class="calibre2">JSON的语法可以表示以下三种类型的值。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><strong class="calibre3">简单值</strong>：使用与JavaScript相同的语法，可以在JSON中表示字符串、数值、布尔值和<code class="calibre15">null</code>。但JSON不支持JavaScript中的特殊值<code class="calibre15">undefined</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><strong class="calibre3">对象</strong>：对象作为一种复杂数据类型，表示的是一组有序的键值对儿。而每个键值对儿中的值可以是简单值，也可以是复杂数据类型的值。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><strong class="calibre3">数组</strong>：数组也是一种复杂数据类型，表示一组有序的值的列表，可以通过数值索引来访问其中的值。数组的值也可以是任意类型——简单值、对象或数组。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">JSON不支持变量、函数或对象实例，它就是一种表示结构化数据的格式，虽然与JavaScript中表示数据的某些语法相同，但它并不局限于JavaScript的范畴。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_238"><strong class="calibre10">20.1.1　简单值</strong></h3>
+
+  <p class="calibre2">最简单的JSON数据形式就是简单值。例如，下面这个值是有效的JSON数据：</p>
+  <pre class="calibre18"><code class="calibre15">5
+</code></pre>
+
+  <p class="calibre2">这是JSON表示数值5的方式。类似地，下面是JSON表示字符串的方式：</p>
+  <pre class="calibre18"><code class="calibre15">"Hello world!"
+</code></pre>
+
+  <p class="calibre2">JavaScript字符串与JSON字符串的最大区别在于，JSON字符串必须使用双引号（单引号会导致语法错误）。</p>
+
+  <p class="calibre2">布尔值和<code class="calibre15">null</code>也是有效的JSON形式。但是，在实际应用中，JSON更多地用来表示更复杂的数据结构，而简单值只是整个数据结构中的一部分。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_239"><strong class="calibre10">20.1.2　对象</strong></h3>
+
+  <p class="calibre2">JSON中的对象与JavaScript字面量稍微有一些不同。下面是一个JavaScript中的对象字面量：</p>
+  <pre class="calibre18"><code class="calibre15">var person = { 
+    name: "Nicholas",
+    age: 29
+};
+</code></pre>
+
+  <p class="calibre2">这虽然是开发人员在JavaScript中创建对象字面量的标准方式，但JSON中的对象要求给属性加引号。实际上，在JavaScript中，前面的对象字面量完全可以写成下面这样：</p>
+  <pre class="calibre18">var object = { 
+    <b class="calibre3">"name"</b>: "Nicholas",
+    <b class="calibre3">"age"</b>: 29
+};
+</pre>
+
+  <p class="calibre2">JSON表示上述对象的方式如下：</p>
+  <pre class="calibre18"><code class="calibre15">{ 
+    "name": "Nicholas",
+    "age": 29
+}
+</code></pre>
+
+  <p class="calibre2">与JavaScript的对象字面量相比，JSON对象有两个地方不一样。首先，没有声明变量（JSON中没有变量的概念）。其次，没有末尾的分号（因为这不是JavaScript语句，所以不需要分号）。再说一遍，对象的属性必须加双引号，这在JSON中是必需的。属性的值可以是简单值，也可以是复杂类型值，因此可以像下面这样在对象中嵌入对象：</p>
+  <pre class="calibre18"><code class="calibre15">{ 
+    "name": "Nicholas",
+    "age": 29,
+    "school": {
+        "name": "Merrimack College",
+        "location": "North Andover, MA"
+    }
+}
+</code></pre>
+
+  <p class="calibre2">这个例子在顶级对象中嵌入了学校（<code class="calibre15">"school"</code>）信息。虽然有两个<code class="calibre15">"name"</code>属性，但由于它们分别属于不同的对象，因此这样完全没有问题。不过，同一个对象中绝对不应该出现两个同名属性。</p>
+
+  <p class="calibre2">与JavaScript不同，JSON中对象的属性名任何时候都必须加双引号。手工编写JSON时，忘了给对象属性名加双引号或者把双引号写成单引号都是常见的错误。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_240"><strong class="calibre10">20.1.3　数组</strong></h3>
+
+  <p class="calibre2">JSON中的第二种复杂数据类型是数组。JSON数组采用的就是JavaScript中的数组字面量形式。例如，下面是JavaScript中的数组字面量：</p>
+  <pre class="calibre18"><code class="calibre15">var values = [25, "hi", true];
+</code></pre>
+
+  <p class="calibre2">在JSON中，可以采用同样的语法表示同一个数组：</p>
+  <pre class="calibre18"><code class="calibre15">[25, "hi", true]
+</code></pre>
+
+  <p class="calibre2">同样要注意，JSON数组也没有变量和分号。把数组和对象结合起来，可以构成更复杂的数据集合，例如：</p>
+  <pre class="calibre18"><code class="calibre15">[
+    {
+         "title": "Professional JavaScript",
+         "authors": [
+             "Nicholas C. Zakas"
+         ],
+         edition: 3,
+         year: 2011
+    },
+    {
+         "title": "Professional JavaScript",
+         "authors": [
+              "Nicholas C. Zakas"
+         ],
+         edition: 2,
+         year: 2009
+    },
+    {
+         "title": "Professional Ajax",
+         "authors": [
+             "Nicholas C. Zakas",
+             "Jeremy McPeak",
+             "Joe Fawcett"
+         ],
+         edition: 2,
+         year: 2008
+    },
+    {
+         "title": "Professional Ajax",
+         "authors": [
+             "Nicholas C. Zakas",
+             "Jeremy McPeak",
+             "Joe Fawcett"
+         ],
+         edition: 1,
+         year: 2007
+    },
+    {
+         "title": "Professional JavaScript",
+         "authors": [
+              "Nicholas C. Zakas"
+         ],
+         edition: 1,
+             year: 2006
+    }
+]
+</code></pre>
+
+  <p class="calibre2">这个数组中包含一些表示图书的对象。每个对象都有几个属性，其中一个属性是<code class="calibre15">"authors"</code>，这个属性的值又是一个数组。对象和数组通常是JSON数据结构的最外层形式（当然，这不是强制规定的），利用它们能够创造出各种各样的数据结构。</p>
+</body>
+</html>

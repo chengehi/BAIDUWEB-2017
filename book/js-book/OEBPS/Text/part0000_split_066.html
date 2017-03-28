@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_56">8.6　小结</h2>
+
+  <p class="calibre2">浏览器对象模型（BOM）以<code class="calibre15">window</code>对象为依托，表示浏览器窗口以及页面可见区域。同时，<code class="calibre15">window</code>对象还是ECMAScript中的<code class="calibre15">Global</code>对象，因而所有全局变量和函数都是它的属性，且所有原生的构造函数及其他函数也都存在于它的命名空间下。本章讨论了下列BOM的组成部分。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">在使用框架时，每个框架都有自己的<code class="calibre15">window</code>对象以及所有原生构造函数及其他函数的副本。每个框架都保存在<code class="calibre15">frames</code>集合中，可以通过位置或通过名称来访问。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">有一些窗口指针，可以用来引用其他框架，包括父框架。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">top</code>对象始终指向最外围的框架，也就是整个浏览器窗口。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">parent</code>对象表示包含当前框架的框架，而<code class="calibre15">self</code>对象则回指<code class="calibre15">window</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">使用<code class="calibre15">location</code>对象可以通过编程方式来访问浏览器的导航系统。设置相应的属性，可以逐段或整体性地修改浏览器的URL。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">调用<code class="calibre15">replace()</code>方法可以导航到一个新URL，同时该URL会替换浏览器历史记录中当前显示的页面。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">navigator</code>对象提供了与浏览器有关的信息。到底提供哪些信息，很大程度上取决于用户的浏览器；不过，也有一些公共的属性（如<code class="calibre15">userAgent</code>）存在于所有浏览器中。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">BOM中还有两个对象：<code class="calibre15">screen</code>和<code class="calibre15">history</code>，但它们的功能有限。<code class="calibre15">screen</code>对象中保存着与客户端显示器有关的信息，这些信息一般只用于站点分析。<code class="calibre15">history</code>对象为访问浏览器的历史记录开了一个小缝隙，开发人员可以据此判断历史记录的数量，也可以在历史记录中向后或向前导航到任意页面。</p>
+
+  <p class="calibre5" id="calibre_pb_91" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_35">5.5　Function类型</h2>
+
+  <p class="calibre2">说起来ECMAScript中什么最有意思，我想那莫过于函数了——而有意思的根源，则在于函数实际上是对象。每个函数都是<code class="calibre15">Function</code>类型的实例，而且都与其他引用类型一样具有属性和方法。由于函数是对象，因此函数名实际上也是一个指向函数对象的指针，不会与某个函数绑定。函数通常是使用函数声明语法定义的，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">function sum (num1, num2) {
+    return num1 + num2;
+}
+</code></pre>
+
+  <p class="calibre2">这与下面使用函数表达式定义函数的方式几乎相差无几。</p>
+  <pre class="calibre18"><code class="calibre15">var sum = function(num1, num2){
+    return num1 + num2;
+};
+</code></pre>
+
+  <p class="calibre2">以上代码定义了变量<code class="calibre15">sum</code>并将其初始化为一个函数。有读者可能会注意到，<code class="calibre15">function</code>关键字后面没有函数名。这是因为在使用函数表达式定义函数时，没有必要使用函数名——通过变量<code class="calibre15">sum</code>即可以引用函数。另外，还要注意函数末尾有一个分号，就像声明其他变量时一样。</p>
+
+  <p class="calibre2">最后一种定义函数的方式是使用<code class="calibre15">Function</code>构造函数。<code class="calibre15">Function</code>构造函数可以接收任意数量的参数，但最后一个参数始终都被看成是函数体，而前面的参数则枚举出了新函数的参数。来看下面的例子：</p>
+  <pre class="calibre18"><code class="calibre15">var sum = new Function("num1", "num2", "return num1 + num2"); // 不推荐
+</code></pre>
+
+  <p class="calibre2">从技术角度讲，这是一个函数表达式。但是，我们不推荐读者使用这种方法定义函数，因为这种语法会导致解析两次代码（第一次是解析常规ECMAScript代码，第二次是解析传入构造函数中的字符串），从而影响性能。不过，这种语法对于理解“函数是对象，函数名是指针”的概念倒是非常直观的。</p>
+
+  <p class="calibre2">由于函数名仅仅是指向函数的指针，因此函数名与包含对象指针的其他变量没有什么不同。换句话说，一个函数可能会有多个名字，如下面的例子所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function sum(num1, num2){
+    return num1 + num2;
+}
+alert(sum(10,10));        //20
+
+var anotherSum = sum;
+alert(anotherSum(10,10)); //20
+
+sum = null;
+alert(anotherSum(10,10)); //20
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeExample01.htm</i></p>
+
+  <p class="calibre2">以上代码首先定义了一个名为<code class="calibre15">sum()</code>的函数，用于求两个值的和。然后，又声明了变量<code class="calibre15">anotherSum</code>，并将其设置为与<code class="calibre15">sum</code>相等（将<code class="calibre15">sum</code>的值赋给<code class="calibre15">anotherSum</code>）。注意，使用不带圆括号的函数名是访问函数指针，而非调用函数。此时，<code class="calibre15">anotherSum</code>和<code class="calibre15">sum</code>就都指向了同一个函数，因此<code class="calibre15">anotherSum()</code>也可以被调用并返回结果。即使将<code class="calibre15">sum</code>设置为<code class="calibre15">null</code>，让它与函数“断绝关系”，但仍然可以正常调用<code class="calibre15">anotherSum()</code>。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_68"><strong class="calibre10">5.5.1　没有重载（深入理解）</strong></h3>
+
+  <p class="calibre2">将函数名想象为指针，也有助于理解为什么ECMAScript中没有函数重载的概念。以下是曾在第3章使用过的例子。</p>
+  <pre class="calibre18"><code class="calibre15">function addSomeNumber(num){
+    return num + 100;
+}
+
+function addSomeNumber(num) {
+    return num + 200;
+}
+
+var result = addSomeNumber(100); //300
+</code></pre>
+
+  <p class="calibre2">显然，这个例子中声明了两个同名函数，而结果则是后面的函数覆盖了前面的函数。以上代码实际上与下面的代码没有什么区别。</p>
+  <pre class="calibre18"><b class="calibre3">var addSomeNumber = function (num){</b>
+    return num + 100;
+};
+
+<b class="calibre3">addSomeNumber = function (num) {</b>
+    return num + 200;
+};
+
+var result = addSomeNumber(100); //300
+</pre>
+
+  <p class="calibre2">通过观察重写之后的代码，很容易看清楚到底是怎么回事儿——在创建第二个函数时，实际上覆盖了引用第一个函数的变量<code class="calibre15">addSomeNumber</code>。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_69"><strong class="calibre10">5.5.2　函数声明与函数表达式</strong></h3>
+
+  <p class="calibre2">本节到目前为止，我们一直没有对函数声明和函数表达式加以区别。而实际上，解析器在向执行环境中加载数据时，对函数声明和函数表达式并非一视同仁。解析器会率先读取函数声明，并使其在执行任何代码之前可用（可以访问）；至于函数表达式，则必须等到解析器执行到它所在的代码行，才会真正被解释执行。请看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">alert(sum(10,10));
+function sum(num1, num2){
+    return num1 + num2;
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionDeclarationExample01.htm</i></p>
+
+  <p class="calibre2">以上代码完全可以正常运行。因为在代码开始执行之前，解析器就已经通过一个名为函数声明提升（function declaration hoisting）的过程，读取并将函数声明添加到执行环境中。对代码求值时，JavaScript引擎在第一遍会声明函数并将它们放到源代码树的顶部。所以，即使声明函数的代码在调用它的代码后面，JavaScript引擎也能把函数声明提升到顶部。如果像下面例子所示的，把上面的函数声明改为等价的函数表达式，就会在执行期间导致错误。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">alert(sum(10,10));
+<b class="calibre3">var sum = function(num1, num2){</b>
+    return num1 + num2;
+};
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionInitializationExample01.htm</i></p>
+
+  <p class="calibre2">以上代码之所以会在运行期间产生错误，原因在于函数位于一个初始化语句中，而不是一个函数声明。换句话说，在执行到函数所在的语句之前，变量<code class="calibre15">sum</code>中不会保存有对函数的引用；而且，由于第一行代码就会导致“unexpected identifier”（意外标识符）错误，实际上也不会执行到下一行。</p>
+
+  <p class="calibre2">除了什么时候可以通过变量访问函数这一点区别之外，函数声明与函数表达式的语法其实是等价的。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 也可以同时使用函数声明和函数表达式，例如<code class="calibre15">var sum = function sum(){}</code>。不过，这种语法在Safari中会导致错误。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_70"><strong class="calibre10">5.5.3　作为值的函数</strong></h3>
+
+  <p class="calibre2">因为ECMAScript中的函数名本身就是变量，所以函数也可以作为值来使用。也就是说，不仅可以像传递参数一样把一个函数传递给另一个函数，而且可以将一个函数作为另一个函数的结果返回。来看一看下面的函数。</p>
+  <pre class="calibre18"><code class="calibre15">function callSomeFunction(someFunction, someArgument){
+    return someFunction(someArgument);
+}
+</code></pre>
+
+  <p class="calibre2">这个函数接受两个参数。第一个参数应该是一个函数，第二个参数应该是要传递给该函数的一个值。然后，就可以像下面的例子一样传递函数了。</p>
+  <pre class="calibre18"><code class="calibre15">function add10(num){
+    return num + 10;
+}
+
+var result1 = callSomeFunction(add10, 10);
+alert(result1);   //20
+
+function getGreeting(name){
+    return "Hello, " + name;
+}
+
+var result2 = callSomeFunction(getGreeting, "Nicholas");
+alert(result2);   //"Hello, Nicholas"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionAsAnArgumentExample01.htm</i></p>
+
+  <p class="calibre2">这里的<code class="calibre15">callSomeFunction()</code>函数是通用的，即无论第一个参数中传递进来的是什么函数，它都会返回执行第一个参数后的结果。还记得吧，要访问函数的指针而不执行函数的话，必须去掉函数名后面的那对圆括号。因此上面例子中传递给<code class="calibre15">callSomeFunction()</code>的是<code class="calibre15">add10</code>和<code class="calibre15">getGreeting</code>，而不是执行它们之后的结果。</p>
+
+  <p class="calibre2">当然，可以从一个函数中返回另一个函数，而且这也是极为有用的一种技术。例如，假设有一个对象数组，我们想要根据某个对象属性对数组进行排序。而传递给数组<code class="calibre15">sort()</code>方法的比较函数要接收两个参数，即要比较的值。可是，我们需要一种方式来指明按照哪个属性来排序。要解决这个问题，可以定义一个函数，它接收一个属性名，然后根据这个属性名来创建一个比较函数，下面就是这个函数的定义。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function createComparisonFunction(propertyName) {
+
+    return function(object1, object2){
+        var value1 = object1[propertyName];
+        var value2 = object2[propertyName];
+
+        if (value1 &lt; value2){
+            return -1;
+        } else if (value1 &gt; value2){
+            return 1;
+        } else {
+            return 0;
+        }
+    };
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionReturningFunctionExample01.htm</i></p>
+
+  <p class="calibre2">这个函数定义看起来有点复杂，但实际上无非就是在一个函数中嵌套了另一个函数，而且内部函数前面加了一个<code class="calibre15">return</code>操作符。在内部函数接收到<code class="calibre15">propertyName</code>参数后，它会使用方括号表示法来取得给定属性的值。取得了想要的属性值之后，定义比较函数就非常简单了。上面这个函数可以像在下面例子中这样使用。</p>
+  <pre class="calibre18"><code class="calibre15">var data = [{name: "Zachary", age: 28}, {name: "Nicholas", age: 29}];
+
+data.sort(createComparisonFunction("name"));
+alert(data[0].name);  //Nicholas
+
+data.sort(createComparisonFunction("age"));
+alert(data[0].name);  //Zachary
+</code></pre>
+
+  <p class="calibre2">这里，我们创建了一个包含两个对象的数组<code class="calibre15">data</code>。其中，每个对象都包含一个<code class="calibre15">name</code>属性和一个<code class="calibre15">age</code>属性。在默认情况下，<code class="calibre15">sort()</code>方法会调用每个对象的<code class="calibre15">toString()</code>方法以确定它们的次序；但得到的结果往往并不符合人类的思维习惯。因此，我们调用<code class="calibre15">createComparisonFunction("name")</code>方法创建了一个比较函数，以便按照每个对象的<code class="calibre15">name</code>属性值进行排序。而结果排在前面的第一项是<code class="calibre15">name</code>为<code class="calibre15">"Nicholas"</code>，<code class="calibre15">age</code>是29的对象。然后，我们又使用了<code class="calibre15">createComparisonFunction("age")</code>返回的比较函数，这次是按照对象的<code class="calibre15">age</code>属性排序。得到的结果是<code class="calibre15">name</code>值为<code class="calibre15">"Zachary"</code>，<code class="calibre15">age</code>值是28的对象排在了第一位。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_71"><strong class="calibre10">5.5.4　函数内部属性</strong></h3>
+
+  <p class="calibre2">在函数内部，有两个特殊的对象：<code class="calibre15">arguments</code>和<code class="calibre15">this</code>。其中，<code class="calibre15">arguments</code>在第3章曾经介绍过，它是一个类数组对象，包含着传入函数中的所有参数。虽然<code class="calibre15">arguments</code>的主要用途是保存函数参数，但这个对象还有一个名叫<code class="calibre15">callee</code>的属性，该属性是一个指针，指向拥有这个<code class="calibre15">arguments</code>对象的函数。请看下面这个非常经典的阶乘函数。</p>
+  <pre class="calibre18"><code class="calibre15">function factorial(num){
+    if (num &lt;=1) {
+        return 1;
+    } else {
+        return num * factorial(num-1)
+    }
+}
+</code></pre>
+
+  <p class="calibre2">定义阶乘函数一般都要用到递归算法；如上面的代码所示，在函数有名字，而且名字以后也不会变的情况下，这样定义没有问题。但问题是这个函数的执行与函数名<code class="calibre15">factorial</code>紧紧耦合在了一起。为了消除这种紧密耦合的现象，可以像下面这样使用<code class="calibre15">arguments.callee</code>。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">function factorial(num){
+    if (num &lt;=1) {
+        return 1;
+    } else {
+        <b class="calibre3">return num * arguments.callee(num-1)</b>
+    }
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeArgumentsExample01.htm</i></p>
+
+  <p class="calibre2">在这个重写后的<code class="calibre15">factorial()</code>函数的函数体内，没有再引用函数名<code class="calibre15">factorial</code>。这样，无论引用函数时使用的是什么名字，都可以保证正常完成递归调用。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var trueFactorial = factorial;
+
+factorial = function(){
+    return 0;
+};
+
+alert(trueFactorial(5));     //120
+alert(factorial(5));         //0
+</code></pre>
+
+  <p class="calibre2">在此，变量<code class="calibre15">trueFactorial</code>获得了<code class="calibre15">factorial</code>的值，实际上是在另一个位置上保存了一个函数的指针。然后，我们又将一个简单地返回0的函数赋值给<code class="calibre15">factorial</code>变量。如果像原来的<code class="calibre15">factorial()</code>那样不使用<code class="calibre15">arguments.callee</code>，调用<code class="calibre15">trueFactorial()</code>就会返回0。可是，在解除了函数体内的代码与函数名的耦合状态之后，<code class="calibre15">trueFactorial()</code>仍然能够正常地计算阶乘；至于<code class="calibre15">factorial()</code>，它现在只是一个返回0的函数。</p>
+
+  <p class="calibre2">函数内部的另一个特殊对象是<code class="calibre15">this</code>，其行为与Java和C#中的<code class="calibre15">this</code>大致类似。换句话说，<code class="calibre15">this</code>引用的是函数据以执行的环境对象——或者也可以说是<code class="calibre15">this</code>值（当在网页的全局作用域中调用函数时，<code class="calibre15">this</code>对象引用的就是<code class="calibre15">window</code>）。来看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">window.color = "red";
+var o = { color: "blue" };
+
+function sayColor(){
+    alert(this.color);
+}
+
+sayColor();     //"red"
+
+o.sayColor = sayColor;
+o.sayColor();   //"blue"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeThisExample01.htm</i></p>
+
+  <p class="calibre2">上面这个函数<code class="calibre15">sayColor()</code>是在全局作用域中定义的，它引用了<code class="calibre15">this</code>对象。由于在调用函数之前，<code class="calibre15">this</code>的值并不确定，因此<code class="calibre15">this</code>可能会在代码执行过程中引用不同的对象。当在全局作用域中调用<code class="calibre15">sayColor()</code>时，<code class="calibre15">this</code>引用的是全局对象<code class="calibre15">window</code>；换句话说，对<code class="calibre15">this.color</code>求值会转换成对<code class="calibre15">window.color</code>求值，于是结果就返回了<code class="calibre15">"red"</code>。而当把这个函数赋给对象<code class="calibre15">o</code>并调用<code class="calibre15">o.sayColor()</code>时，<code class="calibre15">this</code>引用的是对象o，因此对<code class="calibre15">this.color</code>求值会转换成对<code class="calibre15">o.color</code>求值，结果就返回了<code class="calibre15">"blue"</code>。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 请读者一定要牢记，函数的名字仅仅是一个包含指针的变量而已。因此，即使是在不同的环境中执行，全局的<code class="calibre15">sayColor()</code>函数与<code class="calibre15">o.sayColor()</code>指向的仍然是同一个函数。</p>
+  </blockquote>
+
+  <p class="calibre2">ECMAScript 5也规范化了另一个函数对象的属性：<code class="calibre15">caller</code>。除了Opera的早期版本不支持，其他浏览器都支持这个ECMAScript 3并没有定义的属性。这个属性中保存着调用当前函数的函数的引用，如果是在全局作用域中调用当前函数，它的值为<code class="calibre15">null</code>。例如：</p>
+  <pre class="calibre18"><code class="calibre15">function outer(){
+    inner(); 
+}
+
+function inner(){
+    alert(inner.caller);
+}
+
+outer();
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeArgumentsCallerExample01.htm</i></p>
+
+  <p class="calibre2">以上代码会导致警告框中显示<code class="calibre15">outer()</code>函数的源代码。因为<code class="calibre15">outer()</code>调用了<code class="calibre15">inter()</code>，所以<code class="calibre15">inner.caller</code>就指向<code class="calibre15">outer()</code>。为了实现更松散的耦合，也可以通过<code class="calibre15">arguments.callee.caller</code>来访问相同的信息。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">function outer(){
+    inner();
+}
+
+function inner(){
+    <b class="calibre3">alert(arguments.callee.caller);</b>
+} 
+
+outer();
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeArgumentsCallerExample02.htm</i></p>
+
+  <p class="calibre2">IE、Firefox、Chrome和Safari的所有版本以及Opera 9.6都支持<code class="calibre15">caller</code>属性。</p>
+
+  <p class="calibre2">当函数在严格模式下运行时，访问<code class="calibre15">arguments.callee</code>会导致错误。ECMAScript 5还定义了<code class="calibre15">arguments.caller</code>属性，但在严格模式下访问它也会导致错误，而在非严格模式下这个属性始终是<code class="calibre15">undefined</code>。定义这个属性是为了分清<code class="calibre15">arguments.caller</code>和函数的<code class="calibre15">caller</code>属性。以上变化都是为了加强这门语言的安全性，这样第三方代码就不能在相同的环境里窥视其他代码了。</p>
+
+  <p class="calibre2">严格模式还有一个限制：不能为函数的<code class="calibre15">caller</code>属性赋值，否则会导致错误。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_72"><strong class="calibre10">5.5.5　函数属性和方法</strong></h3>
+
+  <p class="calibre2">前面曾经提到过，ECMAScript中的函数是对象，因此函数也有属性和方法。每个函数都包含两个属性：<code class="calibre15">length</code>和<code class="calibre15">prototype</code>。其中，<code class="calibre15">length</code>属性表示函数希望接收的命名参数的个数，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">function sayName(name){
+    alert(name);
+}      
+
+function sum(num1, num2){
+    return num1 + num2;
+}
+
+function sayHi(){
+    alert("hi");
+}
+
+alert(sayName.length);      //1
+alert(sum.length);          //2
+alert(sayHi.length);        //0
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeLengthPropertyExample01.htm</i></p>
+
+  <p class="calibre2">以上代码定义了3个函数，但每个函数接收的命名参数个数不同。首先，<code class="calibre15">sayName()</code>函数定义了一个参数，因此其<code class="calibre15">length</code>属性的值为1。类似地，<code class="calibre15">sum()</code>函数定义了两个参数，结果其<code class="calibre15">length</code>属性中保存的值为2。而<code class="calibre15">sayHi()</code>没有命名参数，所以其<code class="calibre15">length</code>值为0。</p>
+
+  <p class="calibre2">在ECMAScript核心所定义的全部属性中，最耐人寻味的就要数<code class="calibre15">prototype</code>属性了。对于ECMAScript中的引用类型而言，<code class="calibre15">prototype</code>是保存它们所有实例方法的真正所在。换句话说，诸如<code class="calibre15">toString()</code>和<code class="calibre15">valueOf()</code>等方法实际上都保存在<code class="calibre15">prototype</code>名下，只不过是通过各自对象的实例访问罢了。在创建自定义引用类型以及实现继承时，<code class="calibre15">prototype</code>属性的作用是极为重要的（第6章将详细介绍）。在ECMAScript 5中，<code class="calibre15">prototype</code>属性是不可枚举的，因此使用<code class="calibre15">for-in</code>无法发现。</p>
+
+  <p class="calibre2">每个函数都包含两个非继承而来的方法：<code class="calibre15">apply()</code>和<code class="calibre15">call()</code>。这两个方法的用途都是在特定的作用域中调用函数，实际上等于设置函数体内<code class="calibre15">this</code>对象的值。首先，<code class="calibre15">apply()</code>方法接收两个参数：一个是在其中运行函数的作用域，另一个是参数数组。其中，第二个参数可以是<code class="calibre15">Array</code>的实例，也可以是<code class="calibre15">arguments</code>对象。例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function sum(num1, num2){
+    return num1 + num2;
+}
+
+function callSum1(num1, num2){
+    return sum.apply(this, arguments);        // 传入arguments对象
+}
+
+function callSum2(num1, num2){
+    return sum.apply(this, [num1, num2]);    // 传入数组
+}
+
+alert(callSum1(10,10));   //20
+alert(callSum2(10,10));   //20
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeApplyMethodExample01.htm</i></p>
+
+  <p class="calibre2">在上面这个例子中，<code class="calibre15">callSum1()</code>在执行<code class="calibre15">sum()</code>函数时传入了<code class="calibre15">this</code>作为<code class="calibre15">this</code>值（因为是在全局作用域中调用的，所以传入的就是<code class="calibre15">window</code>对象）和<code class="calibre15">arguments</code>对象。而<code class="calibre15">callSum2</code>同样也调用了<code class="calibre15">sum()</code>函数，但它传入的则是<code class="calibre15">this</code>和一个参数数组。这两个函数都会正常执行并返回正确的结果。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 在严格模式下，未指定环境对象而调用函数，则<code class="calibre15">this</code>值不会转型为<code class="calibre15">window</code>。除非明确把函数添加到某个对象或者调用<code class="calibre15">apply()</code>或<code class="calibre15">call()</code>，否则<code class="calibre15">this</code>值将是<code class="calibre15">undefined</code>。</p>
+  </blockquote>
+
+  <p class="calibre2"><code class="calibre15">call()</code>方法与<code class="calibre15">apply()</code>方法的作用相同，它们的区别仅在于接收参数的方式不同。对于<code class="calibre15">call()</code>方法而言，第一个参数是<code class="calibre15">this</code>值没有变化，变化的是其余参数都直接传递给函数。换句话说，在使用<code class="calibre15">call()</code>方法时，传递给函数的参数必须逐个列举出来，如下面的例子所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">function sum(num1, num2){
+    return num1 + num2;
+}
+
+function callSum(num1, num2){
+    <b class="calibre3">return sum.call(this, num1, num2);</b>
+}
+
+alert(callSum(10,10));   //20
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeCallMethodExample01.htm</i></p>
+
+  <p class="calibre2">在使用<code class="calibre15">call()</code>方法的情况下，<code class="calibre15">callSum()</code>必须明确地传入每一个参数。结果与使用<code class="calibre15">apply()</code>没有什么不同。至于是使用<code class="calibre15">apply()</code>还是<code class="calibre15">call()</code>，完全取决于你采取哪种给函数传递参数的方式最方便。如果你打算直接传入<code class="calibre15">arguments</code>对象，或者包含函数中先接收到的也是一个数组，那么使用<code class="calibre15">apply()</code>肯定更方便；否则，选择<code class="calibre15">call()</code>可能更合适。（在不给函数传递参数的情况下，使用哪个方法都无所谓。）</p>
+
+  <p class="calibre2">事实上，传递参数并非<code class="calibre15">apply()</code>和<code class="calibre15">call()</code>真正的用武之地；它们真正强大的地方是能够扩充函数赖以运行的作用域。下面来看一个例子。</p>
+  <pre class="calibre18">window.color = "red";
+var o = { color: "blue" };
+
+function sayColor(){
+    alert(this.color);
+}
+
+sayColor();                //red
+
+<b class="calibre3">sayColor.call(this);       //red</b>
+<b class="calibre3">sayColor.call(window);     //red</b>
+<b class="calibre3">sayColor.call(o);          //blue</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeCallExample01.htm</i></p>
+
+  <p class="calibre2">这个例子是在前面说明<code class="calibre15">this</code>对象的示例基础上修改而成的。这一次，<code class="calibre15">sayColor()</code>也是作为全局函数定义的，而且当在全局作用域中调用它时，它确实会显示<code class="calibre15">"red"</code>——因为对<code class="calibre15">this.color</code>的求值会转换成对<code class="calibre15">window.color</code>的求值。而<code class="calibre15">sayColor.call(this)</code>和<code class="calibre15">sayColor.call(window)</code>，则是两种显式地在全局作用域中调用函数的方式，结果当然都会显示<code class="calibre15">"red"</code>。但是，当运行<code class="calibre15">sayColor.call(o)</code>时，函数的执行环境就不一样了，因为此时函数体内的<code class="calibre15">this</code>对象指向了<code class="calibre15">o</code>，于是结果显示的是<code class="calibre15">"blue"</code>。</p>
+
+  <p class="calibre2">使用<code class="calibre15">call()</code>（或<code class="calibre15">apply()</code>）来扩充作用域的最大好处，就是对象不需要与方法有任何耦合关系。在前面例子的第一个版本中，我们是先将<code class="calibre15">sayColor()</code>函数放到了对象<code class="calibre15">o</code>中，然后再通过<code class="calibre15">o</code>来调用它的；而在这里重写的例子中，就不需要先前那个多余的步骤了。</p>
+
+  <p class="calibre2">ECMAScript 5还定义了一个方法：<code class="calibre15">bind()</code>。这个方法会创建一个函数的实例，其<code class="calibre15">this</code>值会被绑定到传给<code class="calibre15">bind()</code>函数的值。例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">window.color = "red";
+var o = { color: "blue" };
+
+function sayColor(){
+    alert(this.color);
+} 
+<b class="calibre3">var objectSayColor = sayColor.bind(o);</b>
+<b class="calibre3">objectSayColor();    //blue</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionTypeBindMethodExample01.htm</i></p>
+
+  <p class="calibre2">在这里，<code class="calibre15">sayColor()</code>调用<code class="calibre15">bind()</code>并传入对象o，创建了<code class="calibre15">objectSayColor()</code>函数。<code class="calibre15">objectSayColor()</code>函数的<code class="calibre15">this</code>值等于<code class="calibre15">o</code>，因此即使是在全局作用域中调用这个函数，也会看到<code class="calibre15">"blue"</code>。这种技巧的优点请参考第22章。</p>
+
+  <p class="calibre2">支持<code class="calibre15">bind()</code>方法的浏览器有IE9+、Firefox 4+、Safari 5.1+、Opera 12+和Chrome。</p>
+
+  <p class="calibre2">每个函数继承的<code class="calibre15">toLocaleString()</code>和<code class="calibre15">toString()</code>方法始终都返回函数的代码。返回代码的格式则因浏览器而异——有的返回的代码与源代码中的函数代码一样，而有的则返回函数代码的内部表示，即由解析器删除了注释并对某些代码作了改动后的代码。由于存在这些差异，我们无法根据这两个方法返回的结果来实现任何重要功能；不过，这些信息在调试代码时倒是很有用。另外一个继承的<code class="calibre15">valueOf()</code>方法同样也只返回函数代码。</p>
+</body>
+</html>

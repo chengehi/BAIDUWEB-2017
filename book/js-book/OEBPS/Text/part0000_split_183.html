@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_245"><strong class="calibre10">B.6　<code class="calibre30">eval</code>与<code class="calibre30">arguments</code></strong></h2>
+
+  <p class="calibre2">严格模式已经明确禁止使用<code class="calibre15">eval</code>和<code class="calibre15">arguments</code>作为标识符，也不允许读写它们的值。例如：</p>
+  <pre class="calibre18"><code class="calibre15">//把eval和arguments作为变量引用
+//非严格模式：没问题，不出错
+//严格模式：抛出语法错误
+
+var eval = 10;
+var arguments = "Hello world!";
+</code></pre>
+
+  <p class="calibre2">在非严格模式下，可以重写<code class="calibre15">eval</code>，也可以给<code class="calibre15">arguments</code>赋值。但在严格模式下，这样做会导致语法错误。不能将它们用作标识符，意味着以下几种使用方式都会抛出语法错误：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">使用<code class="calibre15">var</code>声明；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">赋予另一个值；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">尝试修改包含的值，如使用++；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">用作函数名；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">用作命名的函数参数；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">在<code class="calibre15">try-catch</code>语句中用作例外名。</p>
+    </li>
+  </ul>
+</body>
+</html>

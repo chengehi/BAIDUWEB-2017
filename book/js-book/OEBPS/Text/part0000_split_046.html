@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_36">5.6　基本包装类型</h2>
+
+  <p class="calibre2">为了便于操作基本类型值，ECMAScript还提供了3个特殊的引用类型：<code class="calibre15">Boolean</code>、<code class="calibre15">Number</code>和<code class="calibre15">String</code>。这些类型与本章介绍的其他引用类型相似，但同时也具有与各自的基本类型相应的特殊行为。实际上，每当读取一个基本类型值的时候，后台就会创建一个对应的基本包装类型的对象，从而让我们能够调用一些方法来操作这些数据。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var s1 = "some text";
+var s2 = s1.substring(2);
+</code></pre>
+
+  <p class="calibre2">这个例子中的变量<code class="calibre15">s1</code>包含一个字符串，字符串当然是基本类型值。而下一行调用了<code class="calibre15">s1</code>的<code class="calibre15">substring()</code>方法，并将返回的结果保存在了<code class="calibre15">s2</code>中。我们知道，基本类型值不是对象，因而从逻辑上讲它们不应该有方法（尽管如我们所愿，它们确实有方法）。其实，为了让我们实现这种直观的操作，后台已经自动完成了一系列的处理。当第二行代码访问<code class="calibre15">s1</code>时，访问过程处于一种读取模式，也就是要从内存中读取这个字符串的值。而在读取模式中访问字符串时，后台都会自动完成下列处理。</p>
+
+  <ol class="calibre11">
+    <li class="calibre12" value="1">
+      <p class="calibre2">创建<code class="calibre15">String</code>类型的一个实例；</p>
+    </li>
+
+    <li class="calibre12" value="2">
+      <p class="calibre2">在实例上调用指定的方法；</p>
+    </li>
+
+    <li class="calibre12" value="3">
+      <p class="calibre2">销毁这个实例。</p>
+    </li>
+  </ol>
+
+  <p class="calibre2">可以将以上三个步骤想象成是执行了下列ECMAScript代码。</p>
+  <pre class="calibre18"><code class="calibre15">var s1 = new String("some text");
+var s2 = s1.substring(2);
+s1 = null;
+</code></pre>
+
+  <p class="calibre2">经过此番处理，基本的字符串值就变得跟对象一样了。而且，上面这三个步骤也分别适用于<code class="calibre15">Boolean</code>和<code class="calibre15">Number</code>类型对应的布尔值和数字值。</p>
+
+  <p class="calibre2">引用类型与基本包装类型的主要区别就是对象的生存期。使用<code class="calibre15">new</code>操作符创建的引用类型的实例，在执行流离开当前作用域之前都一直保存在内存中。而自动创建的基本包装类型的对象，则只存在于一行代码的执行瞬间，然后立即被销毁。这意味着我们不能在运行时为基本类型值添加属性和方法。来看下面的例子：</p>
+  <pre class="calibre18"><code class="calibre15">var s1 = "some text";
+s1.color = "red";
+alert(s1.color);   //undefined
+</code></pre>
+
+  <p class="calibre2">在此，第二行代码试图为字符串<code class="calibre15">s1</code>添加一个<code class="calibre15">color</code>属性。但是，当第三行代码再次访问<code class="calibre15">s1</code>时，其<code class="calibre15">color</code>属性不见了。问题的原因就是第二行创建的<code class="calibre15">String</code>对象在执行第三行代码时已经被销毁了。第三行代码又创建自己的<code class="calibre15">String</code>对象，而该对象没有<code class="calibre15">color</code>属性。</p>
+
+  <p class="calibre2">当然，可以显式地调用<code class="calibre15">Boolean</code>、<code class="calibre15">Number</code>和<code class="calibre15">String</code>来创建基本包装类型的对象。不过，应该在绝对必要的情况下再这样做，因为这种做法很容易让人分不清自己是在处理基本类型还是引用类型的值。对基本包装类型的实例调用<code class="calibre15">typeof</code>会返回<code class="calibre15">"object"</code>，而且所有基本包装类型的对象都会被转换为布尔值<code class="calibre15">true</code>。</p>
+
+  <p class="calibre2"><code class="calibre15">Object</code>构造函数也会像工厂方法一样，根据传入值的类型返回相应基本包装类型的实例。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var obj = new Object("some text");
+alert(obj instanceof String);   //true
+</code></pre>
+
+  <p class="calibre2">把字符串传给<code class="calibre15">Object</code>构造函数，就会创建<code class="calibre15">String</code>的实例；而传入数值参数会得到<code class="calibre15">Number</code>的实例，传入布尔值参数就会得到<code class="calibre15">Boolean</code>的实例。</p>
+
+  <p class="calibre2">要注意的是，使用<code class="calibre15">new</code>调用基本包装类型的构造函数，与直接调用同名的转型函数是不一样的。 例如：</p>
+  <pre class="calibre18"><code class="calibre15">var value = "25";
+var number = Number(value);  //转型函数
+alert(typeof number);        //"number"
+
+var obj = new Number(value); //构造函数
+alert(typeof obj);           //"object"
+</code></pre>
+
+  <p class="calibre2">在这个例子中，变量<code class="calibre15">number</code>中保存的是基本类型的值25，而变量<code class="calibre15">obj</code>中保存的是<code class="calibre15">Number</code>的实例。要了解有关转型函数的更多信息，请参考第3章。</p>
+
+  <p class="calibre2">尽管我们不建议显式地创建基本包装类型的对象，但它们操作基本类型值的能力还是相当重要的。而每个基本包装类型都提供了操作相应值的便捷方法。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_73"><strong class="calibre10">5.6.1　<code class="calibre30">Boolean</code>类型</strong></h3>
+
+  <p class="calibre2"><code class="calibre15">Boolean</code>类型是与布尔值对应的引用类型。要创建<code class="calibre15">Boolean</code>对象，可以像下面这样调用<code class="calibre15">Boolean</code>构造函数并传入<code class="calibre15">true</code>或<code class="calibre15">false</code>值。</p>
+  <pre class="calibre18"><code class="calibre15">var booleanObject = new Boolean(true);
+</code></pre>
+
+  <p class="calibre2"><code class="calibre15">Boolean</code>类型的实例重写了<code class="calibre15">valueOf()</code>方法，返回基本类型值<code class="calibre15">true</code>或<code class="calibre15">false</code>；重写了<code class="calibre15">toString()</code>方法，返回字符串<code class="calibre15">"true"</code>和<code class="calibre15">"false"</code>。可是，<code class="calibre15">Boolean</code>对象在ECMAScript中的用处不大，因为它经常会造成人们的误解。其中最常见的问题就是在布尔表达式中使用<code class="calibre15">Boolean</code>对象，例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var falseObject = new Boolean(false);
+var result = falseObject &amp;&amp; true;
+alert(result);  //true
+
+var falseValue = false;
+result = falseValue &amp;&amp; true;
+alert(result);  //false
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">BooleanTypeExample01.htm</i></p>
+
+  <p class="calibre2">在这个例子中，我们使用<code class="calibre15">false</code>值创建了一个<code class="calibre15">Boolean</code>对象。然后，将这个对象与基本类型值<code class="calibre15">true</code>构成了逻辑与表达式。在布尔运算中，<code class="calibre15">false &amp;&amp; true</code>等于<code class="calibre15">false</code>。可是，示例中的这行代码是对<code class="calibre15">falseObject</code>而不是对它的值（<code class="calibre15">false</code>）进行求值。前面讨论过，布尔表达式中的所有对象都会被转换为<code class="calibre15">true</code>，因此<code class="calibre15">falseObject</code>对象在布尔表达式中代表的是<code class="calibre15">true</code>。结果，<code class="calibre15">true &amp;&amp; true</code>当然就等于<code class="calibre15">true</code>了。</p>
+
+  <p class="calibre2">基本类型与引用类型的布尔值还有两个区别。首先，<code class="calibre15">typeof</code>操作符对基本类型返回<code class="calibre15">"boolean"</code>，而对引用类型返回<code class="calibre15">"object"</code>。其次，由于<code class="calibre15">Boolean</code>对象是<code class="calibre15">Boolean</code>类型的实例，所以使用<code class="calibre15">instanceof</code>操作符测试<code class="calibre15">Boolean</code>对象会返回<code class="calibre15">true</code>，而测试基本类型的布尔值则返回<code class="calibre15">false</code>。例如：</p>
+  <pre class="calibre18"><code class="calibre15">alert(typeof falseObject);   //object
+alert(typeof falseValue);    //boolean
+alert(falseObject instanceof Boolean);  //true
+alert(falseValue instanceof Boolean);   //false
+</code></pre>
+
+  <p class="calibre2">理解基本类型的布尔值与<code class="calibre15">Boolean</code>对象之间的区别非常重要——当然，我们的建议是永远不要使用<code class="calibre15">Boolean</code>对象。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_74"><strong class="calibre10">5.6.2　<code class="calibre30">Number</code>类型</strong></h3>
+
+  <p class="calibre2"><code class="calibre15">Number</code>是与数字值对应的引用类型。要创建<code class="calibre15">Number</code>对象，可以在调用<code class="calibre15">Number</code>构造函数时向其中传递相应的数值。下面是一个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var numberObject = new Number(10);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">NumberTypeExample01.htm</i></p>
+
+  <p class="calibre2">与<code class="calibre15">Boolean</code>类型一样，<code class="calibre15">Number</code>类型也重写了<code class="calibre15">valueOf()</code>、<code class="calibre15">toLocaleString()</code>和<code class="calibre15">toString()</code>方法。重写后的<code class="calibre15">valueOf()</code>方法返回对象表示的基本类型的数值，另外两个方法则返回字符串形式的数值。我们在第3章还介绍过，可以为<code class="calibre15">toString()</code>方法传递一个表示基数的参数，告诉它返回几进制数值的字符串形式，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">var num = 10;
+alert(num.toString());      //"10"
+alert(num.toString(2));     //"1010"
+alert(num.toString(8));     //"12"
+alert(num.toString(10));    //"10"
+alert(num.toString(16));    //"a"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">NumberTypeExample01.htm</i></p>
+
+  <p class="calibre2">除了继承的方法之外，<code class="calibre15">Number</code>类型还提供了一些用于将数值格式化为字符串的方法。</p>
+
+  <p class="calibre2">其中，<code class="calibre15">toFixed()</code>方法会按照指定的小数位返回数值的字符串表示，例如：</p>
+  <pre class="calibre18">var num = 10;
+<b class="calibre3">alert(num.toFixed(2));     //"10.00"</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">NumberTypeExample01.htm</i></p>
+
+  <p class="calibre2">这里给<code class="calibre15">toFixed()</code>方法传入了数值<code class="calibre15">2</code>，意思是显示几位小数。于是，这个方法返回了<code class="calibre15">"10.00"</code>，即以0填补了必要的小数位。如果数值本身包含的小数位比指定的还多，那么接近指定的最大小数位的值就会舍入，如下面的例子所示。</p>
+  <pre class="calibre18">var num = 10.005;
+<b class="calibre3">alert(num.toFixed(2));     //"10.01"</b>
+</pre>
+
+  <p class="calibre2">能够自动舍入的特性，使得<code class="calibre15">toFixed()</code>方法很适合处理货币值。但需要注意的是，不同浏览器给这个方法设定的舍入规则可能会有所不同。在给<code class="calibre15">toFixed()</code>传入0的情况下，IE8及之前版本不能正确舍入范围在{(?0.94,?0.5],[0.5,0.94)}之间的值。对于这个范围内的值，IE会返回0，而不是?1或1；其他浏览器都能返回正确的值。IE9修复了这个问题。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> <code class="calibre15">toFixed()</code>方法可以表示带有0到20个小数位的数值。但这只是标准实现的范围，有些浏览器也可能支持更多位数。</p>
+  </blockquote>
+
+  <p class="calibre2">另外可用于格式化数值的方法是<code class="calibre15">toExponential()</code>，该方法返回以指数表示法（也称e表示法）表示的数值的字符串形式。与<code class="calibre15">toFixed()</code>一样，<code class="calibre15">toExponential()</code>也接收一个参数，而且该参数同样也是指定输出结果中的小数位数。看下面的例子。</p>
+  <pre class="calibre18">var num = 10;
+<b class="calibre3">alert(num.toExponential(1));     //"1.0e+1"</b>
+</pre>
+
+  <p class="calibre2">以上代码输出了<code class="calibre15">"1.0e+1"</code>；不过，这么小的数值一般不必使用e表示法。如果你想得到表示某个数值的最合适的格式，就应该使用<code class="calibre15">toPrecision()</code>方法。</p>
+
+  <p class="calibre2">对于一个数值来说，<code class="calibre15">toPrecision()</code>方法可能会返回固定大小（fixed）格式，也可能返回指数（exponential）格式；具体规则是看哪种格式最合适。这个方法接收一个参数，即表示数值的所有数字的位数（不包括指数部分）。请看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var num = 99;
+<b class="calibre3">alert(num.toPrecision(1));     //"1e+2"</b>
+<b class="calibre3">alert(num.toPrecision(2));     //"99"</b>
+<b class="calibre3">alert(num.toPrecision(3));     //"99.0"</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">NumberTypeExample01.htm</i></p>
+
+  <p class="calibre2">以上代码首先完成的任务是以一位数来表示99，结果是<code class="calibre15">"1e+2"</code>，即100。因为一位数无法准确地表示99，因此<code class="calibre15">toPrecision()</code>就将它向上舍入为100，这样就可以使用一位数来表示它了。而接下来的用两位数表示99，当然还是<code class="calibre15">"99"</code>。最后，在想以三位数表示99时，<code class="calibre15">toPrecision()</code>方法返回了<code class="calibre15">"99.0"</code>。实际上，<code class="calibre15">toPrecision()</code>会根据要处理的数值决定到底是调用<code class="calibre15">toFixed()</code>还是调用<code class="calibre15">toExponential()</code>。而这三个方法都可以通过向上或向下舍入，做到以最准确的形式来表示带有正确小数位的值。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> <code class="calibre15">toPrecision()</code>方法可以表现1到21位小数。某些浏览器支持的范围更大，但这是典型实现的范围。</p>
+  </blockquote>
+
+  <p class="calibre2">与<code class="calibre15">Boolean</code>对象类似，<code class="calibre15">Number</code>对象也以后台方式为数值提供了重要的功能。但与此同时，我们仍然不建议直接实例化<code class="calibre15">Number</code>类型，而原因与显式创建<code class="calibre15">Boolean</code>对象一样。具体来讲，就是在使用<code class="calibre15">typeof</code>和<code class="calibre15">instanceof</code>操作符测试基本类型数值与引用类型数值时，得到的结果完全不同，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">var numberObject = new Number(10);
+var numberValue = 10;
+alert(typeof numberObject);   //"object"
+alert(typeof numberValue);    //"number"
+alert(numberObject instanceof Number);  //true
+alert(numberValue instanceof Number);   //false
+</code></pre>
+
+  <p class="calibre2">在使用<code class="calibre15">typeof</code>操作符测试基本类型数值时，始终会返回<code class="calibre15">"number"</code>，而在测试<code class="calibre15">Number</code>对象时，则会返回<code class="calibre15">"object"</code>。类似地，<code class="calibre15">Number</code>对象是<code class="calibre15">Number</code>类型的实例，而基本类型的数值则不是。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_75"><strong class="calibre10">5.6.3　<code class="calibre30">String</code>类型</strong></h3>
+
+  <p class="calibre2"><code class="calibre15">String</code>类型是字符串的对象包装类型，可以像下面这样使用<code class="calibre15">String</code>构造函数来创建。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><b class="calibre3">var stringObject = new String("hello world");</b></pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypeExample01.htm</i></p>
+
+  <p class="calibre2"><code class="calibre15">String</code>对象的方法也可以在所有基本的字符串值中访问到。其中，继承的<code class="calibre15">valueOf()</code>、<code class="calibre15">toLocaleString()</code>和<code class="calibre15">toString()</code>方法，都返回对象所表示的基本字符串值。</p>
+
+  <p class="calibre2"><code class="calibre15">String</code>类型的每个实例都有一个<code class="calibre15">length</code>属性，表示字符串中包含多个字符。来看下面的例子。</p>
+  <pre class="calibre18">var stringValue = "hello world";
+<b class="calibre3">alert(stringValue.length);     //"11"</b>
+</pre>
+
+  <p class="calibre2">这个例子输出了字符串<code class="calibre15">"hello world"</code>中的字符数量，即<code class="calibre15">"11"</code>。应该注意的是，即使字符串中包含双字节字符（不是占一个字节的ASCII字符），每个字符也仍然算一个字符。</p>
+
+  <p class="calibre2"><code class="calibre15">String</code>类型提供了很多方法，用于辅助完成对ECMAScript中字符串的解析和操作。</p>
+
+  <p class="calibre2">1. <strong class="calibre3">字符方法</strong></p>
+
+  <p class="calibre2">两个用于访问字符串中特定字符的方法是：<code class="calibre15">charAt()</code>和<code class="calibre15">charCodeAt()</code>。这两个方法都接收一个参数，即基于0的字符位置。其中，<code class="calibre15">charAt()</code>方法以单字符字符串的形式返回给定位置的那个字符（ECMAScript中没有字符类型）。例如：</p>
+  <pre class="calibre18">var stringValue = "hello world";
+<b class="calibre3">alert(stringValue.charAt(1));   //"e"</b>
+</pre>
+
+  <p class="calibre2">字符串<code class="calibre15">"hello world"</code>位置1处的字符是<code class="calibre15">"e"</code>，因此调用<code class="calibre15">charAt(1)</code>就返回了<code class="calibre15">"e"</code>。如果你想得到的不是字符而是字符编码，那么就要像下面这样使用<code class="calibre15">charCodeAt()</code>了。</p>
+  <pre class="calibre18">var stringValue = "hello world";
+<b class="calibre3">alert(stringValue.charCodeAt(1));   //输出"101"</b>
+</pre>
+
+  <p class="calibre2">这个例子输出的是<code class="calibre15">"101"</code>，也就是小写字母<code class="calibre15">"e"</code>的字符编码。</p>
+
+  <p class="calibre2">ECMAScript 5还定义了另一个访问个别字符的方法。在支持浏览器中，可以使用方括号加数字索引来访问字符串中的特定字符，如下面的例子所示。</p>
+  <pre class="calibre18">var stringValue = "hello world";
+<b class="calibre3">alert(stringValue[1]);   //"e"</b>
+</pre>
+
+  <p class="calibre2">使用方括号表示法访问个别字符的语法得到了IE8及Firefox、Safari、Chrome和Opera所有版本的支持。如果是在IE7及更早版本中使用这种语法，会返回<code class="calibre15">undefined</code>值（尽管根本不是特殊的<code class="calibre15">undefined</code>值）。</p>
+
+  <p class="calibre2">2. <strong class="calibre3">字符串操作方法</strong></p>
+
+  <p class="calibre2">下面介绍与操作字符串有关的几个方法。第一个就是<code class="calibre15">concat()</code>，用于将一或多个字符串拼接起来，返回拼接得到的新字符串。先来看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">var stringValue = "hello ";
+var result = stringValue.concat("world");
+alert(result);             //"hello world"
+alert(stringValue);        //"hello"
+</code></pre>
+
+  <p class="calibre2">在这个例子中，通过<code class="calibre15">stringValue</code>调用<code class="calibre15">concat()</code>方法返回的结果是<code class="calibre15">"hello world"</code>——但<code class="calibre15">stringValue</code>的值则保持不变。实际上，<code class="calibre15">concat()</code>方法可以接受任意多个参数，也就是说可以通过它拼接任意多个字符串。再看一个例子：</p>
+  <pre class="calibre18">var stringValue = "hello ";
+<b class="calibre3">var result = stringValue.concat("world", "!");</b>
+
+alert(result);             //"hello world!"
+alert(stringValue);        //"hello"
+</pre>
+
+  <p class="calibre2">这个例子将<code class="calibre15">"world"</code>和<code class="calibre15">"!"</code>拼接到了<code class="calibre15">"hello"</code>的末尾。虽然<code class="calibre15">concat()</code>是专门用来拼接字符串的方法，但实践中使用更多的还是加号操作符（+）。而且，使用加号操作符在大多数情况下都比使用<code class="calibre15">concat()</code>方法要简便易行（特别是在拼接多个字符串的情况下）。</p>
+
+  <p class="calibre2">ECMAScript还提供了三个基于子字符串创建新字符串的方法：<code class="calibre15">slice()</code>、<code class="calibre15">substr()</code>和<code class="calibre15">substring()</code>。这三个方法都会返回被操作字符串的一个子字符串，而且也都接受一或两个参数。第一个参数指定子字符串的开始位置，第二个参数（在指定的情况下）表示子字符串到哪里结束。具体来说，<code class="calibre15">slice()</code>和<code class="calibre15">substring()</code>的第二个参数指定的是子字符串最后一个字符后面的位置。而<code class="calibre15">substr()</code>的第二个参数指定的则是返回的字符个数。如果没有给这些方法传递第二个参数，则将字符串的长度作为结束位置。与<code class="calibre15">concat()</code>方法一样，<code class="calibre15">slice()</code>、<code class="calibre15">substr()</code>和<code class="calibre15">substring()</code>也不会修改字符串本身的值——它们只是返回一个基本类型的字符串值，对原始字符串没有任何影响。请看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var stringValue = "hello world";
+<b class="calibre3">alert(stringValue.slice(3));            //"lo world"</b>
+<b class="calibre3">alert(stringValue.substring(3));        //"lo world"</b>
+<b class="calibre3">alert(stringValue.substr(3));           //"lo world"</b>
+<b class="calibre3">alert(stringValue.slice(3, 7));         //"lo w"</b>
+<b class="calibre3">alert(stringValue.substring(3,7));      //"lo w"</b>
+<b class="calibre3">alert(stringValue.substr(3, 7));        //"lo worl"</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypeManipulationMethodsExample01.htm</i></p>
+
+  <p class="calibre2">这个例子比较了以相同方式调用<code class="calibre15">slice()</code>、<code class="calibre15">substr()</code>和<code class="calibre15">substring()</code>得到的结果，而且多数情况下的结果是相同的。在只指定一个参数3的情况下，这三个方法都返回<code class="calibre15">"lo world"</code>，因为<code class="calibre15">"hello"</code>中的第二个<code class="calibre15">"l"</code>处于位置3。而在指定两个参数3和7的情况下，<code class="calibre15">slice()</code>和<code class="calibre15">substring()</code>返回<code class="calibre15">"lo w"</code>（<code class="calibre15">"world"</code>中的<code class="calibre15">"o"</code>处于位置7，因此结果中不包含<code class="calibre15">"o"</code>），但<code class="calibre15">substr()</code>返回<code class="calibre15">"lo worl"</code>，因为它的第二个参数指定的是要返回的字符个数。</p>
+
+  <p class="calibre2">在传递给这些方法的参数是负值的情况下，它们的行为就不尽相同了。其中，<code class="calibre15">slice()</code>方法会将传入的负值与字符串的长度相加，<code class="calibre15">substr()</code>方法将负的第一个参数加上字符串的长度，而将负的第二个参数转换为0。最后，<code class="calibre15">substring()</code>方法会把所有负值参数都转换为0。下面来看例子。</p>
+  <pre class="calibre18">var stringValue = "hello world";
+<b class="calibre3">alert(stringValue.slice(-3));           //"rld"</b>
+<b class="calibre3">alert(stringValue.substring(-3));       //"hello world"</b>
+<b class="calibre3">alert(stringValue.substr(-3));          //"rld"</b>
+<b class="calibre3">alert(stringValue.slice(3, -4));        //"lo w"</b>
+<b class="calibre3">alert(stringValue.substring(3, -4));    //"hel"</b>
+<b class="calibre3">alert(stringValue.substr(3, -4));       //""（空字符串）</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypeManipulationMethodsExample01.htm</i></p>
+
+  <p class="calibre2">这个例子清晰地展示了上述三个方法之间的不同行为。在给<code class="calibre15">slice()</code>和<code class="calibre15">substr()</code>传递一个负值参数时，它们的行为相同。这是因为<code class="calibre15">-3</code>会被转换为<code class="calibre15">8</code>（字符串长度加参数11+(-3)=8），实际上相当于调用了<code class="calibre15">slice(8)</code>和<code class="calibre15">substr(8)</code>。但<code class="calibre15">substring()</code>方法则返回了全部字符串，因为它将<code class="calibre15">-3</code>转换成了0。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> IE的JavaScript实现在处理向<code class="calibre15">substr()</code>方法传递负值的情况时存在问题，它会返回原始的字符串。IE9修复了这个问题。</p>
+  </blockquote>
+
+  <p class="calibre2">当第二个参数是负值时，这三个方法的行为各不相同。<code class="calibre15">slice()</code>方法会把第二个参数转换为7，这就相当于调用了<code class="calibre15">slice(3,7)</code>，因此返回<code class="calibre15">"lo w"</code>。<code class="calibre15">substring()</code>方法会把第二个参数转换为0，使调用变成了<code class="calibre15">substring(3,0)</code>，而由于这个方法会将较小的数作为开始位置，将较大的数作为结束位置，因此最终相当于调用了<code class="calibre15">substring(0,3)</code>。<code class="calibre15">substr()</code>也会将第二个参数转换为0，这也就意味着返回包含零个字符的字符串，也就是一个空字符串。</p>
+
+  <p class="calibre2">3. <strong class="calibre3">字符串位置方法</strong></p>
+
+  <p class="calibre2">有两个可以从字符串中查找子字符串的方法：<code class="calibre15">indexOf()</code>和<code class="calibre15">lastIndexOf()</code>。这两个方法都是从一个字符串中搜索给定的子字符串，然后返子字符串的位置（如果没有找到该子字符串，则返回<code class="calibre15">-1</code>）。这两个方法的区别在于：<code class="calibre15">indexOf()</code>方法从字符串的开头向后搜索子字符串，而<code class="calibre15">lastIndexOf()</code>方法是从字符串的末尾向前搜索子字符串。还是来看一个例子吧。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var stringValue = "hello world";
+<b class="calibre3">alert(stringValue.indexOf("o"));             //4</b>
+<b class="calibre3">alert(stringValue.lastIndexOf("o"));         //7</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypeLocationMethodsExample01.htm</i></p>
+
+  <p class="calibre2">子字符串<code class="calibre15">"o"</code>第一次出现的位置是4，即<code class="calibre15">"hello"</code>中的<code class="calibre15">"o"</code>；最后一次出现的位置是7，即<code class="calibre15">"world"</code>中的<code class="calibre15">"o"</code>。如果<code class="calibre15">"o"</code>在这个字符串中仅出现了一次，那么<code class="calibre15">indexOf()</code>和<code class="calibre15">lastIndexOf()</code>会返回相同的位置值。</p>
+
+  <p class="calibre2">这两个方法都可以接收可选的第二个参数，表示从字符串中的哪个位置开始搜索。换句话说，<code class="calibre15">indexOf()</code>会从该参数指定的位置向后搜索，忽略该位置之前的所有字符；而<code class="calibre15">lastIndexOf()</code>则会从指定的位置向前搜索，忽略该位置之后的所有字符。看下面的例子。</p>
+  <pre class="calibre18">var stringValue = "hello world";
+<b class="calibre3">alert(stringValue.indexOf("o", 6));          //7</b>
+<b class="calibre3">alert(stringValue.lastIndexOf("o", 6));      //4</b>
+</pre>
+
+  <p class="calibre2">在将第二个参数6传递给这两个方法之后，得到了与前面例子相反的结果。这一次，由于<code class="calibre15">indexOf()</code>是从位置6（字母<code class="calibre15">"w"</code>）开始向后搜索，结果在位置7找到了<code class="calibre15">"o"</code>，因此它返回7。而<code class="calibre15">lastIndexOf()</code>是从位置6开始向前搜索。结果找到了<code class="calibre15">"hello"</code>中的<code class="calibre15">"o"</code>，因此它返回4。在使用第二个参数的情况下，可以通过循环调用<code class="calibre15">indexOf()</code>或<code class="calibre15">lastIndexOf()</code>来找到所有匹配的子字符串，如下面的例子所示：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var stringValue = "Lorem ipsum dolor sit amet, consectetur adipisicing elit";
+var positions = new Array();
+var pos = stringValue.indexOf("e");
+
+while(pos &gt; -1){
+    positions.push(pos);
+    pos = stringValue.indexOf("e", pos + 1);
+}
+
+alert(positions);    //"3,24,32,35,52"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypeLocationMethodsExample02.htm</i></p>
+
+  <p class="calibre2">这个例子通过不断增加<code class="calibre15">indexOf()</code>方法开始查找的位置，遍历了一个长字符串。在循环之外，首先找到了<code class="calibre15">"e"</code>在字符串中的初始位置；而进入循环后，则每次都给<code class="calibre15">indexOf()</code>传递上一次的位置加1。这样，就确保了每次新搜索都从上一次找到的子字符串的后面开始。每次搜索返回的位置依次被保存在数组<code class="calibre15">positions</code>中，以便将来使用。</p>
+
+  <p class="calibre2">4. <strong class="calibre3"><code class="calibre15">trim()</code>方法</strong></p>
+
+  <p class="calibre2">ECMAScript 5为所有字符串定义了<code class="calibre15">trim()</code>方法。这个方法会创建一个字符串的副本，删除前置及后缀的所有空格，然后返回结果。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var stringValue = "   hello world   ";
+var trimmedStringValue = stringValue.trim();
+alert(stringValue);            //"   hello world   "
+alert(trimmedStringValue);     //"hello world" 
+</code></pre>
+
+  <p class="calibre2">由于<code class="calibre15">trim()</code>返回的是字符串的副本，所以原始字符串中的前置及后缀空格会保持不变。支持这个方法的浏览器有IE9+、Firefox 3.5+、Safari 5+、Opera 10.5+和Chrome。此外，Firefox 3.5+、Safari 5+和Chrome 8+还支持非标准的<code class="calibre15">trimLeft()</code>和<code class="calibre15">trimRight()</code>方法，分别用于删除字符串开头和末尾的空格。</p>
+
+  <p class="calibre2">5. <strong class="calibre3">字符串大小写转换方法</strong></p>
+
+  <p class="calibre2">接下来我们要介绍的是一组与大小写转换有关的方法。ECMAScript中涉及字符串大小写转换的方法有4个：<code class="calibre15">toLowerCase()</code>、<code class="calibre15">toLocaleLowerCase()</code>、<code class="calibre15">toUpperCase()</code>和<code class="calibre15">toLocaleUpperCase()</code>。其中，<code class="calibre15">toLowerCase()</code>和<code class="calibre15">toUpperCase()</code>是两个经典的方法，借鉴自<code class="calibre15">java.lang.String</code>中的同名方法。而<code class="calibre15">toLocaleLowerCase()</code>和<code class="calibre15">toLocaleUpperCase()</code>方法则是针对特定地区的实现。对有些地区来说，针对地区的方法与其通用方法得到的结果相同，但少数语言（如土耳其语）会为Unicode大小写转换应用特殊的规则，这时候就必须使用针对地区的方法来保证实现正确的转换。以下是几个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var stringValue = "hello world";
+<b class="calibre3">alert(stringValue.toLocaleUpperCase());  //"HELLO WORLD"</b>
+<b class="calibre3">alert(stringValue.toUpperCase());        //"HELLO WORLD"</b>
+<b class="calibre3">alert(stringValue.toLocaleLowerCase());  //"hello world"</b>
+<b class="calibre3">alert(stringValue.toLowerCase());        //"hello world"</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypeCaseMethodExample01.htm</i></p>
+
+  <p class="calibre2">以上代码调用的<code class="calibre15">toLocaleUpperCase()</code>和<code class="calibre15">toUpperCase()</code>都返回了<code class="calibre15">"HELLO WORLD"</code>，就像调用<code class="calibre15">toLocaleLowerCase()</code>和<code class="calibre15">toLowerCase()</code>都返回<code class="calibre15">"hello world"</code>一样。一般来说，在不知道自己的代码将在哪种语言环境中运行的情况下，还是使用针对地区的方法更稳妥一些。</p>
+
+  <p class="calibre2">6. <strong class="calibre3">字符串的模式匹配方法</strong></p>
+
+  <p class="calibre2"><code class="calibre15">String</code>类型定义了几个用于在字符串中匹配模式的方法。第一个方法就是<code class="calibre15">match()</code>，在字符串上调用这个方法，本质上与调用<code class="calibre15">RegExp</code>的<code class="calibre15">exec()</code>方法相同。<code class="calibre15">match()</code>方法只接受一个参数，要么是一个正则表达式，要么是一个<code class="calibre15">RegExp</code>对象。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var text = "cat, bat, sat, fat"; 
+var pattern = /.at/;
+
+//与pattern.exec(text)相同
+var matches = text.match(pattern);
+alert(matches.index);               //0
+alert(matches[0]);                  //"cat"
+alert(pattern.lastIndex);           //0
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypePatternMatchingExample01.htm</i></p>
+
+  <p class="calibre2">本例中的<code class="calibre15">match()</code>方法返回了一个数组；如果是调用<code class="calibre15">RegExp</code>对象的<code class="calibre15">exec()</code>方法并传递本例中的字符串作为参数，那么也会得到与此相同的数组：数组的第一项是与整个模式匹配的字符串，之后的每一项（如果有）保存着与正则表达式中的捕获组匹配的字符串。</p>
+
+  <p class="calibre2">另一个用于查找模式的方法是<code class="calibre15">search()</code>。这个方法的唯一参数与<code class="calibre15">match()</code>方法的参数相同：由字符串或<code class="calibre15">RegExp</code>对象指定的一个正则表达式。<code class="calibre15">search()</code>方法返回字符串中第一个匹配项的索引；如果没有找到匹配项，则返回<code class="calibre15">-1</code>。而且，<code class="calibre15">search()</code>方法始终是从字符串开头向后查找模式。看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var text = "cat, bat, sat, fat"; 
+<b class="calibre3">var pos = text.search(/at/);</b>
+<b class="calibre3">alert(pos);   //1</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypePatternMatchingExample01.htm</i></p>
+
+  <p class="calibre2">这个例子中的<code class="calibre15">search()</code>方法返回<code class="calibre15">1</code>，即<code class="calibre15">"at"</code>在字符串中第一次出现的位置。</p>
+
+  <p class="calibre2">为了简化替换子字符串的操作，ECMAScript提供了<code class="calibre15">replace()</code>方法。这个方法接受两个参数：第一个参数可以是一个<code class="calibre15">RegExp</code>对象或者一个字符串（这个字符串不会被转换成正则表达式），第二个参数可以是一个字符串或者一个函数。如果第一个参数是字符串，那么只会替换第一个子字符串。要想替换所有子字符串，唯一的办法就是提供一个正则表达式，而且要指定全局（<code class="calibre15">g</code>）标志，如下所示。</p>
+  <pre class="calibre18">var text = "cat, bat, sat, fat"; 
+<b class="calibre3">var result = text.replace("at", "ond");</b>
+<b class="calibre3">alert(result);    //"cond, bat, sat, fat"</b>
+
+<b class="calibre3">result = text.replace(/at/g, "ond");</b>
+<b class="calibre3">alert(result);    //"cond, bond, sond, fond"</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypePatternMatchingExample01.htm</i></p>
+
+  <p class="calibre2">在这个例子中，首先传入<code class="calibre15">replace()</code>方法的是字符串<code class="calibre15">"at"</code>和替换用的字符串<code class="calibre15">"ond"</code>。替换的结果是把<code class="calibre15">"cat"</code>变成了<code class="calibre15">"cond"</code>，但字符串中的其他字符并没有受到影响。然后，通过将第一个参数修改为带有全局标志的正则表达式，就将全部<code class="calibre15">"at"</code>都替换成了<code class="calibre15">"ond"</code>。</p>
+
+  <p class="calibre2">如果第二个参数是字符串，那么还可以使用一些特殊的字符序列，将正则表达式操作得到的值插入到结果字符串中。下表列出了ECMAScript提供的这些特殊的字符序列。</p>
+
+  <table class="table">
+    <tbody class="calibre23">
+      <tr class="calibre24">
+        <th class="calibre25" width="20%">字符序列</th>
+
+        <th class="calibre25" width="80%">替换文本</th>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">$$</code></td>
+
+        <td class="calibre27">$</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">$&amp;</code></td>
+
+        <td class="calibre27">匹配整个模式的子字符串。与<code class="calibre31">RegExp.lastMatch</code>的值相同</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">$'</code></td>
+
+        <td class="calibre27">匹配的子字符串之前的子字符串。与<code class="calibre31">RegExp.leftContext</code>的值相同</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">$`</code></td>
+
+        <td class="calibre27">匹配的子字符串之后的子字符串。与<code class="calibre31">RegExp.rightContext</code>的值相同</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">$n</code></td>
+
+        <td class="calibre27">匹配第n个捕获组的子字符串，其中n等于0～9。例如，<code class="calibre31">$1</code>是匹配第一个捕获组的子字符串，<code class="calibre31">$2</code>是匹配第二个捕获组的子字符串，以此类推。如果正则表达式中没有定义捕获组，则使用空字符串</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">$nn</code></td>
+
+        <td class="calibre27">匹配第nn个捕获组的子字符串，其中nn等于01～99。例如，<code class="calibre31">$01</code>是匹配第一个捕获组的子字符串，<code class="calibre31">$02</code>是匹配第二个捕获组的子字符串，以此类推。如果正则表达式中没有定义捕获组，则使用空字符串</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="calibre2">通过这些特殊的字符序列，可以使用最近一次匹配结果中的内容，如下面的例子所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var text = "cat, bat, sat, fat"; 
+<b class="calibre3">result = text.replace(/(.at)/g, "word ($1)");</b>
+<b class="calibre3">alert(result);    //word (cat), word (bat), word (sat), word (fat)</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypePatternMatchingExample01.htm</i></p>
+
+  <p class="calibre2">在此，每个以<code class="calibre15">"at"</code>结尾的单词都被替换了，替换结果是<code class="calibre15">"word"</code>后跟一对圆括号，而圆括号中是被字符序列<code class="calibre15">$1</code>所替换的单词。</p>
+
+  <p class="calibre2"><code class="calibre15">replace()</code>方法的第二个参数也可以是一个函数。在只有一个匹配项（即与模式匹配的字符串）的情况下，会向这个函数传递3个参数：模式的匹配项、模式匹配项在字符串中的位置和原始字符串。在正则表达式中定义了多个捕获组的情况下，传递给函数的参数依次是模式的匹配项、第一个捕获组的匹配项、第二个捕获组的匹配项……，但最后两个参数仍然分别是模式的匹配项在字符串中的位置和原始字符串。这个函数应该返回一个字符串，表示应该被替换的匹配项。使用函数作为<code class="calibre15">replace()</code>方法的第二个参数可以实现更加精细的替换操作，请看下面这个例子。</p>
+  <pre class="calibre18"><code class="calibre15">function htmlEscape(text){
+    return text.replace(/[&lt;&gt;"&amp;]/g, function(match, pos, originalText){
+        switch(match){
+            case "&lt;":
+                return "&amp;lt;";
+            case "&gt;":
+                return "&amp;gt;";
+            case "&amp;":
+                return "&amp;amp;";
+            case "\"":
+                return "&amp;quot;";
+        }             
+    });
+}
+
+alert(htmlEscape("&lt;p class=\"greeting\"&gt;Hello world!&lt;/p&gt;")); 
+//&amp;lt;p class=&amp;quot;greeting&amp;quot;&amp;gt;Hello world!&amp;lt;/p&amp;gt;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypePatternMatchingExample01.htm</i></p>
+
+  <p class="calibre2">这里，我们为插入HTML代码定义了函数<code class="calibre15">htmlEscape()</code>，这个函数能够转义4个字符：小于号、大于号、和号以及双引号。实现这种转义的最简单方式，就是使用正则表达式查找这几个字符，然后定义一个能够针对每个匹配的字符返回特定HTML实体的函数。</p>
+
+  <p class="calibre2">最后一个与模式匹配有关的方法是<code class="calibre15">split()</code>，这个方法可以基于指定的分隔符将一个字符串分割成多个子字符串，并将结果放在一个数组中。分隔符可以是字符串，也可以是一个<code class="calibre15">RegExp</code>对象（这个方法不会将字符串看成正则表达式）。<code class="calibre15">split()</code>方法可以接受可选的第二个参数，用于指定数组的大小，以便确保返回的数组不会超过既定大小。请看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var colorText = "red,blue,green,yellow";
+var colors1 = colorText.split(",");          //["red", "blue", "green", "yellow"]
+var colors2 = colorText.split(",", 2);       //["red", "blue"]
+var colors3 = colorText.split(/[^\,]+/);     //["", ",", ",", ",", ""]
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypePatternMatchingExample01.htm</i></p>
+
+  <p class="calibre2">在这个例子中，<code class="calibre15">colorText</code>是逗号分隔的颜色名字符串。基于该字符串调用<code class="calibre15">split(",")</code>会得到一个包含其中颜色名的数组，用于分割字符串的分隔符是逗号。为了将数组截短，让它只包含两项，可以为<code class="calibre15">split()</code>方法传递第二个参数2。最后，通过使用正则表达式，还可以取得包含逗号字符的数组。需要注意的是，在最后一次调用<code class="calibre15">split()</code>返回的数组中，第一项和最后一项是两个空字符串。之所以会这样，是因为通过正则表达式指定的分隔符出现在了字符串的开头（即子字符串<code class="calibre15">"red"</code>）和末尾（即子字符串<code class="calibre15">"yellow"</code>）。</p>
+
+  <p class="calibre2">对<code class="calibre15">split()</code>中正则表达式的支持因浏览器而异。尽管对于简单的模式没有什么差别，但对于未发现匹配项以及带有捕获组的模式，匹配的行为就不大相同了。以下是几种常见的差别。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">IE8及之前版本会忽略捕获组。ECMA-262规定应该把捕获组拼接到结果数组中。IE9能正确地在结果中包含捕获组。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">Firefox 3.6及之前版本在捕获组未找到匹配项时，会在结果数组中包含空字符串；ECMA-262规定没有匹配项的捕获组在结果数组中应该用<code class="calibre15">undefined</code>表示。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">在正则表达式中使用捕获组时还有其他微妙的差别。在使用这种正则表达式时，一定要在各种浏览器下多做一些测试。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 要了解关于<code class="calibre15">split()</code>方法以及捕获组的跨浏览器问题的更多讨论，请参考Steven Levithan的文章“JavaScript split bugs：Fixed!”（<a class="calibre6" href="http://blog.stevenlevithan.com/archives/cross-browser-split">http://blog.stevenlevithan.com/archives/cross-browser-split</a>）。</p>
+  </blockquote>
+
+  <p class="calibre2">7. <strong class="calibre3"><code class="calibre15">localeCompare()</code>方法</strong></p>
+
+  <p class="calibre2">与操作字符串有关的最后一个方法是<code class="calibre15">localeCompare()</code>，这个方法比较两个字符串，并返回下列值中的一个：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">如果字符串在字母表中应该排在字符串参数之前，则返回一个负数（大多数情况下是<code class="calibre15">-1</code>，具体的值要视实现而定）；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">如果字符串等于字符串参数，则返回<code class="calibre15">0</code>；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">如果字符串在字母表中应该排在字符串参数之后，则返回一个正数（大多数情况下是<code class="calibre15">1</code>，具体的值同样要视实现而定）。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">下面是几个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var stringValue = "yellow";       
+alert(stringValue.localeCompare("brick"));         //1
+alert(stringValue.localeCompare("yellow"));        //0
+alert(stringValue.localeCompare("zoo"));           //-1
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypeLocaleCompareExample01.htm</i></p>
+
+  <p class="calibre2">这个例子比较了字符串<code class="calibre15">"yellow"</code>和另外几个值：<code class="calibre15">"brick"</code>、<code class="calibre15">"yellow"</code>和<code class="calibre15">"zoo"</code>。因为<code class="calibre15">"brick"</code>在字母表中排在<code class="calibre15">"yellow"</code>之前，所以<code class="calibre15">localeCompare()</code>返回了<code class="calibre15">1</code>；而<code class="calibre15">"yellow"</code>等于<code class="calibre15">"yellow"</code>，所以<code class="calibre15">localeCompare()</code>返回了<code class="calibre15">0</code>；最后，<code class="calibre15">"zoo"</code>在字母表中排在<code class="calibre15">"yellow"</code>后面，所以<code class="calibre15">localeCompare()</code>返回了<code class="calibre15">-1</code>。再强调一次，因为<code class="calibre15">localeCompare()</code>返回的数值取决于实现，所以最好是像下面例子所示的这样使用这个方法。</p>
+  <pre class="calibre18"><code class="calibre15">function determineOrder(value) {
+    var result = stringValue.localeCompare(value);
+    if (result &lt; 0){
+        alert("The string 'yellow' comes before the string '" + value + "'.");
+    } else if (result &gt; 0) {
+        alert("The string 'yellow' comes after the string '" + value + "'.");
+    } else {
+        alert("The string 'yellow' is equal to the string '" + value + "'.");
+    }
+}
+
+determineOrder("brick");
+determineOrder("yellow");
+determineOrder("zoo");
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypeLocaleCompareExample01.htm</i></p>
+
+  <p class="calibre2">使用这种结构，就可以确保自己的代码在任何实现中都可以正确地运行了。</p>
+
+  <p class="calibre2"><code class="calibre15">localeCompare()</code>方法比较与众不同的地方，就是实现所支持的地区（国家和语言）决定了这个方法的行为。比如，美国以英语作为ECMAScript实现的标准语言，因此<code class="calibre15">localeCompare()</code>就是区分大小写的，于是大写字母在字母表中排在小写字母前头就成为了一项决定性的比较规则。不过，在其他地区恐怕就不是这种情况了。</p>
+
+  <p class="calibre2">8. <strong class="calibre3"><code class="calibre15">fromCharCode()</code>方法</strong></p>
+
+  <p class="calibre2">另外，<code class="calibre15">String</code>构造函数本身还有一个静态方法：<code class="calibre15">fromCharCode()</code>。这个方法的任务是接收一或多个字符编码，然后将它们转换成一个字符串。从本质上来看，这个方法与实例方法<code class="calibre15">charCodeAt()</code>执行的是相反的操作。来看一个例子：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">alert(String.fromCharCode(104, 101, 108, 108, 111)); //"hello"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">StringTypeFromCharCodeExample01.htm</i></p>
+
+  <p class="calibre2">在这里，我们给<code class="calibre15">fromCharCode()</code>传递的是字符串<code class="calibre15">"hello"</code>中每个字母的字符编码。</p>
+
+  <p class="calibre2">9. <strong class="calibre3">HTML方法</strong></p>
+
+  <p class="calibre2">早期的Web浏览器提供商觉察到了使用JavaScript动态格式化HTML的需求。于是，这些提供商就扩展了标准，实现了一些专门用于简化常见HTML格式化任务的方法。下表列出了这些HTML方法。不过，需要请读者注意的是，应该尽量不使用这些方法，因为它们创建的标记通常无法表达语义。</p>
+
+  <table class="table">
+    <tbody class="calibre23">
+      <tr class="calibre24">
+        <th class="calibre25" width="50%">方　　法</th>
+
+        <th class="calibre25" width="50%">输出结果</th>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">anchor(<i class="calibre7">name</i>)</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;a name= "<i class="calibre7">name</i>"&gt;<i class="calibre7">string</i>&lt;/a&gt;</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">big()</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;big&gt;<i class="calibre7">string</i>&lt;/big&gt;</code></td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">bold()</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;b&gt;<i class="calibre7">string</i>&lt;/b&gt;</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">fixed()</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;tt&gt;<i class="calibre7">string</i>&lt;/tt&gt;</code></td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">fontcolor(<i class="calibre7">color</i>)</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;font color="<i class="calibre7">color</i>"&gt;<i class="calibre7">string</i>&lt;/font&gt;</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">fontsize(<i class="calibre7">size</i>)</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;font size="<i class="calibre7">size</i>"&gt;<i class="calibre7">string</i>&lt;/font&gt;</code></td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">italics()</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;i&gt;<i class="calibre7">string</i>&lt;/i&gt;</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">link(url)</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;a href="<i class="calibre7">url</i>"&gt;<i class="calibre7">string</i>&lt;/a&gt;</code></td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">small()</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;small&gt;<i class="calibre7">string</i>&lt;/small&gt;</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">strike()</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;strike&gt;<i class="calibre7">string</i>&lt;/strike&gt;</code></td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">sub()</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;sub&gt;<i class="calibre7">string</i>&lt;/sub&gt;</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">sup()</code></td>
+
+        <td class="calibre27"><code class="calibre31">&lt;sup&gt;<i class="calibre7">string</i>&lt;/sup&gt;</code></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

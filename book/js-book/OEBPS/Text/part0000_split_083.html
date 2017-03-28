@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_86">12.1　DOM变化</h2>
+
+  <p class="calibre2">DOM2级和3级的目的在于扩展DOM API，以满足操作XML的所有需求，同时提供更好的错误处理及特性检测能力。从某种意义上讲，实现这一目的很大程度意味着对命名空间的支持。“DOM2级核心”没有引入新类型，它只是在DOM1级的基础上通过增加新方法和新属性来增强了既有类型。“DOM3级核心”同样增强了既有类型，但也引入了一些新类型。</p>
+
+  <p class="calibre2">类似地，“DOM2级视图”和“DOM2级HTML”模块也增强了DOM接口，提供了新的属性和方法。由于这两个模块很小，因此我们将把它们与“DOM2级核心”放在一起，讨论基本JavaScript对象的变化。可以通过下列代码来确定浏览器是否支持这些DOM模块。</p>
+  <pre class="calibre18"><code class="calibre15">var supportsDOM2Core = document.implementation.hasFeature("Core", "2.0"); 
+var supportsDOM3Core = document.implementation.hasFeature("Core", "3.0");
+var supportsDOM2HTML = document.implementation.hasFeature("HTML", "2.0");
+var supportsDOM2Views = document.implementation.hasFeature("Views", "2.0");
+var supportsDOM2XML = document.implementation.hasFeature("XML", "2.0");
+</code></pre>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 本章只讨论那些已经有浏览器实现的部分，任何浏览器都没有实现的部分将不作讨论。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_132"><strong class="calibre10">12.1.1　针对XML命名空间的变化</strong></h3>
+
+  <p class="calibre2">有了XML命名空间，不同XML文档的元素就可以混合在一起，共同构成格式良好的文档，而不必担心发生命名冲突。从技术上说，HTML不支持XML命名空间，但XHTML支持XML命名空间。因此，本节给出的都是XHTML的示例。</p>
+
+  <p class="calibre2">命名空间要使用<code class="calibre15">xmlns</code>特性来指定。XHTML的命名空间是<a class="calibre6" href="http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>，在任何格式良好XHTML页面中，都应该将其包含在<code class="calibre15">&lt;html&gt;</code>元素中，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Example XHTML page&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        Hello world!
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+  <p class="calibre2">对这个例子而言，其中的所有元素默认都被视为XHTML命名空间中的元素。要想明确地为XML命名空间创建前缀，可以使用<code class="calibre15">xmlns</code>后跟冒号，再后跟前缀，如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml"&gt;
+    &lt;xhtml:head&gt;
+        &lt;xhtml:title&gt;Example XHTML page&lt;/xhtml:title&gt;
+    &lt;/xhtml:head&gt;
+    &lt;xhtml:body&gt;
+        Hello world!
+    &lt;/xhtml:body&gt;
+&lt;/xhtml:html&gt;
+</code></pre>
+
+  <p class="calibre2">这里为XHTML的命名空间定义了一个名为<code class="calibre15">xhtml</code>的前缀，并要求所有XHTML元素都以该前缀开头。有时候为了避免不同语言间的冲突，也需要使用命名空间来限定特性，如下面的例子所示。</p>
+  <pre class="calibre18">&lt;xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml"&gt;
+    &lt;xhtml:head&gt;
+        &lt;xhtml:title&gt;Example XHTML page&lt;/xhtml:title&gt;
+    &lt;/xhtml:head&gt;
+    <b class="calibre3">&lt;xhtml:body xhtml:class="home"&gt;</b>
+        Hello world!
+    &lt;/xhtml:body&gt;
+&lt;/xhtml:html&gt;
+</pre>
+
+  <p class="calibre2">这个例子中的特性<code class="calibre15">class</code>带有一个<code class="calibre15">xhtml</code>前缀。在只基于一种语言编写XML文档的情况下，命名空间实际上也没有什么用。不过，在混合使用两种语言的情况下，命名空间的用处就非常大了。来看一看下面这个混合了XHTML和SVG语言的文档：</p>
+  <pre class="calibre18">&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Example XHTML page&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        <b class="calibre3">&lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1"</b>
+             <b class="calibre3">viewBox="0 0 100 100" style="width:100%; height:100%"&gt;</b>
+            <b class="calibre3">&lt;rect x="0" y="0" width="100" height="100" style="fill:red"/&gt;</b>
+        <b class="calibre3">&lt;/svg&gt;</b>
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+  <p class="calibre2">在这个例子中，通过设置命名空间，将<code class="calibre15">&lt;svg&gt;</code>标识为了与包含文档无关的元素。此时，<code class="calibre15">&lt;svg&gt;</code>元素的所有子元素，以及这些元素的所有特性，都被认为属于<code class="calibre15">http://www.w3.org/2000/svg</code>命名空间。即使这个文档从技术上说是一个XHTML文档，但因为有了命名空间，其中的SVG代码也仍然是有效的。</p>
+
+  <p class="calibre2">对于类似这样的文档来说，最有意思的事发生在调用方法操作文档节点的情况下。例如，在创建一个元素时，这个元素属于哪个命名空间呢？在查询一个特殊标签名时，应该将结果包含在哪个命名空间中呢？“DOM2级核心”通过为大多数DOM1级方法提供特定于命名空间的版本解决了这个问题。</p>
+
+  <p class="calibre2">1. <strong class="calibre3"><code class="calibre15">Node</code>类型的变化</strong></p>
+
+  <p class="calibre2">在DOM2级中，<code class="calibre15">Node</code>类型包含下列特定于命名空间的属性。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">localName</code>：不带命名空间前缀的节点名称。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">namespaceURI</code>：命名空间URI或者（在未指定的情况下是）<code class="calibre15">null</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">prefix</code>：命名空间前缀或者（在未指定的情况下是）<code class="calibre15">null</code>。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">当节点使用了命名空间前缀时，其<code class="calibre15">nodeName</code>等于<code class="calibre15">prefix+":"+ localName</code>。以下面的文档为例：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Example XHTML page&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        <b class="calibre3">&lt;s:svg xmlns:s="http://www.w3.org/2000/svg" version="1.1"</b>
+             <b class="calibre3">viewBox="0 0 100 100" style="width:100%; height:100%"&gt;</b>
+            <b class="calibre3">&lt;s:rect x="0" y="0" width="100" height="100" style="fill:red"/&gt;</b>
+        <b class="calibre3">&lt;/s:svg&gt;</b>
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+  <p class="calibre8"><i class="calibre7">NamespaceExample.xml</i></p>
+
+  <p class="calibre2">对于<code class="calibre15">&lt;html&gt;</code>元素来说，它的<code class="calibre15">localName</code>和<code class="calibre15">tagName</code>是<code class="calibre15">"html"</code>，<code class="calibre15">namespaceURI</code>是<code class="calibre15">"http://www.w3.org/1999/xhtml"</code>，而<code class="calibre15">prefix</code>是<code class="calibre15">null</code>。对于<code class="calibre15">&lt;s:svg&gt;</code>元素而言，它的<code class="calibre15">localName</code>是<code class="calibre15">"svg"</code>，<code class="calibre15">tagName</code>是<code class="calibre15">"s:svg"</code>，<code class="calibre15">namespaceURI</code>是<code class="calibre15">"http://www.w3.org/2000/svg"</code>，而<code class="calibre15">prefix</code>是<code class="calibre15">"s"</code>。</p>
+
+  <p class="calibre2">DOM3级在此基础上更进一步，又引入了下列与命名空间有关的方法。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">isDefaultNamespace(<em class="calibre7">namespaceURI</em>)</code>：在指定的<code class="calibre15"><em class="calibre7">namespaceURI</em></code>是当前节点的默认命名空间的情况下返回<code class="calibre15">true</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">lookupNamespaceURI(<em class="calibre7">prefix</em>)</code>：返回给定<code class="calibre15"><em class="calibre7">prefix</em></code>的命名空间。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">lookupPrefix(<em class="calibre7">namespaceURI</em>)</code>：返回给定<code class="calibre15"><em class="calibre7">namespaceURI</em></code>的前缀。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">针对前面的例子，可以执行下列代码：</p>
+  <pre class="calibre18"><code class="calibre15">alert(document.body.isDefaultNamespace("http://www.w3.org/1999/xhtml"); //true
+
+//假设svg中包含着对&lt;s:svg&gt;的引用
+alert(svg.lookupPrefix("http://www.w3.org/2000/svg")); //"s"
+alert(svg.lookupNamespaceURI("s")); //"http://www.w3.org/2000/svg"
+</code></pre>
+
+  <p class="calibre2">在取得了一个节点，但不知道该节点与文档其他元素之间关系的情况下，这些方法是很有用的。</p>
+
+  <p class="calibre2">2. <strong class="calibre3"><code class="calibre15">Document</code>类型的变化</strong></p>
+
+  <p class="calibre2">DOM2级中的<code class="calibre15">Document</code>类型也发生了变化，包含了下列与命名空间有关的方法。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">createElementNS(<em class="calibre7">namespaceURI, tagName</em>)</code>：使用给定的<code class="calibre15"><em class="calibre7">tagName</em></code>创建一个属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>的新元素。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">createAttributeNS(<em class="calibre7">namespaceURI, attributeName</em>)</code>：使用给定的<code class="calibre15"><em class="calibre7">attributeName</em></code>创建一个属于命名空间<code class="calibre15">namespaceURI</code>的新特性。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">getElementsByTagNameNS(<em class="calibre7">namespaceURI, tagName</em>)</code>：返回属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>的<code class="calibre15"><em class="calibre7">tagName</em></code>元素的<code class="calibre15">NodeList</code>。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">使用这些方法时需要传入表示命名空间的URI（而不是命名空间前缀），如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">//创建一个新的SVG元素
+var svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+
+//创建一个属于某个命名空间的新特性
+var att = document.createAttributeNS("http://www.somewhere.com", "random");
+
+//取得所有XHTML元素
+var elems = document.getElementsByTagNameNS("http://www.w3.org/1999/xhtml", "*");
+</code></pre>
+
+  <p class="calibre2">只有在文档中存在两个或多个命名空间时，这些与命名空间有关的方法才是必需的。</p>
+
+  <p class="calibre2">3. <strong class="calibre3"><code class="calibre15">Element</code>类型的变化</strong></p>
+
+  <p class="calibre2">“DOM2级核心”中有关<code class="calibre15">Element</code>的变化，主要涉及操作特性。新增的方法如下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">getAttributeNS(<em class="calibre7">namespaceURI,localName</em>)</code>：取得属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>且名为<code class="calibre15"><em class="calibre7">localName</em></code>的特性。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">getAttributeNodeNS(<em class="calibre7">namespaceURI,localName</em>)</code>：取得属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>且名为<code class="calibre15"><em class="calibre7">localName</em></code>的特性节点。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">getElementsByTagNameNS(<em class="calibre7">namespaceURI, tagName</em>)</code>：返回属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>的<code class="calibre15"><em class="calibre7">tagName</em></code>元素的<code class="calibre15">NodeList</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">hasAttributeNS(<em class="calibre7">namespaceURI,localName</em>)</code>：确定当前元素是否有一个名为<code class="calibre15"><em class="calibre7">localName</em></code>的特性，而且该特性的命名空间是<code class="calibre15"><em class="calibre7">namespaceURI</em></code>。注意，“DOM2级核心”也增加了一个<code class="calibre15">hasAttribute()</code>方法，用于不考虑命名空间的情况。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">removeAttriubteNS(<em class="calibre7">namespaceURI,localName</em>)</code>：删除属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>且名为<code class="calibre15"><em class="calibre7">localName</em></code>的特性。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">setAttributeNS(<em class="calibre7">namespaceURI,qualifiedName,value</em>)</code>：设置属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>且名为<code class="calibre15"><em class="calibre7">qualifiedName</em></code>的特性的值为<code class="calibre15"><em class="calibre7">value</em></code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">setAttributeNodeNS(<em class="calibre7">attNode</em>)</code>：设置属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>的特性节点。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">除了第一个参数之外，这些方法与DOM1级中相关方法的作用相同；第一个参数始终都是一个命名空间URI。</p>
+
+  <p class="calibre2">4. <strong class="calibre3"><code class="calibre15">NamedNodeMap</code>类型的变化</strong></p>
+
+  <p class="calibre2"><code class="calibre15">NamedNodeMap</code>类型也新增了下列与命名空间有关的方法。由于特性是通过<code class="calibre15">NamedNodeMap</code>表示的，因此这些方法多数情况下只针对特性使用。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">getNamedItemNS(<em class="calibre7">namespaceURI,localName</em>)</code>：取得属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>且名为<code class="calibre15"><em class="calibre7">localName</em></code>的项。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">removeNamedItemNS(<em class="calibre7">namespaceURI,localName</em>)</code>：移除属于命名空间<code class="calibre15"><em class="calibre7">namespaceURI</em></code>且名为<code class="calibre15"><em class="calibre7">localName</em></code>的项。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">setNamedItemNS(<em class="calibre7">node</em>)</code>：添加<code class="calibre15"><em class="calibre7">node</em></code>，这个节点已经事先指定了命名空间信息。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">由于一般都是通过元素访问特性，所以这些方法很少使用。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_133"><strong class="calibre10">12.1.2　其他方面的变化</strong></h3>
+
+  <p class="calibre2">DOM的其他部分在“DOM2级核心”中也发生了一些变化。这些变化与XML命名空间无关，而是更倾向于确保API的可靠性及完整性。</p>
+
+  <p class="calibre2">1. <strong class="calibre3"><code class="calibre15">DocumentType</code>类型的变化</strong></p>
+
+  <p class="calibre2"><code class="calibre15">DocumentType</code>类型新增了3个属性：<code class="calibre15">publicId</code>、<code class="calibre15">systemId</code>和<code class="calibre15">internalSubset</code>。其中，前两个属性表示的是文档类型声明中的两个信息段，这两个信息段在DOM1级中是没有办法访问到的。以下面的HTML文档类型声明为例。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd"&gt;
+</code></pre>
+
+  <p class="calibre2">对这个文档类型声明而言，<code class="calibre15">publicId</code>是<code class="calibre15">"-//W3C//DTD HTML 4.01//EN"</code>，而<code class="calibre15">systemId</code>是<code class="calibre15">"http://www.w3.org/TR/html4/strict.dtd"</code>。在支持DOM2级的浏览器中，应该可以运行下列代码。</p>
+  <pre class="calibre18"><code class="calibre15">alert(document.doctype.publicId);
+alert(document.doctype.systemId);
+</code></pre>
+
+  <p class="calibre2">实际上，很少需要在网页中访问此类信息。</p>
+
+  <p class="calibre2">最后一个属性<code class="calibre15">internalSubset</code>，用于访问包含在文档类型声明中的额外定义，以下面的代码为例。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+[&lt;!ELEMENT name (#PCDATA)&gt;] &gt;
+</code></pre>
+
+  <p class="calibre2">访问<code class="calibre15">document.doctype.internalSubset</code>将得到<code class="calibre15">"&lt;!ELEMENT name (#PCDATA)&gt;"</code>。这种内部子集（internal subset）在HTML中极少用到，在XML中可能会更常见一些。</p>
+
+  <p class="calibre2">2. <strong class="calibre3"><code class="calibre15">Document</code>类型的变化</strong></p>
+
+  <p class="calibre2"><code class="calibre15">Document</code>类型的变化中唯一与命名空间无关的方法是<code class="calibre15">importNode()</code>。这个方法的用途是从一个文档中取得一个节点，然后将其导入到另一个文档，使其成为这个文档结构的一部分。需要注意的是，每个节点都有一个<code class="calibre15">ownerDocument</code>属性，表示所属的文档。如果调用<code class="calibre15">appendChild()</code>时传入的节点属于不同的文档（<code class="calibre15">ownerDocument</code>属性的值不一样），则会导致错误。但在调用<code class="calibre15">importNode()</code>时传入不同文档的节点则会返回一个新节点，这个新节点的所有权归当前文档所有。</p>
+
+  <p class="calibre2">说起来，<code class="calibre15">importNode()</code>方法与<code class="calibre15">Element</code>的<code class="calibre15">cloneNode()</code>方法非常相似，它接受两个参数：要复制的节点和一个表示是否复制子节点的布尔值。返回的结果是原来节点的副本，但能够在当前文档中使用。来看下面的例子：</p>
+  <pre class="calibre18"><code class="calibre15">var newNode = document.importNode(oldNode, true); //导入节点及其所有子节点
+document.body.appendChild(newNode);
+</code></pre>
+
+  <p class="calibre2">这个方法在HTML文档中并不常用，在XML文档中用得比较多（更多讨论请参见第18章）。</p>
+
+  <p class="calibre2">“DOM2级视图”模块添加了一个名为<code class="calibre15">defaultView</code>的属性，其中保存着一个指针，指向拥有给定文档的窗口（或框架）。除此之外，“视图”规范没有提供什么时候其他视图可用的信息，因而这是唯一一个新增的属性。除IE之外的所有浏览器都支持<code class="calibre15">defaultView</code>属性。在IE中有一个等价的属性名叫<code class="calibre15">parentWindow</code>（Opera也支持这个属性）。因此，要确定文档的归属窗口，可以使用以下代码。</p>
+  <pre class="calibre18"><code class="calibre15">var parentWindow = document.defaultView || document.parentWindow;
+</code></pre>
+
+  <p class="calibre2">除了上述一个方法和一个属性之外，“DOM2级核心”还为<code class="calibre15">document.implementation</code>对象规定了两个新方法：<code class="calibre15">createDocumentType()</code>和<code class="calibre15">createDocument()</code>。前者用于创建一个新的<code class="calibre15">DocumentType</code>节点，接受3个参数：文档类型名称、<code class="calibre15">publicId</code>、<code class="calibre15">systemId</code>。例如，下列代码会创建一个新的HTML 4.01 Strict文档类型。</p>
+  <pre class="calibre18"><code class="calibre15">var doctype = document.implementation.createDocumentType("html",
+                  "-//W3C//DTD HTML 4.01//EN",
+                  "http://www.w3.org/TR/html4/strict.dtd");
+</code></pre>
+
+  <p class="calibre2">由于既有文档的文档类型不能改变，因此<code class="calibre15">createDocumentType()</code>只在创建新文档时有用；创建新文档时需要用到<code class="calibre15">createDocument()</code>方法。这个方法接受3个参数：针对文档中元素的<code class="calibre15">namespaceURI</code>、文档元素的标签名、新文档的文档类型。下面这行代码将会创建一个空的新XML文档。</p>
+  <pre class="calibre18"><code class="calibre15">var doc = document.implementation.createDocument("", "root", null);
+</code></pre>
+
+  <p class="calibre2">这行代码会创建一个没有命名空间的新文档，文档元素为<code class="calibre15">&lt;root&gt;</code>，而且没有指定文档类型。要想创建一个XHTML文档，可以使用以下代码。</p>
+  <pre class="calibre18"><code class="calibre15">var doctype = document.implementation.createDocumentType("html",
+                  " -//W3C//DTD XHTML 1.0 Strict//EN",
+                  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd");
+
+var doc = document.implementation.createDocument("http://www.w3.org/1999/xhtml", 
+                 "html", doctype);
+</code></pre>
+
+  <p class="calibre2">这样，就创建了一个带有适当命名空间和文档类型的新XHTML文档。不过，新文档当前只有文档元素<code class="calibre15">&lt;html&gt;</code>，剩下的所有元素都需要继续添加。</p>
+
+  <p class="calibre2">“DOM2级HTML”模块也为<code class="calibre15">document.implementation</code>新增了一个方法，名叫<code class="calibre15">createHTMLDocument()</code>。这个方法的用途是创建一个完整的HTML文档，包括<code class="calibre15">&lt;html&gt;</code>、<code class="calibre15">&lt;head&gt;</code>、<code class="calibre15">&lt;title&gt;</code>和<code class="calibre15">&lt;body&gt;</code>元素。这个方法只接受一个参数，即新创建文档的标题（放在<code class="calibre15">&lt;title&gt;</code>元素中的字符串），返回新的HTML文档，如下所示：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var htmldoc = document.implementation.createHTMLDocument("New Doc");
+alert(htmldoc.title);            //"New Doc"
+alert(typeof htmldoc.body);      //"object"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">CreateHTMLDocumentExample.htm</i></p>
+
+  <p class="calibre2">通过调用<code class="calibre15">createHTMLDocument()</code>创建的这个文档，是<code class="calibre15">HTMLDocument</code>类型的实例，因而具有该类型的所有属性和方法，包括<code class="calibre15">title</code>和<code class="calibre15">body</code>属性。只有Opera和Safari支持这个方法。</p>
+
+  <p class="calibre2">3. <strong class="calibre3"><code class="calibre15">Node</code>类型的变化</strong></p>
+
+  <p class="calibre2"><code class="calibre15">Node</code>类型中唯一与命名空间无关的变化，就是添加了<code class="calibre15">isSupported()</code>方法。与DOM1级为<code class="calibre15">document.implementation</code>引入的<code class="calibre15">hasFeature()</code>方法类似，<code class="calibre15">isSupported()</code>方法用于确定当前节点具有什么能力。这个方法也接受相同的两个参数：特性名和特性版本号。如果浏览器实现了相应特性，而且能够基于给定节点执行该特性，<code class="calibre15">isSupported()</code>就返回<code class="calibre15">true</code>。来看一个例子：</p>
+  <pre class="calibre18"><code class="calibre15">if (document.body.isSupported("HTML", "2.0")){
+    //执行只有"DOM2级HTML"才支持的操作
+}
+</code></pre>
+
+  <p class="calibre2">由于不同实现在决定对什么特性返回<code class="calibre15">true</code>或<code class="calibre15">false</code>时并不一致，这个方法同样也存在与<code class="calibre15">hasFeature()</code>方法相同的问题。为此，我们建议在确定某个特性是否可用时，最好还是使用能力检测。</p>
+
+  <p class="calibre2">DOM3级引入了两个辅助比较节点的方法：<code class="calibre15">isSameNode()</code>和<code class="calibre15">isEqualNode()</code>。这两个方法都接受一个节点参数，并在传入节点与引用的节点相同或相等时返回<code class="calibre15">true</code>。所谓相同，指的是两个节点引用的是同一个对象。所谓相等，指的是两个节点是相同的类型，具有相等的属性（<code class="calibre15">nodeName</code>、<code class="calibre15">nodeValue</code>，等等），而且它们的<code class="calibre15">attributes</code>和<code class="calibre15">childNodes</code>属性也相等（相同位置包含相同的值）。来看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">var div1 = document.createElement("div");
+div1.setAttribute("class", "box");
+
+var div2 = document.createElement("div");
+div2.setAttribute("class", "box");
+
+alert(div1.isSameNode(div1));  //true
+alert(div1.isEqualNode(div2)); //true
+alert(div1.isSameNode(div2));  //false
+</code></pre>
+
+  <p class="calibre2">这里创建了两个具有相同特性的<code class="calibre15">&lt;div&gt;</code>元素。这两个元素相等，但不相同。</p>
+
+  <p class="calibre2">DOM3级还针对为DOM节点添加额外数据引入了新方法。其中，<code class="calibre15">setUserData()</code>方法会将数据指定给节点，它接受3个参数：要设置的键、实际的数据（可以是任何数据类型）和处理函数。以下代码可以将数据指定给一个节点。</p>
+  <pre class="calibre18"><code class="calibre15">document.body.setUserData("name", "Nicholas", function(){});
+</code></pre>
+
+  <p class="calibre2">然后，使用<code class="calibre15">getUserData()</code>并传入相同的键，就可以取得该数据，如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">var value = document.body.getUserData("name");
+</code></pre>
+
+  <p class="calibre2">传入<code class="calibre15">setUserData()</code>中的处理函数会在带有数据的节点被复制、删除、重命名或引入一个文档时调用，因而你可以事先决定在上述操作发生时如何处理用户数据。处理函数接受5个参数：表示操作类型的数值（1表示复制，2表示导入，3表示删除，4表示重命名）、数据键、数据值、源节点和目标节点。在删除节点时，源节点是<code class="calibre15">null</code>；而在复制节点时，目标节点是<code class="calibre15">null</code>。在函数内部，你可以决定如何存储数据。来看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var div = document.createElement("div");
+div.setUserData("name", "Nicholas", function(operation, key, value, src, dest){
+    if (operation == 1){
+        dest.setUserData(key, value, function(){});   }
+});
+
+var newDiv = div.cloneNode(true);
+alert(newDiv.getUserData("name"));      //"Nicholas"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">UserDataExample.htm</i></p>
+
+  <p class="calibre2">这里，先创建了一个<code class="calibre15">&lt;div&gt;</code>元素，然后又为它添加了一些数据（用户数据）。在使用<code class="calibre15">cloneNode()</code>复制这个元素时，就会调用处理函数，从而将数据自动复制到了副本节点。结果在通过副本节点调用<code class="calibre15">getUserData()</code>时，就会返回与原始节点中包含的相同的值。</p>
+
+  <p class="calibre2">4. <strong class="calibre3">框架的变化</strong></p>
+
+  <p class="calibre2">框架和内嵌框架分别用<code class="calibre15">HTMLFrameElement</code>和<code class="calibre15">HTMLIFrameElement</code>表示，它们在DOM2级中都有了一个新属性，名叫<code class="calibre15">contentDocument</code>。这个属性包含一个指针，指向表示框架内容的文档对象。在此之前，无法直接通过元素取得这个文档对象（只能使用<code class="calibre15">frames</code>集合）。可以像下面这样使用这个属性。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var iframe = document.getElementById("myIframe");
+var iframeDoc = iframe.contentDocument;     //在IE8以前的版本中无效
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IFrameElementExample.htm</i></p>
+
+  <p class="calibre2">由于<code class="calibre15">contentDocument</code>属性是<code class="calibre15">Document</code>类型的实例，因此可以像使用其他HTML文档一样使用它，包括所有属性和方法。Opera、Firefox、Safari和Chrome支持这个属性。IE8之前不支持框架中的<code class="calibre15">contentDocument</code>属性，但支持一个名叫<code class="calibre15">contentWindow</code>的属性，该属性返回框架的<code class="calibre15">window</code>对象，而这个<code class="calibre15">window</code>对象又有一个<code class="calibre15">document</code>属性。因此，要想在上述所有浏览器中访问内嵌框架的文档对象，可以使用下列代码。</p>
+  <pre class="calibre18"><code class="calibre15">var iframe = document.getElementById("myIframe");
+var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IFrameElementExample2.htm</i></p>
+
+  <p class="calibre2">所有浏览器都支持<code class="calibre15">contentWindow</code>属性。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 访问框架或内嵌框架的文档对象要受到跨域安全策略的限制。如果某个框架中的页面来自其他域或不同子域，或者使用了不同的协议，那么要访问这个框架的文档对象就会导致错误。</p>
+  </blockquote>
+</body>
+</html>

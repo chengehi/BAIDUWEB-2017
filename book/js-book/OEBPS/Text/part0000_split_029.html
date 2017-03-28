@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_19">3.3　变量</h2>
+
+  <p class="calibre2">ECMAScript的变量是松散类型的，所谓松散类型就是可以用来保存任何类型的数据。换句话说，每个变量仅仅是一个用于保存值的占位符而已。定义变量时要使用<code class="calibre15">var</code>操作符（注意<code class="calibre15">var</code>是一个关键字），后跟变量名（即一个标识符），如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">var message;
+</code></pre>
+
+  <p class="calibre2">这行代码定义了一个名为<code class="calibre15">message</code>的变量，该变量可以用来保存任何值（像这样未经过初始化的变量，会保存一个特殊的值——<code class="calibre15">undefined</code>，相关内容将在3.4节讨论）。ECMAScript也支持直接初始化变量，因此在定义变量的同时就可以设置变量的值，如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">var message = "hi";
+</code></pre>
+
+  <p class="calibre2">在此，变量<code class="calibre15">message</code>中保存了一个字符串值<code class="calibre15">"hi"</code>。像这样初始化变量并不会把它标记为字符串类型；初始化的过程就是给变量赋一个值那么简单。因此，可以在修改变量值的同时修改值的类型，如下所示：</p>
+  <pre class="calibre18">var message = "hi";
+<b class="calibre3">message = 100;         // 有效，但不推荐</b>
+</pre>
+
+  <p class="calibre2">在这个例子中，变量<code class="calibre15">message</code>一开始保存了一个字符串值<code class="calibre15">"hi"</code>，然后该值又被一个数字值100取代。虽然我们不建议修改变量所保存值的类型，但这种操作在ECMAScript中完全有效。</p>
+
+  <p class="calibre2">有一点必须注意，即使用<code class="calibre15">var</code>操作符定义的变量将成为定义该变量的作用域中的局部变量。也就是说，如果在函数中使用<code class="calibre15">var</code>定义一个变量，那么这个变量在函数退出后就会被销毁，例如：</p>
+  <pre class="calibre18"><code class="calibre15">function test(){
+    var message = "hi"; // 局部变量
+}
+test();
+alert(message); // 错误！
+</code></pre>
+
+  <p class="calibre2">这里，变量<code class="calibre15">message</code>是在函数中使用<code class="calibre15">var</code>定义的。当函数被调用时，就会创建该变量并为其赋值。而在此之后，这个变量又会立即被销毁，因此例子中的下一行代码就会导致错误。不过，可以像下面这样省略<code class="calibre15">var</code>操作符，从而创建一个全局变量：</p>
+  <pre class="calibre18">function test(){
+    <b class="calibre3">message = "hi"; // 全局变量</b>
+}
+test();
+alert(message); // "hi"
+</pre>
+
+  <p class="calibre2">这个例子省略了<code class="calibre15">var</code>操作符，因而<code class="calibre15">message</code>就成了全局变量。这样，只要调用过一次<code class="calibre15">test()</code>函数，这个变量就有了定义，就可以在函数外部的任何地方被访问到。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 虽然省略<strong class="calibre3"><code class="calibre15">var</code></strong>操作符可以定义全局变量，但这也不是我们推荐的做法。因为在局部作用域中定义的全局变量很难维护，而且如果有意地忽略了<strong class="calibre3"><code class="calibre15">var</code></strong>操作符，也会由于相应变量不会马上就有定义而导致不必要的混乱。给未经声明的变量赋值在严格模式下会导致抛出<code class="calibre15">ReferenceError</code>错误。</p>
+  </blockquote>
+
+  <p class="calibre2">可以使用一条语句定义多个变量，只要像下面这样把每个变量（初始化或不初始化均可）用逗号分隔开即可：</p>
+  <pre class="calibre18"><code class="calibre15">var message = "hi",
+    found = false,
+    age = 29;
+</code></pre>
+
+  <p class="calibre2">这个例子定义并初始化了3个变量。同样由于ECMAScript是松散类型的，因而使用不同类型初始化变量的操作可以放在一条语句中来完成。虽然代码里的换行和变量缩进不是必需的，但这样做可以提高可读性。</p>
+
+  <p class="calibre2">在严格模式下，不能定义名为<code class="calibre15">eval</code>或<code class="calibre15">arguments</code>的变量，否则会导致语法错误。</p>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_180">25.4　File API</h2>
+
+  <p class="calibre2">不能直接访问用户计算机中的文件，一直都是Web应用开发中的一大障碍。2000年以前，处理文件的唯一方式就是在表单中加入<code class="calibre15">&lt;input type="file"&gt;</code>字段，仅此而已。File API（文件API）的宗旨是为Web开发人员提供一种安全的方式，以便在客户端访问用户计算机中的文件，并更好地对这些文件执行操作。支持File API的浏览器有IE10+、Firefox 4+、Safari 5.0.5+、Opera 11.1+和Chrome。</p>
+
+  <p class="calibre2">File API在表单中的文件输入字段的基础上，又添加了一些直接访问文件信息的接口。HTML5在DOM中为文件输入元素添加了一个<code class="calibre15">files</code>集合。在通过文件输入字段选择了一或多个文件时，<code class="calibre15">files</code>集合中将包含一组<code class="calibre15">File</code>对象，每个<code class="calibre15">File</code>对象对应着一个文件。每个<code class="calibre15">File</code>对象都有下列只读属性。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">name</code>：本地文件系统中的文件名。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">size</code>：文件的字节大小。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">type</code>：字符串，文件的MIME类型。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">lastModifiedDate</code>：字符串，文件上一次被修改的时间（只有Chrome实现了这个属性）。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">举个例子，通过侦听<code class="calibre15">change</code>事件并读取<code class="calibre15">files</code>集合就可以知道选择的每个文件的信息：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var filesList = document.getElementById("files-list");
+EventUtil.addHandler(filesList, "change", function(event){ 
+    var files = EventUtil.getTarget(event).files,
+        i = 0,
+        len = files.length;
+
+    while (i &lt; len){
+        console.log(files[i].name + " (" + files[i].type + ", " + files[i].size +
+                   " bytes) ");
+        i++;
+    }
+});
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FileAPIExample01.htm</i></p>
+
+  <p class="calibre2">这个例子把每个文件的信息输出到了控制台中。仅仅这一项功能，对Web应用开发来说就已经是非常大的进步了。不过，File API的功能还不止于此，通过它提供的<code class="calibre15">FileReader</code>类型甚至还可以读取文件中的数据。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_292"><strong class="calibre10">25.4.1　<code class="calibre30">FileReader</code>类型</strong></h3>
+
+  <p class="calibre2"><code class="calibre15">FileReader</code>类型实现的是一种异步文件读取机制。可以把<code class="calibre15">FileReader</code>想象成<code class="calibre15">XMLHttpRequest</code>，区别只是它读取的是文件系统，而不是远程服务器。为了读取文件中的数据，<code class="calibre15">FileReader</code>提供了如下几个方法。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">readAsText(<em class="calibre7">file,encoding</em>)</code>：以纯文本形式读取文件，将读取到的文本保存在<code class="calibre15">result</code>属性中。第二个参数用于指定编码类型，是可选的。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">readAsDataURL(<em class="calibre7">file</em>)</code>：读取文件并将文件以数据URI的形式保存在<code class="calibre15">result</code>属性中。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">readAsBinaryString(<em class="calibre7">file</em>)</code>：读取文件并将一个字符串保存在<code class="calibre15">result</code>属性中，字符串中的每个字符表示一字节。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">readAsArrayBuffer(<em class="calibre7">file</em>)</code>：读取文件并将一个包含文件内容的<code class="calibre15">ArrayBuffer</code>保存在result属性中。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">这些读取文件的方法为灵活地处理文件数据提供了极大便利。例如，可以读取图像文件并将其保存为数据URI，以便将其显示给用户，或者为了解析方便，可以将文件读取为文本形式。</p>
+
+  <p class="calibre2">由于读取过程是异步的，因此<code class="calibre15">FileReader</code>也提供了几个事件。其中最有用的三个事件是<code class="calibre15">progress</code>、<code class="calibre15">error</code>和<code class="calibre15">load</code>，分别表示是否又读取了新数据、是否发生了错误以及是否已经读完了整个文件。</p>
+
+  <p class="calibre2">每过50ms左右，就会触发一次<code class="calibre15">progress</code>事件，通过事件对象可以获得与XHR的<code class="calibre15">progress</code>事件相同的信息（属性）：<code class="calibre15">lengthComputable</code>、<code class="calibre15">loaded</code>和<code class="calibre15">total</code>。另外，尽管可能没有包含全部数据，但每次<code class="calibre15">progress</code>事件中都可以通过<code class="calibre15">FileReader</code>的<code class="calibre15">result</code>属性读取到文件内容。</p>
+
+  <p class="calibre2">由于种种原因无法读取文件，就会触发<code class="calibre15">error</code>事件。触发<code class="calibre15">error</code>事件时，相关的信息将保存到<code class="calibre15">FileReader</code>的<code class="calibre15">error</code>属性中。这个属性中将保存一个对象，该对象只有一个属性<code class="calibre15">code</code>，即错误码。这个错误码是1表示未找到文件，是2表示安全性错误，是3表示读取中断，是4表示文件不可读，是5表示编码错误。</p>
+
+  <p class="calibre2">文件成功加载后会触发<code class="calibre15">load</code>事件；如果发生了<code class="calibre15">error</code>事件，就不会发生<code class="calibre15">load</code>事件。以下是一个使用上述三个事件的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var filesList = document.getElementById("files-list");
+EventUtil.addHandler(filesList, "change", function(event){
+    var info = "", 
+        output = document.getElementById("output"),
+        progress = document.getElementById("progress"),
+        files = EventUtil.getTarget(event).files,
+        type = "default",
+        reader = new FileReader();
+
+    if (/image/.test(files[0].type)){
+        reader.readAsDataURL(files[0]);
+        type = "image";
+    } else {
+        reader.readAsText(files[0]);
+        type = "text";
+    }
+
+    reader.onerror = function(){
+        output.innerHTML = "Could not read file, error code is " +
+                            reader.error.code;
+    };
+
+    reader.onprogress = function(event){
+        if (event.lengthComputable){
+            progress.innerHTML = event.loaded + "/" + event.total;
+        }
+    };
+
+    reader.onload = function(){
+
+        var html = "";
+
+        switch(type){
+            case "image":
+                html = "&lt;img src=\"" + reader.result + "\"&gt;";
+                break;
+            case "text":
+                html = reader.result;
+                break;
+        }
+        output.innerHTML = html;
+    };
+});
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FileAPIExample02.htm</i></p>
+
+  <p class="calibre2">这个例子读取了表单字段中选择的文件，并将其内容显示在了页面中。如果文件有MIMI类型，表示文件是图像，因此在<code class="calibre15">load</code>事件中就把它保存为数据URI，并在页面中将这幅图像显示出来。如果文件不是图像，则以字符串形式读取文件内容，然后如实在页面中显示读取到的内容。这里使用了<code class="calibre15">progress</code>事件来跟踪读取了多少字节的数据，而<code class="calibre15">error</code>事件则用于监控发生的错误。</p>
+
+  <p class="calibre2">如果想中断读取过程，可以调用<code class="calibre15">abort()</code>方法，这样就会触发<code class="calibre15">abort</code>事件。在触发<code class="calibre15">load</code>、<code class="calibre15">error</code>或<code class="calibre15">abort</code>事件后，会触发另一个事件<code class="calibre15">loadend</code>。<code class="calibre15">loadend</code>事件发生就意味着已经读取完整个文件，或者读取时发生了错误，或者读取过程被中断。</p>
+
+  <p class="calibre2">实现File API的所有浏览器都支持<code class="calibre15">readAsText()</code>和<code class="calibre15">readAsDataURL()</code>方法。但IE10 PR 2并未实现<code class="calibre15">readAsBinaryString()</code>和<code class="calibre15">readAsArrayBuffer()</code>方法。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_293"><strong class="calibre10">25.4.2　读取部分内容</strong></h3>
+
+  <p class="calibre2">有时候，我们只想读取文件的一部分而不是全部内容。为此，<code class="calibre15">File</code>对象还支持一个<code class="calibre15">slice()</code>方法，这个方法在Firefox中的实现叫<code class="calibre15">mozSlice()</code>，在Chrome中的实现叫<code class="calibre15">webkitSlice()</code>，Safari的5.1及之前版本不支持这个方法。<code class="calibre15">slice()</code>方法接收两个参数：起始字节及要读取的字节数。这个方法返回一个<code class="calibre15">Blob</code>的实例，<code class="calibre15">Blob</code>是<code class="calibre15">File</code>类型的父类型。下面是一个通用的函数，可以在不同实现中使用<code class="calibre15">slice()</code>方法：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function blobSlice(blob, startByte, length){
+    if (blob.slice){
+        return blob.slice(startByte, length);
+    } else if (blob.webkitSlice){
+        return blob.webkitSlice(startByte, length);
+    } else if (blob.mozSlice){
+        return blob.mozSlice(startByte, length);
+    } else {
+        return null;
+    }
+} 
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FileAPIExample03.htm</i></p>
+
+  <p class="calibre2"><code class="calibre15">Blob</code>类型有一个<code class="calibre15">size</code>属性和一个<code class="calibre15">type</code>属性，而且它也支持<code class="calibre15">slice()</code>方法，以便进一步切割数据。通过<code class="calibre15">FileReader</code>也可以从<code class="calibre15">Blob</code>中读取数据。下面这个例子只读取文件的32B内容。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var filesList = document.getElementById("files-list");
+EventUtil.addHandler(filesList, "change", function(event){
+    var info = "",
+        output = document.getElementById("output"),
+        progress = document.getElementById("progress"),
+        files = EventUtil.getTarget(event).files,
+        reader = new FileReader(),
+        <b class="calibre3">blob = blobSlice(files[0], 0, 32);</b>
+
+    if (blob){
+        <b class="calibre3">reader.readAsText(blob);</b>
+
+        reader.onerror = function(){
+            output.innerHTML = "Could not read file, error code is " +
+                                reader.error.code;
+        };
+
+        reader.onload = function(){
+            output.innerHTML = reader.result;
+        };
+    } else {
+        alert("Your browser doesn' t support slice().");
+    }
+});
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FileAPIExample03.htm</i></p>
+
+  <p class="calibre2">只读取文件的一部分可以节省时间，非常适合只关注数据中某个特定部分（如文件头部）的情况。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_294"><strong class="calibre10">25.4.3　对象URL</strong></h3>
+
+  <p class="calibre2">对象URL也被称为blob URL，指的是引用保存在<code class="calibre15">File</code>或<code class="calibre15">Blob</code>中数据的URL。使用对象URL的好处是可以不必把文件内容读取到JavaScript中而直接使用文件内容。为此，只要在需要文件内容的地方提供对象URL即可。要创建对象URL，可以使用<code class="calibre15">window.URL.createObjectURL()</code>方法，并传入<code class="calibre15">File</code>或<code class="calibre15">Blob</code>对象。这个方法在Chrome中的实现叫<code class="calibre15">window.webkitURL.createObjectURL()</code>，因此可以通过如下函数来消除命名的差异：</p>
+  <pre class="calibre18"><code class="calibre15">function createObjectURL(blob){
+    if (window.URL){
+        return window.URL.createObjectURL(blob);
+    } else if (window.webkitURL){
+        return window.webkitURL.createObjectURL(blob);
+    } else {
+        return null;
+    } 
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FileAPIExample04.htm</i></p>
+
+  <p class="calibre2">这个函数的返回值是一个字符串，指向一块内存的地址。因为这个字符串是URL，所以在DOM中也能使用。例如，以下代码可以在页面中显示一个图像文件：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var filesList = document.getElementById("files-list");
+EventUtil.addHandler(filesList, "change", function(event){
+    var info = "", 
+        output = document.getElementById("output"),
+        progress = document.getElementById("progress"),
+        files = EventUtil.getTarget(event).files,
+        reader = new FileReader(),
+        <b class="calibre3">url = createObjectURL(files[0]);</b>
+
+    if (url){
+        if (/image/.test(files[0].type)){
+            <b class="calibre3">output.innerHTML = "&lt;img src=\"" + url + "\"&gt;";</b>
+        } else {
+            output.innerHTML = "Not an image.";
+        }
+    } else {
+        output.innerHTML = "Your browser doesn't support object URLs.";
+    }
+});
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FileAPIExample04.htm</i></p>
+
+  <p class="calibre2">直接把对象URL放在<code class="calibre15">&lt;img&gt;</code>标签中，就省去了把数据先读到JavaScript中的麻烦。另一方面，<code class="calibre15">&lt;img&gt;</code>标签则会找到相应的内存地址，直接读取数据并将图像显示在页面中。</p>
+
+  <p class="calibre2">如果不再需要相应的数据，最好释放它占用的内容。但只要有代码在引用对象URL，内存就不会释放。要手工释放内存，可以把对象URL传给<code class="calibre15">window.URL.revokeOjbectURL()</code>（在Chrome中是<code class="calibre15">window.webkitURL.revokeObjectURL()</code>）。要兼容这两种方法的实现，可以使用以下函数：</p>
+  <pre class="calibre18"><code class="calibre15">function revokeObjectURL(url){
+    if (window.URL){ 
+        window.URL.revokeObjectURL(url);
+    } else if (window.webkitURL){
+        window.webkitURL.revokeObjectURL(url);
+    }
+}
+</code></pre>
+
+  <p class="calibre2">页面卸载时会自动释放对象URL占用的内存。不过，为了确保尽可能少地占用内存，最好在不需要某个对象URL时，就马上手工释放其占用的内存。</p>
+
+  <p class="calibre2">支持对象URL的浏览器有IE10+、Firefox 4和Chrome。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_295"><strong class="calibre10">25.4.4　读取拖放的文件</strong></h3>
+
+  <p class="calibre2">围绕读取文件信息，结合使用HTML5拖放API和文件API，能够创造出令人瞩目的用户界面：在页面上创建了自定义的放置目标之后，你可以从桌面上把文件拖放到该目标。与拖放一张图片或者一个链接类似，从桌面上把文件拖放到浏览器中也会触发<code class="calibre15">drop</code>事件。而且可以在<code class="calibre15">event.dataTransfer.files</code>中读取到被放置的文件，当然此时它是一个<code class="calibre15">File</code>对象，与通过文件输入字段取得的<code class="calibre15">File</code>对象一样。</p>
+
+  <p class="calibre2">下面这个例子会将放置到页面中自定义的放置目标中的文件信息显示出来：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var droptarget = document.getElementById( "droptarget");
+
+function handleEvent(event){
+    var info = "",
+        output = document.getElementById("output"),
+        files, i, len;
+
+    EventUtil.preventDefault(event);
+
+    if (event.type == "drop"){
+        <b class="calibre3">files = event.dataTransfer.files;</b>
+        i = 0;
+        len = files.length;
+
+        while (i &lt; len){
+            info += files[i].name + " (" + files[i].type + ", " + files[i].size +
+                   " bytes)&lt;br&gt;";
+            i++;
+        }
+
+        output.innerHTML = info;
+    }
+}
+
+EventUtil.addHandler(droptarget, "dragenter", handleEvent);
+EventUtil.addHandler(droptarget, "dragover", handleEvent);
+EventUtil.addHandler(droptarget, "drop", handleEvent);
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FileAPIExample05.htm</i></p>
+
+  <p class="calibre2">与之前展示的拖放示例一样，这里也必须取消<code class="calibre15">dragenter</code>、<code class="calibre15">dragover</code>和<code class="calibre15">drop</code>的默认行为。在<code class="calibre15">drop</code>事件中，可以通过<code class="calibre15">event.dataTransfer.files</code>读取文件信息。还有一种利用这个功能的流行做法，即结合<code class="calibre15">XMLHttpRequest</code>和拖放文件来实现上传。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_296"><strong class="calibre10">25.4.5　使用XHR上传文件</strong></h3>
+
+  <p class="calibre2">通过File API能够访问到文件内容，利用这一点就可以通过XHR直接把文件上传到服务器。当然啦，把文件内容放到<code class="calibre15">send()</code>方法中，再通过POST请求，的确很容易就能实现上传。但这样做传递的是文件内容，因而服务器端必须收集提交的内容，然后再把它们保存到另一个文件中。其实，更好的做法是以表单提交的方式来上传文件。</p>
+
+  <p class="calibre2">这样使用<code class="calibre15">FormData</code>类型就很容易做到了（第21章介绍过<code class="calibre15">FormData</code>）。首先，要创建一个<code class="calibre15">FormData</code>对象，通过它调用<code class="calibre15">append()</code>方法并传入相应的<code class="calibre15">File</code>对象作为参数。然后，再把<code class="calibre15">FormData</code>对象传递给XHR的<code class="calibre15">send()</code>方法，结果与通过表单上传一模一样。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var droptarget = document.getElementById("droptarget");
+
+function handleEvent(event){
+    var info = "",
+        output = document.getElementById("output"),
+        data, xhr,
+        files, i, len;
+
+    EventUtil.preventDefault(event);
+
+    if (event.type == "drop"){
+        <b class="calibre3">data = new FormData();</b>
+        files = event.dataTransfer.files;
+        i = 0;
+        len = files.length;
+
+        while (i &lt; len){
+            <b class="calibre3">data.append("file" + i, files[i]);</b>
+            i++;
+        }
+
+        xhr = new XMLHttpRequest();
+        xhr.open("post", "FileAPIExample06Upload.php", true);
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState == 4){
+                alert(xhr.responseText);
+            }
+        };
+        <b class="calibre3">xhr.send(data);</b>
+    }
+}
+
+EventUtil.addHandler(droptarget, "dragenter", handleEvent);
+EventUtil.addHandler(droptarget, "dragover", handleEvent);
+EventUtil.addHandler(droptarget, "drop", handleEvent);
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FileAPIExample06.htm</i></p>
+
+  <p class="calibre2">这个例子创建一个<code class="calibre15">FormData</code>对象，与每个文件对应的键分别是<code class="calibre15">file0</code>、<code class="calibre15">file1</code>、<code class="calibre15">file2</code>这样的格式。注意，不用额外写任何代码，这些文件就可以作为表单的值提交。而且，也不必使用<code class="calibre15">FileReader</code>，只要传入<code class="calibre15">File</code>对象即可。</p>
+
+  <p class="calibre2">使用<code class="calibre15">FormData</code>上传文件，在服务器端就好像是接收到了常规的表单数据一样，一切按部就班地处理即可。换句话说，如果服务器端使用的是PHP，那么<code class="calibre15">$_FILES</code>数组中就会保存着上传的文件。支持以这种方式上传文件的浏览器有Firefox 4+、Safari 5+和Chrome。</p>
+</body>
+</html>

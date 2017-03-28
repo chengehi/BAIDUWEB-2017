@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_152">21.5　其他跨域技术</h2>
+
+  <p class="calibre2">在CORS出现以前，要实现跨域Ajax通信颇费一些周折。开发人员想出了一些办法，利用DOM中能够执行跨域请求的功能，在不依赖XHR对象的情况下也能发送某种请求。虽然CORS技术已经无处不在，但开发人员自己发明的这些技术仍然被广泛使用，毕竟这样不需要修改服务器端代码。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_258"><strong class="calibre10">21.5.1　图像Ping</strong></h3>
+
+  <p class="calibre2">上述第一种跨域请求技术是使用<code class="calibre15">&lt;img&gt;</code>标签。我们知道，一个网页可以从任何网页中加载图像，不用担心跨域不跨域。这也是在线广告跟踪浏览量的主要方式。正如第13章讨论过的，也可以动态地创建图像，使用它们的<code class="calibre15">onload</code>和<code class="calibre15">onerror</code>事件处理程序来确定是否接收到了响应。</p>
+
+  <p class="calibre2">动态创建图像经常用于**图像**Ping。图像Ping是与服务器进行简单、单向的跨域通信的一种方式。请求的数据是通过查询字符串形式发送的，而响应可以是任意内容，但通常是像素图或204响应。通过图像Ping，浏览器得不到任何具体的数据，但通过侦听<code class="calibre15">load</code>和<code class="calibre15">error</code>事件，它能知道响应是什么时候接收到的。来看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var img = new Image(); 
+img.onload = img.onerror = function(){
+    alert("Done!");
+};
+img.src = "http://www.example.com/test?name=Nicholas";
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ImagePingExample01.htm</i></p>
+
+  <p class="calibre2">这里创建了一个<code class="calibre15">Image</code>的实例，然后将<code class="calibre15">onload</code>和<code class="calibre15">onerror</code>事件处理程序指定为同一个函数。这样无论是什么响应，只要请求完成，就能得到通知。请求从设置<code class="calibre15">src</code>属性那一刻开始，而这个例子在请求中发送了一个<code class="calibre15">name</code>参数。</p>
+
+  <p class="calibre2">图像Ping最常用于跟踪用户点击页面或动态广告曝光次数。图像Ping有两个主要的缺点，一是只能发送<code class="calibre15">GET</code>请求，二是无法访问服务器的响应文本。因此，图像Ping只能用于浏览器与服务器间的单向通信。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_259"><strong class="calibre10">21.5.2　JSONP</strong></h3>
+
+  <p class="calibre2">JSONP是JSON with padding（填充式JSON或参数式JSON）的简写，是应用JSON的一种新方法，在后来的Web服务中非常流行。JSONP看起来与JSON差不多，只不过是被包含在函数调用中的JSON，就像下面这样。</p>
+  <pre class="calibre18"><code class="calibre15">callback({ "name": "Nicholas" });
+</code></pre>
+
+  <p class="calibre2">JSONP由两部分组成：回调函数和数据。回调函数是当响应到来时应该在页面中调用的函数。回调函数的名字一般是在请求中指定的。而数据就是传入回调函数中的JSON数据。下面是一个典型的JSONP请求。</p>
+  <pre class="calibre18"><code class="calibre15">http://freegeoip.net/json/?callback=handleResponse
+</code></pre>
+
+  <p class="calibre2">这个URL是在请求一个JSONP地理定位服务。通过查询字符串来指定JSONP服务的回调参数是很常见的，就像上面的URL所示，这里指定的回调函数的名字叫<code class="calibre15">handleResponse()</code>。</p>
+
+  <p class="calibre2">JSONP是通过动态<code class="calibre15">&lt;script&gt;</code>元素（要了解详细信息，请参考第13章）来使用的，使用时可以为<code class="calibre15">src</code>属性指定一个跨域URL。这里的<code class="calibre15">&lt;script&gt;</code>元素与<code class="calibre15">&lt;img&gt;</code>元素类似，都有能力不受限制地从其他域加载资源。因为JSONP是有效的JavaScript代码，所以在请求完成后，即在JSONP响应加载到页面中以后，就会立即执行。来看一个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function handleResponse(response){
+    alert("You’re at IP address " + response.ip + ", which is in " +
+          response.city + ", " + response.region_name);
+}
+
+var script = document.createElement("script");
+script.src = "http://freegeoip.net/json/?callback=handleResponse";
+document.body.insertBefore(script, document.body.firstChild);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">JSONPExample01.htm</i></p>
+
+  <p class="calibre2">这个例子通过查询地理定位服务来显示你的IP地址和位置信息。</p>
+
+  <p class="calibre2">JSONP之所以在开发人员中极为流行，主要原因是它非常简单易用。与图像Ping相比，它的优点在于能够直接访问响应文本，支持在浏览器与服务器之间双向通信。不过，JSONP也有两点不足。</p>
+
+  <p class="calibre2">首先，JSONP是从其他域中加载代码执行。如果其他域不安全，很可能会在响应中夹带一些恶意代码，而此时除了完全放弃JSONP调用之外，没有办法追究。因此在使用不是你自己运维的Web服务时，一定得保证它安全可靠。</p>
+
+  <p class="calibre2">其次，要确定JSONP请求是否失败并不容易。虽然HTML5给<code class="calibre15">&lt;script&gt;</code>元素新增了一个<code class="calibre15">onerror</code>事件处理程序，但目前还没有得到任何浏览器支持。为此，开发人员不得不使用计时器检测指定时间内是否接收到了响应。但就算这样也不能尽如人意，毕竟不是每个用户上网的速度和带宽都一样。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_260"><strong class="calibre10">21.5.3　Comet</strong></h3>
+
+  <p class="calibre2">Comet是Alex Russell<sup class="calibre13">1</sup>发明的一个词儿，指的是一种更高级的Ajax技术（经常也有人称为“服务器推送”）。Ajax是一种从页面向服务器请求数据的技术，而Comet则是一种服务器向页面推送数据的技术。Comet能够让信息近乎实时地被推送到页面上，非常适合处理体育比赛的分数和股票报价。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><sup class="calibre13">1</sup> Alex Russell是著名JavaScript框架Dojo的创始人。</p>
+  </blockquote>
+
+  <p class="calibre2">有两种实现Comet的方式：<strong class="calibre3">长轮询</strong>和<strong class="calibre3">流</strong>。长轮询是传统轮询（也称为短轮询）的一个翻版，即浏览器定时向服务器发送请求，看有没有更新的数据。图21-1展示的是短轮询的时间线。</p>
+
+  <p class="p-img"><img alt="" class="calibre21" src="../Images/00080.gif" /></p>
+
+  <p class="calibre2"><strong class="calibre3">图　21-1</strong></p>
+
+  <p class="calibre2">长轮询把短轮询颠倒了一下。页面发起一个到服务器的请求，然后服务器一直保持连接打开，直到有数据可发送。发送完数据之后，浏览器关闭连接，随即又发起一个到服务器的新请求。这一过程在页面打开期间一直持续不断。图21-2展示了长轮询的时间线。</p>
+
+  <p class="p-img"><img alt="" class="calibre21" src="../Images/00081.gif" /></p>
+
+  <p class="calibre2"><strong class="calibre3">图　21-2</strong></p>
+
+  <p class="calibre2">无论是短轮询还是长轮询，浏览器都要在接收数据之前，先发起对服务器的连接。两者最大的区别在于服务器如何发送数据。短轮询是服务器立即发送响应，无论数据是否有效，而长轮询是等待发送响应。轮询的优势是所有浏览器都支持，因为使用XHR对象和<code class="calibre15">setTimeout()</code>就能实现。而你要做的就是决定什么时候发送请求。</p>
+
+  <p class="calibre2">第二种流行的Comet实现是HTTP流。流不同于上述两种轮询，因为它在页面的整个生命周期内只使用一个HTTP连接。具体来说，就是浏览器向服务器发送一个请求，而服务器保持连接打开，然后周期性地向浏览器发送数据。比如，下面这段PHP脚本就是采用流实现的服务器中常见的形式。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;?php
+    $i = 0;
+    while(true){
+
+        //输出一些数据，然后立即刷新输出缓存
+        echo "Number is $i";
+        flush();
+
+        //等几秒钟
+        sleep(10);
+
+        $i++;
+    }
+</code></pre>
+
+  <p class="calibre2">所有服务器端语言都支持打印到输出缓存然后刷新（将输出缓存中的内容一次性全部发送到客户端）的功能。而这正是实现HTTP流的关键所在。</p>
+
+  <p class="calibre2">在Firefox、Safari、Opera和Chrome中，通过侦听<code class="calibre15">readystatechange</code>事件及检测<code class="calibre15">readyState</code>的值是否为3，就可以利用XHR对象实现HTTP流。在上述这些浏览器中，随着不断从服务器接收数据，<code class="calibre15">readyState</code>的值会周期性地变为3。当<code class="calibre15">readyState</code>值变为3时，<code class="calibre15">responseText</code>属性中就会保存接收到的所有数据。此时，就需要比较此前接收到的数据，决定从什么位置开始取得最新的数据。使用XHR对象实现HTTP流的典型代码如下所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function createStreamingClient(url, progress, finished){
+
+    var xhr = new XMLHttpRequest(),
+        received = 0;
+
+    xhr.open("get", url, true);
+    xhr.onreadystatechange = function(){
+        var result;
+
+        if (xhr.readyState == 3){
+
+            //只取得最新数据并调整计数器
+            result = xhr.responseText.substring(received);
+            received += result.length;
+
+            //调用progress回调函数
+            progress(result);
+
+        } else if (xhr.readyState == 4){
+            finished(xhr.responseText);
+        }
+
+    };
+    xhr.send(null);
+    return xhr;
+}
+
+var client = createStreamingClient("streaming.php", function(data){
+                alert("Received: " + data);
+             }, function(data){
+                alert("Done!");
+             });
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">HTTPStreamingExample01.htm</i></p>
+
+  <p class="calibre2">这个<code class="calibre15">createStreamingClient()</code>函数接收三个参数：要连接的URL、在接收到数据时调用的函数以及关闭连接时调用的函数。有时候，当连接关闭时，很可能还需要重新建立，所以关注连接什么时候关闭还是有必要的。</p>
+
+  <p class="calibre2">只要<code class="calibre15">readystatechange</code>事件发生，而且<code class="calibre15">readyState</code>值为3，就对<code class="calibre15">responseText</code>进行分割以取得最新数据。这里的<code class="calibre15">received</code>变量用于记录已经处理了多少个字符，每次<code class="calibre15">readyState</code>值为3时都递增。然后，通过<code class="calibre15">progress</code>回调函数来处理传入的新数据。而当<code class="calibre15">readyState</code>值为4时，则执行<code class="calibre15">finished</code>回调函数，传入响应返回的全部内容。</p>
+
+  <p class="calibre2">虽然这个例子比较简单，而且也能在大多数浏览器中正常运行（IE除外），但管理Comet的连接是很容易出错的，需要时间不断改进才能达到完美。浏览器社区认为Comet是未来Web的一个重要组成部分，为了简化这一技术，又为Comet创建了两个新的接口。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_261"><strong class="calibre10">21.5.4　服务器发送事件</strong></h3>
+
+  <p class="calibre2">SSE（Server-Sent Events，服务器发送事件）是围绕只读Comet交互推出的API或者模式。SSE API用于创建到服务器的单向连接，服务器通过这个连接可以发送任意数量的数据。服务器响应的MIME类型必须是<code class="calibre15">text/event-stream</code>，而且是浏览器中的JavaScript API能解析格式输出。SSE支持短轮询、长轮询和HTTP流，而且能在断开连接时自动确定何时重新连接。有了这么简单实用的API，再实现Comet就容易多了。</p>
+
+  <p class="calibre2">支持SSE的浏览器有Firefox 6+、Safari 5+、Opera 11+、Chrome和iOS 4+版Safari。</p>
+
+  <p class="calibre2">1. <strong class="calibre3">SSE API</strong></p>
+
+  <p class="calibre2">SSE的JavaScript API与其他传递消息的JavaScript API很相似。要预订新的事件流，首先要创建一个新的<code class="calibre15">EventSource</code>对象，并传进一个入口点：</p>
+  <pre class="calibre18"><code class="calibre15">var source = new EventSource("myevents.php");
+</code></pre>
+
+  <p class="calibre2">注意，传入的URL必须与创建对象的页面同源（相同的URL模式、域及端口）。<code class="calibre15">EventSource</code>的实例有一个<code class="calibre15">readyState</code>属性，值为0表示正连接到服务器，值为1表示打开了连接，值为2表示关闭了连接。</p>
+
+  <p class="calibre2">另外，还有以下三个事件。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">open</code>：在建立连接时触发。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">message</code>：在从服务器接收到新事件时触发。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">error</code>：在无法建立连接时触发。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">就一般的用法而言，<code class="calibre15">onmessage</code>事件处理程序也没有什么特别的。</p>
+  <pre class="calibre18"><code class="calibre15">source.onmessage = function(event){
+    var data = event.data;
+    //处理数据
+};
+</code></pre>
+
+  <p class="calibre2">服务器发回的数据以字符串形式保存在<code class="calibre15">event.data</code>中。</p>
+
+  <p class="calibre2">默认情况下，<code class="calibre15">EventSource</code>对象会保持与服务器的活动连接。如果连接断开，还会重新连接。这就意味着SSE适合长轮询和HTTP流。如果想强制立即断开连接并且不再重新连接，可以调用<code class="calibre15">close()</code>方法。</p>
+  <pre class="calibre18"><code class="calibre15">source.close();
+</code></pre>
+
+  <p class="calibre2">2. <strong class="calibre3">事件流</strong></p>
+
+  <p class="calibre2">所谓的服务器事件会通过一个持久的HTTP响应发送，这个响应的MIME类型为<code class="calibre15">text/eventstream</code>。响应的格式是纯文本，最简单的情况是每个数据项都带有前缀<code class="calibre15">data</code>:，例如：</p>
+  <pre class="calibre18"><code class="calibre15">data: foo
+
+data: bar
+
+data: foo
+data: bar
+</code></pre>
+
+  <p class="calibre2">对以上响应而言，事件流中的第一个<code class="calibre15">message</code>事件返回的<code class="calibre15">event.data</code>值为<code class="calibre15">"foo"</code>，第二个<code class="calibre15">message</code>事件返回的<code class="calibre15">event.data</code>值为<code class="calibre15">"bar"</code>，第三个<code class="calibre15">message</code>事件返回的<code class="calibre15">event.data</code>值为<code class="calibre15">"foo\nbar"</code>（注意中间的换行符）。对于多个连续的以<code class="calibre15">data:</code>开头的数据行，将作为多段数据解析，每个值之间以一个换行符分隔。只有在包含<code class="calibre15">data:</code>的数据行后面有空行时，才会触发<code class="calibre15">message</code>事件，因此在服务器上生成事件流时不能忘了多添加这一行。</p>
+
+  <p class="calibre2">通过<code class="calibre15">id:</code>前缀可以给特定的事件指定一个关联的ID，这个ID行位于<code class="calibre15">data:</code>行前面或后面皆可：</p>
+  <pre class="calibre18"><code class="calibre15">data: foo
+id: 1
+</code></pre>
+
+  <p class="calibre2">设置了ID后，<code class="calibre15">EventSource</code>对象会跟踪上一次触发的事件。如果连接断开，会向服务器发送一个包含名为<code class="calibre15">Last-Event-ID</code>的特殊HTTP头部的请求，以便服务器知道下一次该触发哪个事件。在多次连接的事件流中，这种机制可以确保浏览器以正确的顺序收到连接的数据段。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_262"><strong class="calibre10">21.5.5　Web Sockets</strong></h3>
+
+  <p class="calibre2">要说最令人津津乐道的新浏览器API，就得数Web Sockets了。Web Sockets的目标是在一个单独的持久连接上提供全双工、双向通信。在JavaScript中创建了Web Socket之后，会有一个HTTP请求发送到浏览器以发起连接。在取得服务器响应后，建立的连接会使用HTTP升级从HTTP协议交换为Web Socket协议。也就是说，使用标准的HTTP服务器无法实现Web Sockets，只有支持这种协议的专门服务器才能正常工作。</p>
+
+  <p class="calibre2">由于Web Sockets使用了自定义的协议，所以URL模式也略有不同。未加密的连接不再是<code class="calibre15">http://</code>，而是<code class="calibre15">ws://</code>；加密的连接也不是<code class="calibre15">https://</code>，而是<code class="calibre15">wss://</code>。在使用Web Socket URL时，必须带着这个模式，因为将来还有可能支持其他模式。</p>
+
+  <p class="calibre2">使用自定义协议而非HTTP协议的好处是，能够在客户端和服务器之间发送非常少量的数据，而不必担心HTTP那样字节级的开销。由于传递的数据包很小，因此Web Sockets非常适合移动应用。毕竟对移动应用而言，带宽和网络延迟都是关键问题。使用自定义协议的缺点在于，制定协议的时间比制定JavaScript API的时间还要长。Web Sockets曾几度搁浅，就因为不断有人发现这个新协议存在一致性和安全性的问题。Firefox 4和Opera 11都曾默认启用Web Sockets，但在发布前夕又禁用了，因为又发现了安全隐患。目前支持Web Sockets的浏览器有Firefox 6+、Safari 5+、Chrome和iOS 4+版Safari。</p>
+
+  <p class="calibre2">1. <strong class="calibre3">Web Sockets API</strong></p>
+
+  <p class="calibre2">要创建Web Socket，先实例一个<code class="calibre15">WebSocket</code>对象并传入要连接的URL：</p>
+  <pre class="calibre18"><code class="calibre15">var socket = new WebSocket("ws://www.example.com/server.php");
+</code></pre>
+
+  <p class="calibre2">注意，必须给<code class="calibre15">WebSocket</code>构造函数传入绝对URL。同源策略对Web Sockets不适用，因此可以通过它打开到任何站点的连接。至于是否会与某个域中的页面通信，则完全取决于服务器。（通过握手信息就可以知道请求来自何方。）</p>
+
+  <p class="calibre2">实例化了<code class="calibre15">WebSocket</code>对象后，浏览器就会马上尝试创建连接。与XHR类似，<code class="calibre15">WebSocket</code>也有一个表示当前状态的<code class="calibre15">readyState</code>属性。不过，这个属性的值与XHR并不相同，而是如下所示。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">WebSocket.OPENING (0)</code>：正在建立连接。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">WebSocket.OPEN (1)</code>：已经建立连接。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">WebSocket.CLOSING (2)</code>：正在关闭连接。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">WebSocket.CLOSE (3)</code>：已经关闭连接。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2"><code class="calibre15">WebSocket</code>没有<code class="calibre15">readystatechange</code>事件；不过，它有其他事件，对应着不同的状态。<code class="calibre15">readyState</code>的值永远从0开始。</p>
+
+  <p class="calibre2">要关闭Web Socket连接，可以在任何时候调用<code class="calibre15">close()</code>方法。</p>
+  <pre class="calibre18"><code class="calibre15">socket.close();
+</code></pre>
+
+  <p class="calibre2">调用了<code class="calibre15">close()</code>之后，<code class="calibre15">readyState</code>的值立即变为2（正在关闭），而在关闭连接后就会变成3。</p>
+
+  <p class="calibre2">2. <strong class="calibre3">发送和接收数据</strong></p>
+
+  <p class="calibre2">Web Socket打开之后，就可以通过连接发送和接收数据。要向服务器发送数据，使用<code class="calibre15">send()</code>方法并传入任意字符串，例如：</p>
+  <pre class="calibre18">var socket = new WebSocket("ws://www.example.com/server.php");
+<b class="calibre3">socket.send("Hello world!");</b>
+</pre>
+
+  <p class="calibre2">因为Web Sockets只能通过连接发送纯文本数据，所以对于复杂的数据结构，在通过连接发送之前，必须进行序列化。下面的例子展示了先将数据序列化为一个JSON字符串，然后再发送到服务器：</p>
+  <pre class="calibre18"><code class="calibre15">var message = {
+    time: new Date(),
+    text: "Hello world!",
+    clientId: "asdfp8734rew"
+};
+
+socket.send(JSON.stringify(message));
+</code></pre>
+
+  <p class="calibre2">接下来，服务器要读取其中的数据，就要解析接收到的JSON字符串。</p>
+
+  <p class="calibre2">当服务器向客户端发来消息时，<code class="calibre15">WebSocket</code>对象就会触发<code class="calibre15">message</code>事件。这个<code class="calibre15">message</code>事件与其他传递消息的协议类似，也是把返回的数据保存在<code class="calibre15">event.data</code>属性中。</p>
+  <pre class="calibre18"><code class="calibre15">socket.onmessage = function(event){
+    var data = event.data; 
+
+    //处理数据
+};
+</code></pre>
+
+  <p class="calibre2">与通过<code class="calibre15">send()</code>发送到服务器的数据一样，<code class="calibre15">event.data</code>中返回的数据也是字符串。如果你想得到其他格式的数据，必须手工解析这些数据。</p>
+
+  <p class="calibre2">3. <strong class="calibre3">其他事件</strong></p>
+
+  <p class="calibre2"><code class="calibre15">WebSocket</code>对象还有其他三个事件，在连接生命周期的不同阶段触发。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">open</code>：在成功建立连接时触发。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">error</code>：在发生错误时触发，连接不能持续。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">close</code>：在连接关闭时触发。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2"><code class="calibre15">WebSocket</code>对象不支持DOM 2级事件侦听器，因此必须使用DOM 0级语法分别定义每个事件处理程序。</p>
+  <pre class="calibre18"><code class="calibre15">var socket = new WebSocket("ws://www.example.com/server.php");
+
+socket.onopen = function(){ 
+    alert("Connection established.");
+};
+
+socket.onerror = function(){
+    alert("Connection error.");
+};
+
+socket.onclose = function(){
+    alert("Connection closed.");
+};
+</code></pre>
+
+  <p class="calibre2">在这三个事件中，只有<code class="calibre15">close</code>事件的<code class="calibre15">event</code>对象有额外的信息。这个事件的事件对象有三个额外的属性：<code class="calibre15">wasClean</code>、<code class="calibre15">code</code>和<code class="calibre15">reason</code>。其中，<code class="calibre15">wasClean</code>是一个布尔值，表示连接是否已经明确地关闭；<code class="calibre15">code</code>是服务器返回的数值状态码；而<code class="calibre15">reason</code>是一个字符串，包含服务器发回的消息。可以把这些信息显示给用户，也可以记录到日志中以便将来分析。</p>
+  <pre class="calibre18"><code class="calibre15">socket.onclose = function(event){ 
+    console.log("Was clean? " + event.wasClean + " Code=" + event.code + " Reason="
+                + event.reason);
+};
+</code></pre>
+
+  <h3 class="calibre22" id="sigil_toc_id_263"><strong class="calibre10">21.5.6　SSE与Web Sockets</strong></h3>
+
+  <p class="calibre2">面对某个具体的用例，在考虑是使用SSE还是使用Web Sockets时，可以考虑如下几个因素。首先，你是否有自由度建立和维护Web Sockets服务器？因为Web Socket协议不同于HTTP，所以现有服务器不能用于Web Socket通信。SSE倒是通过常规HTTP通信，因此现有服务器就可以满足需求。</p>
+
+  <p class="calibre2">第二个要考虑的问题是到底需不需要双向通信。如果用例只需读取服务器数据（如比赛成绩），那么SSE比较容易实现。如果用例必须双向通信（如聊天室），那么Web Sockets显然更好。别忘了，在不能选择Web Sockets的情况下，组合XHR和SSE也是能实现双向通信的。</p>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_243"><strong class="calibre10">B.4　函数</strong></h2>
+
+  <p class="calibre2">首先，严格模式要求命名函数的参数必须唯一。以下面这个函数为例：</p>
+  <pre class="calibre18"><code class="calibre15">//重名参数
+//非严格模式：没有错误，只能访问第二个参数
+//严格模式：抛出语法错误
+
+function sum (num, num){
+    //do something
+} 
+</code></pre>
+
+  <p class="calibre2">在非严格模式下，这个函数声明不会抛出错误。通过参数名只能访问第二个参数，要访问第一个参数必须通过<code class="calibre15">arguments</code>对象。</p>
+
+  <p class="calibre2">在严格模式下，<code class="calibre15">arguments</code>对象的行为也有所不同。在非严格模式下，修改命名参数的值也会反映到<code class="calibre15">arguments</code>对象中，而严格模式下这两个值是完全独立的。例如：</p>
+  <pre class="calibre18"><code class="calibre15">//修改命名参数的值
+//非严格模式：修改会反映到arguments中
+//严格模式：修改不会反映到arguments中
+
+function showValue(value){
+    value = "Foo"; 
+    alert(value);        //"Foo"
+    alert(arguments[0]); //非严格模式："Foo"
+                         //严格模式："Hi"
+}
+
+showValue("Hi");
+</code></pre>
+
+  <p class="calibre2">以上代码中，函数<code class="calibre15">showValue()</code>只有一个命名参数<code class="calibre15">value</code>。调用这个函数时传入了一个参数<code class="calibre15">"Hi"</code>，这个值赋给了<code class="calibre15">value</code>。而在函数内部，<code class="calibre15">value</code>被改为<code class="calibre15">"Foo"</code>。在非严格模式下，这个修改也会改变<code class="calibre15">arguments[0]</code>的值，但在严格模式下，<code class="calibre15">arguments[0]</code>的值仍然是传入的值。</p>
+
+  <p class="calibre2">另一个变化是淘汰了<code class="calibre15">arguments.callee</code>和<code class="calibre15">arguments.caller</code>。在非严格模式下，这两个属性一个引用函数本身，一个引用调用函数。而在严格模式下，访问哪个属性都会抛出<code class="calibre15">TypeError</code>。例如：</p>
+  <pre class="calibre18"><code class="calibre15">//访问arguments.callee
+//非严格模式：没有问题
+//严格模式：抛出TypeError
+
+function factorial(num){
+    if (num &lt;= 1) {
+        return 1;
+    } else {
+        return num * arguments.callee(num-1)
+    }
+}
+
+var result=factorial(5);
+</code></pre>
+
+  <p class="calibre2">类似地，尝试读写函数的<code class="calibre15">caller</code>属性，也会导致抛出<code class="calibre15">TypeError</code>。所以，对于上面的例子而言，访问<code class="calibre15">factorial.caller</code>也会抛出错误。</p>
+
+  <p class="calibre2">与变量类似，严格模式对函数名也做出了限制，不允许用<code class="calibre15">implements</code>、<code class="calibre15">interface</code>、<code class="calibre15">let</code>、<code class="calibre15">package</code>、<code class="calibre15">private</code>、<code class="calibre15">protected</code>、<code class="calibre15">public</code>、<code class="calibre15">static</code>和<code class="calibre15">yield</code>作为函数名。</p>
+
+  <p class="calibre2">对函数的最后一点限制，就是只能在脚本的顶级和在函数内部声明函数。也就是说，在<code class="calibre15">if</code>语句中声明函数会导致语法错误：</p>
+  <pre class="calibre18"><code class="calibre15">//在if语句中声明函数
+//非严格模式：将函数提升到if语句外部
+//严格模式：抛出语法错误
+
+if (true){
+    function doSomething(){
+          //...
+    }
+}
+</code></pre>
+
+  <p class="calibre2">在非严格模式下，以上代码能在所有浏览器中运行，但在严格模式下会导致语法错误。</p>
+</body>
+</html>

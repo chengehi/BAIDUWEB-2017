@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_23">3.7　函数</h2>
+
+  <p class="calibre2">函数对任何语言来说都是一个核心的概念。通过函数可以封装任意多条语句，而且可以在任何地方、任何时候调用执行。ECMAScript中的函数使用<code class="calibre15">function</code>关键字来声明，后跟一组参数以及函数体。函数的基本语法如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">function functionName(arg0, arg1,...,argN) {
+    statements
+}
+</code></pre>
+
+  <p class="calibre2">以下是一个函数示例：</p>
+  <pre class="calibre18"><code class="calibre15">function sayHi(name, message) {
+    alert("Hello " + name + "," + message);
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample01.htm</i></p>
+
+  <p class="calibre2">这个函数可以通过其函数名来调用，后面还要加上一对圆括号和参数（圆括号中的参数如果有多个，可以用逗号隔开）。调用<code class="calibre15">sayHi()</code>函数的代码如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">sayHi("Nicholas", "how are you today?");
+</code></pre>
+
+  <p class="calibre2">这个函数的输出结果是<code class="calibre15">"Hello Nicholas,how are you today?"</code>。函数中定义中的命名参数<code class="calibre15">name</code>和<code class="calibre15">message</code>被用作了字符串拼接的两个操作数，而结果最终通过警告框显示了出来。</p>
+
+  <p class="calibre2">ECMAScript中的函数在定义时不必指定是否返回值。实际上，任何函数在任何时候都可以通过<code class="calibre15">return</code>语句后跟要返回的值来实现返回值。请看下面的例子：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function sum(num1, num2) {
+    return num1 + num2;
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample02.htm</i></p>
+
+  <p class="calibre2">这个<code class="calibre15">sum()</code>函数的作用是把两个值加起来返回一个结果。我们注意到，除了<code class="calibre15">return</code>语句之外，没有任何声明表示该函数会返回一个值。调用这个函数的示例代码如下：</p>
+  <pre class="calibre18"><code class="calibre15">var result = sum(5, 10);
+</code></pre>
+
+  <p class="calibre2">这个函数会在执行完<code class="calibre15">return</code>语句之后停止并立即退出。因此，位于<code class="calibre15">return</code>语句之后的任何代码都永远不会执行。例如：</p>
+  <pre class="calibre18">function sum(num1, num2) {
+    return num1 + num2;
+    <b class="calibre3">alert("Hello world");    // 永远不会执行</b>
+}
+</pre>
+
+  <p class="calibre2">在这个例子中，由于调用<code class="calibre15">alert()</code>函数的语句位于<code class="calibre15">return</code>语句之后，因此永远不会显示警告框。</p>
+
+  <p class="calibre2">当然，一个函数中也可以包含多个<code class="calibre15">return</code>语句，如下面这个例子中所示：</p>
+  <pre class="calibre18"><code class="calibre15">function diff(num1, num2) {
+    if (num1 &lt; num2) {
+        return num2 - num1;
+    } else {
+        return num1 - num2;
+    }
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample03.htm</i></p>
+
+  <p class="calibre2">这个例子中定义的<code class="calibre15">diff()</code>函数用于计算两个数值的差。如果第一个数比第二个小，则用第二个数减第一个数；否则，用第一个数减第二个数。代码中的两个分支都具有自己的<code class="calibre15">return</code>语句，分别用于执行正确的计算。</p>
+
+  <p class="calibre2">另外，<code class="calibre15">return</code>语句也可以不带有任何返回值。在这种情况下，函数在停止执行后将返回<code class="calibre15">undefined</code>值。这种用法一般用在需要提前停止函数执行而又不需要返回值的情况下。比如在下面这个例子中，就不会显示警告框：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">function sayHi(name, message) {
+    <b class="calibre3">return;</b>
+    alert("Hello " + name + "," + message);    //永远不会调用
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample04.htm</i></p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 推荐的做法是要么让函数始终都返回一个值，要么永远都不要返回值。否则，如果函数有时候返回值，有时候有不返回值，会给调试代码带来不便。</p>
+  </blockquote>
+
+  <p class="calibre2">严格模式对函数有一些限制：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">不能把函数命名为<code class="calibre15">eval</code>或<code class="calibre15">arguments</code>；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">不能把参数命名为<code class="calibre15">eval</code>或<code class="calibre15">arguments</code>；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">不能出现两个命名参数同名的情况。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">如果发生以上情况，就会导致语法错误，代码无法执行。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_40"><strong class="calibre10">3.7.1　理解参数</strong></h3>
+
+  <p class="calibre2">ECMAScript函数的参数与大多数其他语言中函数的参数有所不同。ECMAScript函数不介意传递进来多少个参数，也不在乎传进来参数是什么数据类型。也就是说，即便你定义的函数只接收两个参数，在调用这个函数时也未必一定要传递两个参数。可以传递一个、三个甚至不传递参数，而解析器永远不会有什么怨言。之所以会这样，原因是ECMAScript中的参数在内部是用一个数组来表示的。函数接收到的始终都是这个数组，而不关心数组中包含哪些参数（如果有参数的话）。如果这个数组中不包含任何元素，无所谓；如果包含多个元素，也没有问题。实际上，在函数体内可以通过<code class="calibre15">arguments</code>对象来访问这个参数数组，从而获取传递给函数的每一个参数。</p>
+
+  <p class="calibre2">其实，<code class="calibre15">arguments</code>对象只是与数组类似（它并不是<code class="calibre15">Array</code>的实例），因为可以使用方括号语法访问它的每一个元素（即第一个元素是<code class="calibre15">arguments[0]</code>，第二个元素是<code class="calibre15">argumetns[1]</code>，以此类推），使用<code class="calibre15">length</code>属性来确定传递进来多少个参数。在前面的例子中，<code class="calibre15">sayHi()</code>函数的第一个参数的名字叫<code class="calibre15">name</code>，而该参数的值也可以通过访问<code class="calibre15">arguments[0]</code>来获取。因此，那个函数也可以像下面这样重写，即不显式地使用命名参数：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function sayHi() {
+    alert("Hello " + arguments[0] + "," + arguments[1]);
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample05.htm</i></p>
+
+  <p class="calibre2">这个重写后的函数中不包含命名的参数。虽然没有使用<code class="calibre15">name</code>和<code class="calibre15">message</code>标识符，但函数的功能依旧。这个事实说明了ECMAScript函数的一个重要特点：命名的参数只提供便利，但不是必需的。另外，在命名参数方面，其他语言可能需要事先创建一个函数签名，而将来的调用必须与该签名一致。但在ECMAScript中，没有这些条条框框，解析器不会验证命名参数。</p>
+
+  <p class="calibre2">通过访问<code class="calibre15">arguments</code>对象的<code class="calibre15">length</code>属性可以获知有多少个参数传递给了函数。下面这个函数会在每次被调用时，输出传入其中的参数个数：</p>
+  <pre class="calibre18"><code class="calibre15">function howManyArgs() {
+    alert(arguments.length);
+}
+
+howManyArgs("string", 45);  //2
+howManyArgs();              //0
+howManyArgs(12);            //1
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample06.htm</i></p>
+
+  <p class="calibre2">执行以上代码会依次出现3个警告框，分别显示2、0和1。由此可见，开发人员可以利用这一点让函数能够接收任意个参数并分别实现适当的功能。请看下面的例子：</p>
+  <pre class="calibre18"><code class="calibre15">function doAdd() {
+    if(arguments.length == 1) {
+        alert(arguments[0] + 10);
+    } else if (arguments.length == 2) {
+        alert(arguments[0] + arguments[1]);
+    }
+}
+
+doAdd(10);         //20
+doAdd(30, 20);     //50
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample07.htm</i></p>
+
+  <p class="calibre2">函数<code class="calibre15">doAdd()</code>会在只有一个参数的情况下给该参数加上10；如果是两个参数，则将那个参数简单相加并返回结果。因此，<code class="calibre15">doAdd(10)</code>会返回20，而<code class="calibre15">doAdd(30,20)</code>则返回50。虽然这个特性算不上完美的重载，但也足够弥补ECMAScript的这一缺憾了。</p>
+
+  <p class="calibre2">另一个与参数相关的重要方面，就是<code class="calibre15">arguments</code>对象可以与命名参数一起使用，如下面的例子所示：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">function doAdd(num1, num2) {
+    <b class="calibre3">if(arguments.length == 1) {</b>
+       alert(num1 + 10);
+    <b class="calibre3">} else if (arguments.length == 2) {</b>
+        alert(arguments[0] + num2);
+    <b class="calibre3">}</b>
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample08.htm</i></p>
+
+  <p class="calibre2">在重写后的这个<code class="calibre15">doAdd()</code>函数中，两个命名参数都与<code class="calibre15">arguments</code>对象一起使用。由于<code class="calibre15">num1</code>的值与<code class="calibre15">arguments[0]</code>的值相同，因此它们可以互换使用（当然，<code class="calibre15">num2</code>和<code class="calibre15">arguments[1]</code>也是如此）。</p>
+
+  <p class="calibre2">关于<code class="calibre15">arguments</code>的行为，还有一点比较有意思。那就是它的值永远与对应命名参数的值保持同步。例如：</p>
+  <pre class="calibre18"><code class="calibre15">function doAdd(num1, num2) {
+    arguments[1] = 10;    
+    alert(arguments[0] + num2);
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample09.htm</i></p>
+
+  <p class="calibre2">每次执行这个<code class="calibre15">doAdd()</code>函数都会重写第二个参数，将第二个参数的值修改为10。因为<code class="calibre15">arguments</code>对象中的值会自动反映到对应的命名参数，所以修改<code class="calibre15">arguments[1]</code>，也就修改了<code class="calibre15">num2</code>，结果它们的值都会变成10。不过，这并不是说读取这两个值会访问相同的内存空间；它们的内存空间是独立的，但它们的值会同步。但这种影响是单向的：修改命名参数不会改变<code class="calibre15">arguments</code>中对应的值。另外还要记住，如果只传入了一个参数，那么为<code class="calibre15">arguments[1]</code>设置的值不会反应到命名参数中。这是因为<code class="calibre15">arguments</code>对象的长度是由传入的参数个数决定的，不是由定义函数时的命名参数的个数决定的。</p>
+
+  <p class="calibre2">关于参数还要记住最后一点：没有传递值的命名参数将自动被赋予<code class="calibre15">undefined</code>值。这就跟定义了变量但又没有初始化一样。例如，如果只给<code class="calibre15">doAdd()</code>函数传递了一个参数，则<code class="calibre15">num2</code>中就会保存<code class="calibre15">undefined</code>值。</p>
+
+  <p class="calibre2">严格模式对如何使用<code class="calibre15">argumetns</code>对象做出了一些限制。首先，像前面例子中那样的赋值会变得无效。也就是说，即使把<code class="calibre15">arguments[1]</code>设置为<code class="calibre15">10</code>，<code class="calibre15">num2</code>的值仍然还是<code class="calibre15">undefined</code>。其次，重写<code class="calibre15">arguments</code>的值会导致语法错误（代码将不会执行）。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> ECMAScript中的所有参数传递的都是值，不可能通过引用传递参数。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_41"><strong class="calibre10">3.7.2　没有重载</strong></h3>
+
+  <p class="calibre2">ECMAScript函数不能像传统意义上那样实现重载。而在其他语言（如Java）中，可以为一个函数编写两个定义，只要这两个定义的签名（接受的参数的类型和数量）不同即可。如前所述，ECMAScirpt函数没有签名，因为其参数是由包含零或多个值的数组来表示的。而没有函数签名，真正的重载是不可能做到的。</p>
+
+  <p class="calibre2">如果在ECMAScript中定义了两个名字相同的函数，则该名字只属于后定义的函数。请看下面的例子：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function addSomeNumber(num){
+    return num + 100;
+}
+
+function addSomeNumber(num) {
+    return num + 200;
+}
+
+var result = addSomeNumber(100);    //300
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionExample10.htm</i></p>
+
+  <p class="calibre2">在此，函数<code class="calibre15">addSomeNumber()</code>被定义了两次。第一个版本给参数加100，而第二个版本给参数加200。由于后定义的函数覆盖了先定义的函数，因此当在最后一行代码中调用这个函数时，返回的结果就是300。</p>
+
+  <p class="calibre2">如前所述，通过检查传入函数中参数的类型和数量并作出不同的反应，可以模仿方法的重载。</p>
+</body>
+</html>

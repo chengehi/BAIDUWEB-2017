@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_259"><strong class="calibre10">D.2　压缩器</strong></h2>
+
+  <p class="calibre2">JavaScript构建过程中很重要的一部分，是压缩输出并移除多余的字符。这样做可以确保传送到浏览器的字节数最小化，最终加速了用户体验。有几种压缩比率不同的工具可以选择。D.2.1　JSMin</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_335"><strong class="calibre10">D.2.1　JSMin</strong></h3>
+
+  <p class="calibre2">JSMin是由Douglas Crockford写的一个基于C的压缩器，进行最基本的JavaScript压缩。它主要是移除空白和注释，确保最终的代码依然可以被顺利执行。JSMin有Windows执行程序，包括C版本代码，还有其他语言的代码：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><strong class="calibre3">价格</strong>：免费</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><strong class="calibre3">网站</strong>：<a class="calibre6" href="http://www.crockford.com/javascript/jsmin.html">http://www.crockford.com/javascript/jsmin.html</a></p>
+    </li>
+  </ul>
+
+  <h3 class="calibre22" id="sigil_toc_id_336"><strong class="calibre10">D.2.2　Dojo ShrinkSafe</strong></h3>
+
+  <p class="calibre2">负责Dojo Toolkit的同一批人开发了一个叫做ShrinkSafe的工具，它使用了Rhino JavaScript解释器首先将JavaScript代码解析为记号流，然后用它们来安全压缩代码。和JSMin一样，ShrinkSafe移除多余的空白符（不包括换行）和注释，但是还更进一步将局部变量替换为两个字符长的变量名。最后可以比JSMin产生更小输出，而没有引入语法错误的风险。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><strong class="calibre3">价格</strong>：免费</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><strong class="calibre3">网站</strong>：<a class="calibre6" href="http://shrinksafe.dojotoolkit.org/">http://shrinksafe.dojotoolkit.org/</a></p>
+    </li>
+  </ul>
+
+  <h3 class="calibre22" id="sigil_toc_id_337"><strong class="calibre10">D.2.3　YUI Compressor</strong></h3>
+
+  <p class="calibre2">YUI小组有一个叫做YUI Compressor的压缩器。和ShrinkSafe类似，YUI Compressor利用了Rhino解释器将JavaScript代码解析为记号流，并移除注释和空白字符并替换变量名。与ShrinkSafe不同，YUI Compressor还移除换行并进行一些细微的优化进一步节省字节数。一般来说，YUI Compressor处理过的文件要小于JSMin或者ShrinkSafe处理过的文件。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><strong class="calibre3">价格</strong>：免费</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><strong class="calibre3">网站</strong>：<a class="calibre6" href="http://yuilibrary.com/projects/yuicompressor">http://yuilibrary.com/projects/yuicompressor</a></p>
+    </li>
+  </ul>
+</body>
+</html>

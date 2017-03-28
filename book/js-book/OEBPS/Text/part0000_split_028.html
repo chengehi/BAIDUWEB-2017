@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_18">3.2　关键字和保留字</h2>
+
+  <p class="calibre2">ECMA-262描述了一组具有特定用途的<strong class="calibre3">关键字</strong>，这些关键字可用于表示控制语句的开始或结束，或者用于执行特定操作等。按照规则，关键字也是语言保留的，不能用作标识符。以下就是ECMAScript的全部关键字（带<code class="calibre15">*</code>号上标的是第5版新增的关键字）：</p>
+  <pre class="calibre18"><code class="calibre15">break         do           instanceof        typeof
+case          else         new               var
+catch         finally      return            void
+continue      for          switch            while
+debugger*     function     this              with
+default       if           throw
+delete        in           try
+</code></pre>
+
+  <p class="calibre2">ECMA-262还描述了另外一组不能用作标识符的<strong class="calibre3">保留字</strong>。尽管保留字在这门语言中还没有任何特定的用途，但它们有可能在将来被用作关键字。以下是ECMA-262第3版定义的全部保留字：</p>
+  <pre class="calibre18"><code class="calibre15">abstract      enum            int            short
+boolean       export          interface      static
+byte          extends         long           super
+char          final           native         synchronized
+class         float           package        throws
+const         goto            private        transient
+debugger      implements      protected      volatile
+double        import          public
+</code></pre>
+
+  <p class="calibre2">第5版把在非严格模式下运行时的保留字缩减为下列这些：</p>
+  <pre class="calibre18"><code class="calibre15">class          enum          extends         super
+const          export        import
+</code></pre>
+
+  <p class="calibre2">在严格模式下，第5版还对以下保留字施加了限制：</p>
+  <pre class="calibre18"><code class="calibre15">implements     package       public
+interface      private       static
+let            protected     yield
+</code></pre>
+
+  <p class="calibre2">注意，<code class="calibre15">let</code>和<code class="calibre15">yield</code>是第5版新增的保留字；其他保留字都是第3版定义的。为了最大程度地保证兼容性，建议读者将第3版定义的保留字外加<code class="calibre15">let</code>和<code class="calibre15">yield</code>作为编程时的参考。</p>
+
+  <p class="calibre2">在实现ECMAScript 3的JavaScript引擎中使用关键字作标识符，会导致“Identifier Expected”错误。而使用保留字作标识符可能会也可能不会导致相同的错误，具体取决于特定的引擎。</p>
+
+  <p class="calibre2">第5版对使用关键字和保留字的规则进行了少许修改。关键字和保留字虽然仍然不能作为标识符使用，但现在可以用作对象的属性名。一般来说，最好都不要使用关键字和保留字作为标识符和属性名，以便与将来的ECMAScript版本兼容。</p>
+
+  <p class="calibre2">除了上面列出的保留字和关键字，ECMA-262第5版对<code class="calibre15">eval</code>和<code class="calibre15">arguments</code>还施加了限制。在严格模式下，这两个名字也不能作为标识符或属性名，否则会抛出错误。</p>
+</body>
+</html>

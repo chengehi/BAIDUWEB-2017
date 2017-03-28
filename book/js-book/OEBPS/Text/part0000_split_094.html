@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_106">13.6　模拟事件</h2>
+
+  <p class="calibre2">事件，就是网页中某个特别值得关注的瞬间。事件经常由用户操作或通过其他浏览器功能来触发。但很少有人知道，也可以使用JavaScript在任意时刻来触发特定的事件，而此时的事件就如同浏览器创建的事件一样。也就是说，这些事件该冒泡还会冒泡，而且照样能够导致浏览器执行已经指定的处理它们的事件处理程序。在测试Web应用程序，模拟触发事件是一种极其有用的技术。DOM2级规范为此规定了模拟特定事件的方式，IE9、Opera、Firefox、Chrome和Safari都支持这种方式。IE有它自己模拟事件的方式。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_154"><strong class="calibre10">13.6.1　DOM中的事件模拟</strong></h3>
+
+  <p class="calibre2">可以在<code class="calibre15">document</code>对象上使用<code class="calibre15">createEvent()</code>方法创建<code class="calibre15">event</code>对象。这个方法接收一个参数，即表示要创建的事件类型的字符串。在DOM2级中，所有这些字符串都使用英文复数形式，而在DOM3级中都变成了单数。这个字符串可以是下列几字符串之一。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">UIEvents</code>：一般化的UI事件。鼠标事件和键盘事件都继承自UI事件。DOM3级中是<code class="calibre15">UIEvent</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">MouseEvents</code>：一般化的鼠标事件。DOM3级中是<code class="calibre15">MouseEvent</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">MutationEvents</code>：一般化的DOM变动事件。DOM3级中是<code class="calibre15">MutationEvent</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">HTMLEvents</code>：一般化的HTML事件。没有对应的DOM3级事件（HTML事件被分散到其他类别中）。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">要注意的是，“DOM2级事件”并没有专门规定键盘事件，后来的“DOM3级事件”中才正式将其作为一种事件给出规定。IE9是目前唯一支持DOM3级键盘事件的浏览器。不过，在其他浏览器中，在现有方法的基础上，可以通过几种方式来模拟键盘事件。</p>
+
+  <p class="calibre2">在创建了<code class="calibre15">event</code>对象之后，还需要使用与事件有关的信息对其进行初始化。每种类型的<code class="calibre15">event</code>对象都有一个特殊的方法，为它传入适当的数据就可以初始化该<code class="calibre15">event</code>对象。不同类型的这个方法的名字也不相同，具体要取决于<code class="calibre15">createEvent()</code>中使用的参数。</p>
+
+  <p class="calibre2">模拟事件的最后一步就是触发事件。这一步需要使用<code class="calibre15">dispatchEvent()</code>方法，所有支持事件的DOM节点都支持这个方法。调用<code class="calibre15">dispatchEvent()</code>方法时，需要传入一个参数，即表示要触发事件的<code class="calibre15">event</code>对象。触发事件之后，该事件就跻身“官方事件”之列了，因而能够照样冒泡并引发相应事件处理程序的执行。</p>
+
+  <p class="calibre2">1. <strong class="calibre3">模拟鼠标事件</strong></p>
+
+  <p class="calibre2">创建新的鼠标事件对象并为其指定必要的信息，就可以模拟鼠标事件。创建鼠标事件对象的方法是为<code class="calibre15">createEvent()</code>传入字符串<code class="calibre15">"MouseEvents"</code>。返回的对象有一个名为<code class="calibre15">initMouseEvent()</code>方法，用于指定与该鼠标事件有关的信息。这个方法接收15个参数，分别与鼠标事件中每个典型的属性一一对应；这些参数的含义如下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">type</code>（字符串）：表示要触发的事件类型，例如<code class="calibre15">"click"</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">bubbles</code>（布尔值）：表示事件是否应该冒泡。为精确地模拟鼠标事件，应该把这个参数设置为<code class="calibre15">true</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">cancelable</code>（布尔值）：表示事件是否可以取消。为精确地模拟鼠标事件，应该把这个参数设置为<code class="calibre15">true</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">view</code>（AbstractView）：与事件关联的视图。这个参数几乎总是要设置为<code class="calibre15">document.defaultView</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">detail</code>（整数）：与事件有关的详细信息。这个值一般只有事件处理程序使用，但通常都设置为0。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">screenX</code>（整数）：事件相对于屏幕的X坐标。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">screenY</code>（整数）：事件相对于屏幕的Y坐标。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">clientX</code>（整数）：事件相对于视口的X坐标。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">clientY</code>（整数）：事件想对于视口的Y坐标。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">ctrlKey</code>（布尔值）：表示是否按下了Ctrl键。默认值为<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">altKey</code>（布尔值）：表示是否按下了Alt键。默认值为<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">shiftKey</code>（布尔值）：表示是否按下了Shift键。默认值为<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">metaKey</code>（布尔值）：表示是否按下了Meta键。默认值为<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">button</code>（整数）：表示按下了哪一个鼠标键。默认值为<code class="calibre15">0</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">relatedTarget</code>（对象）：表示与事件相关的对象。这个参数只在模拟<code class="calibre15">mouseover</code>或<code class="calibre15">mouseout</code>时使用。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">显而易见，<code class="calibre15">initMouseEvent()</code>方法的这些参数是与鼠标事件的<code class="calibre15">event</code>对象所包含的属性一一对应的。其中，前4个参数对正确地激发事件至关重要，因为浏览器要用到这些参数；而剩下的所有参数只有在事件处理程序中才会用到。当把<code class="calibre15">event</code>对象传给<code class="calibre15">dispatchEvent()</code>方法时，这个对象的<code class="calibre15">target</code>属性会自动设置。下面，我们就通过一个例子来了解如何模拟对按钮的单击事件。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var btn = document.getElementById("myBtn");
+
+//创建事件对象
+var event = document.createEvent("MouseEvents");
+
+//初始化事件对象
+event.initMouseEvent("click", true, true, document.defaultView, 0, 0, 0, 0, 0, 
+                     false, false, false, false, 0, null);
+
+//触发事件
+btn.dispatchEvent(event);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SimulateDOMClickExample01.htm</i></p>
+
+  <p class="calibre2">在兼容DOM的浏览器中，也可以通过相同的方式来模拟其他鼠标事件（例如<code class="calibre15">dblclick</code>）。</p>
+
+  <p class="calibre2">2. <strong class="calibre3">模拟键盘事件</strong></p>
+
+  <p class="calibre2">前面曾经提到过，“DOM2级事件”中没有就键盘事件作出规定，因此模拟键盘事件并没有现成的思路可循。“DOM2级事件”的草案中本来包含了键盘事件，但在定稿之前又被删除了；Firefox根据其草案实现了键盘事件。需要提请大家注意的是，“DOM3级事件”中的键盘事件与曾包含在“DOM2级事件”草案中的键盘事件有很大区别。</p>
+
+  <p class="calibre2">DOM3级规定，调用<code class="calibre15">createEvent()</code>并传入<code class="calibre15">"KeyboardEvent"</code>就可以创建一个键盘事件。返回的事件对象会包含一个<code class="calibre15">initKeyEvent()</code>方法，这个方法接收下列参数。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">type</code>（字符串）：表示要触发的事件类型，如<code class="calibre15">"keydown"</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">bubbles</code>（布尔值）：表示事件是否应该冒泡。为精确模拟鼠标事件，应该设置为<code class="calibre15">true</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">cancelable</code>（布尔值）：表示事件是否可以取消。为精确模拟鼠标事件，应该设置为<code class="calibre15">true</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">view</code>（<code class="calibre15">AbstractView</code>）：与事件关联的视图。这个参数几乎总是要设置为<code class="calibre15">document.defaultView</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">key</code>（布尔值）：表示按下的键的键码。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">location</code>（整数）：表示按下了哪里的键。0表示默认的主键盘，1表示左，2表示右，3表示数字键盘，4表示移动设备（即虚拟键盘），5表示手柄。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">modifiers</code>（字符串）：空格分隔的修改键列表，如<code class="calibre15">"Shift"</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">repeat</code>（整数）：在一行中按了这个键多少次。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">由于DOM3级不提倡使用<code class="calibre15">keypress</code>事件，因此只能利用这种技术来模拟<code class="calibre15">keydown</code>和<code class="calibre15">keyup</code>事件。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var textbox = document.getElementById("myTextbox"),
+    event; 
+
+//以DOM3级方式创建事件对象
+if (document.implementation.hasFeature("KeyboardEvents", "3.0")){
+    event = document.createEvent("KeyboardEvent");
+
+    //初始化事件对象
+    event.initKeyboardEvent("keydown", true, true, document.defaultView, "a",
+                            0, "Shift", 0);
+}
+
+//触发事件
+textbox.dispatchEvent(event);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SimulateDOMKeyEventExample01.htm</i></p>
+
+  <p class="calibre2">这个例子模拟的是按住Shift的同时又按下A键。在使用<code class="calibre15">document.createEvent("KeyboardEvent")</code>之前，应该先检测浏览器是否支持DOM3级事件；其他浏览器返回一个非标准的<code class="calibre15">KeyboardEvent</code>对象。</p>
+
+  <p class="calibre2">在Firefox中，调用<code class="calibre15">createEvent()</code>并传入<code class="calibre15">"KeyEvents"</code>就可以创建一个键盘事件。返回的事件对象会包含一个<code class="calibre15">initKeyEvent()</code>方法，这个方法接受下列10个参数。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">type</code>（字符串）：表示要触发的事件类型，如<code class="calibre15">"keydown"</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">bubbles</code>（布尔值）：表示事件是否应该冒泡。为精确模拟鼠标事件，应该设置为<code class="calibre15">true</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">cancelable</code>（布尔值）：表示事件是否可以取消。为精确模拟鼠标事件，应该设置为<code class="calibre15">true</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">view</code>（<code class="calibre15">AbstractView</code>）：与事件关联的视图。这个参数几乎总是要设置为<code class="calibre15">document.defaultView</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">ctrlKey</code>（布尔值）：表示是否按下了Ctrl键。默认值为<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">altKey</code>（布尔值）：表示是否按下了Alt键。默认值为<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">shiftKey</code>（布尔值）：表示是否按下了Shift键。默认值为<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">metaKey</code>（布尔值）：表示是否按下了Meta键。默认值为<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">keyCode</code>（整数）：被按下或释放的键的键码。这个参数对<code class="calibre15">keydown</code>和<code class="calibre15">keyup</code>事件有用，默认值为<code class="calibre15">0</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">charCode</code>（整数）：通过按键生成的字符的ASCII编码。这个参数对<code class="calibre15">keypress</code>事件有用，默认值为0。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">将创建的<code class="calibre15">event</code>对象传入到<code class="calibre15">dispatchEvent()</code>方法就可以触发键盘事件，如下面的例子所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">//只适用于Firefox
+var textbox = document.getElementById("myTextbox")
+
+<b class="calibre3">//创建事件对象</b>
+<b class="calibre3">var event = document.createEvent("KeyEvents");</b>
+
+<b class="calibre3">//初始化事件对象</b>
+<b class="calibre3">event.initKeyEvent("keypress", true, true, document.defaultView, false, false,</b>
+                   <b class="calibre3">false, false, 65, 65);</b>
+
+//触发事件
+textbox.dispatchEvent(event);
+</pre>
+
+  <p class="calibre8"><i class="calibre7">SimulateFFKeyEventExample01.htm</i></p>
+
+  <p class="calibre2">在Firefox中运行上面的代码，会在指定的文本框中输入字母A。同样，也可以依此模拟<code class="calibre15">keyup</code>和<code class="calibre15">keydown</code>事件。</p>
+
+  <p class="calibre2">在其他浏览器中，则需要创建一个通用的事件，然后再向事件对象中添加键盘事件特有的信息。 例如：</p>
+  <pre class="calibre18">var textbox = document.getElementById("myTextbox");
+
+<b class="calibre3">//创建事件对象</b>
+<b class="calibre3">var event = document.createEvent("Events");</b>
+
+<b class="calibre3">//初始化事件对象</b>
+<b class="calibre3">event.initEvent(type, bubbles, cancelable);</b>
+<b class="calibre3">event.view = document.defaultView;</b>
+<b class="calibre3">event.altKey = false;</b>
+<b class="calibre3">event.ctrlKey = false;</b>
+<b class="calibre3">event.shiftKey = false;</b>
+<b class="calibre3">event.metaKey = false;</b>
+<b class="calibre3">event.keyCode = 65;</b>
+<b class="calibre3">event.charCode = 65;</b>
+
+//触发事件
+textbox.dispatchEvent(event);
+</pre>
+
+  <p class="calibre2">以上代码首先创建了一个通用事件，然后调用<code class="calibre15">initEvent()</code>对其进行初始化，最后又为其添加了键盘事件的具体信息。在此必须要使用通用事件，而不能使用UI事件，因为UI事件不允许向<code class="calibre15">event</code>对象中再添加新属性（Safari除外）。像这样模拟事件虽然会触发键盘事件，但却不会向文本框中写入文本，这是由于无法精确模拟键盘事件所造成的。</p>
+
+  <p class="calibre2">3. <strong class="calibre3">模拟其他事件</strong></p>
+
+  <p class="calibre2">虽然鼠标事件和键盘事件是在浏览器中最经常模拟的事件，但有时候同样需要模拟变动事件和HTML事件。要模拟变动事件，可以使用<code class="calibre15">createEvent("MutationEvents")</code>创建一个包含<code class="calibre15">initMutationEvent()</code>方法的变动事件对象。这个方法接受的参数包括：<code class="calibre15">type</code>、<code class="calibre15">bubbles</code>、<code class="calibre15">cancelable</code>、<code class="calibre15">relatedNode</code>、<code class="calibre15">preValue</code>、<code class="calibre15">newValue</code>、<code class="calibre15">attrName</code>和<code class="calibre15">attrChange</code>。下面来看一个模拟变动事件的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var event = document.createEvent("MutationEvents");
+event.initMutationEvent("DOMNodeInserted", true, false, someNode, "","","",0);
+target.dispatchEvent(event);
+</code></pre>
+
+  <p class="calibre2">以上代码模拟了<code class="calibre15">DOMNodeInserted</code>事件。其他变动事件也都可以照这个样子来模拟，只要改一改参数就可以了。</p>
+
+  <p class="calibre2">要模拟HTML事件，同样需要先创建一个<code class="calibre15">event</code>对象——通过<code class="calibre15">createEvent("HTMLEvents")</code>，然后再使用这个对象的<code class="calibre15">initEvent()</code>方法来初始化它即可，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">var event = document.createEvent("HTMLEvents");
+event.initEvent("focus", true, false);
+target.dispatchEvent(event);
+</code></pre>
+
+  <p class="calibre2">这个例子展示了如何在给定目标上模拟<code class="calibre15">focus</code>事件。模拟其他HTML事件的方法也是这样。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 浏览器中很少使用变动事件和HTML事件，因为使用它们会受到一些限制。</p>
+  </blockquote>
+
+  <p class="calibre2">4. <strong class="calibre3">自定义DOM事件</strong></p>
+
+  <p class="calibre2">DOM3级还定义了“自定义事件”。自定义事件不是由DOM原生触发的，它的目的是让开发人员创建自己的事件。要创建新的自定义事件，可以调用<code class="calibre15">createEvent("CustomEvent")</code>。返回的对象有一个名为<code class="calibre15">initCustomEvent()</code>的方法，接收如下4个参数。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">type</code>（字符串）：触发的事件类型，例如<code class="calibre15">"keydown"</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">bubbles</code>（布尔值）：表示事件是否应该冒泡。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">cancelable</code>（布尔值）：表示事件是否可以取消。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">detail</code>（对象）：任意值，保存在<code class="calibre15">event</code>对象的<code class="calibre15">detail</code>属性中。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">可以像分派其他事件一样在DOM中分派创建的自定义事件对象。例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var div = document.getElementById("myDiv"),
+    event; 
+
+EventUtil.addHandler(div, "myevent", function(event){
+    alert("DIV: " + event.detail);
+});
+EventUtil.addHandler(document, "myevent", function(event){
+    alert("DOCUMENT: " + event.detail);
+});
+
+if (document.implementation.hasFeature("CustomEvents", "3.0")){
+    event = document.createEvent("CustomEvent");
+    event.initCustomEvent("myevent", true, false, "Hello world!");
+    div.dispatchEvent(event);
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SimulateDOMCustomEventExample01.htm</i></p>
+
+  <p class="calibre2">这个例子创建了一个冒泡事件<code class="calibre15">"myevent"</code>。而<code class="calibre15">event.detail</code>的值被设置成了一个简单的字符串，然后在<code class="calibre15">&lt;div&gt;</code>元素和<code class="calibre15">document</code>上侦听这个事件。因为<code class="calibre15">initCustomEvent()</code>方法已经指定这个事件应该冒泡，所以浏览器会负责将事件向上冒泡到<code class="calibre15">document</code>。</p>
+
+  <p class="calibre2">支持自定义DOM事件的浏览器有IE9+和Firefox 6+。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_155"><strong class="calibre10">13.6.2　IE中的事件模拟</strong></h3>
+
+  <p class="calibre2">在IE8及之前版本中模拟事件与在DOM中模拟事件的思路相似：先创建<code class="calibre15">event</code>对象，然后为其指定相应的信息，然后再使用该对象来触发事件。当然，IE在实现每个步骤时都采用了不一样的方式。</p>
+
+  <p class="calibre2">调用<code class="calibre15">document.createEventObject()</code>方法可以在IE中创建<code class="calibre15">event</code>对象。但与DOM方式不同的是，这个方法不接受参数，结果会返回一个通用的<code class="calibre15">event</code>对象。然后，你必须手工为这个对象添加所有必要的信息（没有方法来辅助完成这一步骤）。最后一步就是在目标上调用<code class="calibre15">fireEvent()</code>方法，这个方法接受两个参数：事件处理程序的名称和<code class="calibre15">event</code>对象。在调用<code class="calibre15">fireEvent()</code>方法时，会自动为<code class="calibre15">event</code>对象添加<code class="calibre15">srcElement</code>和<code class="calibre15">type</code>属性；其他属性则都是必须通过手工添加的。换句话说，模拟任何IE支持的事件都采用相同的模式。例如，下面的代码模拟了在一个按钮上触发<code class="calibre15">click</code>事件过程。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var btn = document.getElementById("myBtn");
+
+//创建事件对象
+var event = document.createEventObject();
+
+//初始化事件对象
+event.screenX = 100;
+event.screenY = 0;
+event.clientX = 0;
+event.clientY = 0;
+event.ctrlKey = false;
+event.altKey = false;
+event.shiftKey = false;
+event.button = 0;
+
+//触发事件
+btn.fireEvent("onclick", event);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SimulateIEClickExample01.htm</i></p>
+
+  <p class="calibre2">这个例子先创建了一个<code class="calibre15">event</code>对象，然后又用一些信息对其进行了初始化。注意，这里可以为对象随意添加属性，不会有任何限制——即使添加的属性IE8及更早版本并不支持也无所谓。在此添加的属性对事件没有什么影响，因为只有事件处理程序才会用到它们。</p>
+
+  <p class="calibre2">采用相同的模式也可以模拟触发<code class="calibre15">keypress</code>事件，如下面的例子所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var textbox = document.getElementById("myTextbox");
+
+//创建事件对象
+var event = document.createEventObject();
+
+//初始化事件对象
+event.altKey = false;
+event.ctrlKey = false;
+event.shiftKey = false;
+event.keyCode = 65;
+
+//触发事件
+textbox.fireEvent("onkeypress", event);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SimulateIEKeyEventExample01.htm</i></p>
+
+  <p class="calibre2">由于鼠标事件、键盘事件以及其他事件的<code class="calibre15">event</code>对象并没有什么不同，所以可以使用通用对象来触发任何类型的事件。不过，正如在DOM中模拟键盘事件一样，运行这个例子也不会因模拟了<code class="calibre15">keypress</code>而在文本框中看到任何字符，即使触发了事件处理程序也没有用。</p>
+</body>
+</html>

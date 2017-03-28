@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_231"><strong class="calibre10">A.3　数组及其他结构</strong></h2>
+
+  <p class="calibre2">Harmony的另一个重点是数组。数组是JavaScript使用最频繁的一种数据结构，因此定义一些更直观更方便地使用数组的方式，绝对是改进这门语言时最优先考虑的事。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_306"><strong class="calibre10">A.3.1　迭代器</strong></h3>
+
+  <p class="calibre2">迭代器也是一个对象，它能迭代一系列值并每次返回其中一个值。想象一下使用<code class="calibre15">for</code>或<code class="calibre15">for-in</code>循环，这时候就是在迭代一批值，而且每次操作其中的一个值。迭代器的作用相同，只不过用不着使用循环了。Harmony为各种类型的对象都定义了迭代器。</p>
+
+  <p class="calibre2">要为对象创建迭代器，可以调用<code class="calibre15">Iterator</code>构造函数，传入想要迭代其值的对象。要取得对象中的下一个值，可以调用迭代器的<code class="calibre15">next()</code>方法。默认情况下，这个方法会返回一个数组。如果迭代的是数组，那么返回数组的第一个元素是值的索引，如果迭代的是对象，那么返回数组的第一个元素是值的属性名；返回数组的第二个元素是值本身。如果所有值都已经迭代了一遍，则再调用<code class="calibre15">next()</code>会抛出<code class="calibre15">StopIteration</code>错误。看下面这个例子。</p>
+  <pre class="calibre18"><code class="calibre15">var person = {
+    name: "Nicholas",
+    age: 29 
+};
+var iterator = new Iterator(person);
+
+try {
+    while(true){
+        let value = iterator.next();
+        document.write(value.join(":") + "&lt;br&gt;");
+    }
+} catch(ex){
+    //有意没有写代码
+}
+</code></pre>
+
+  <p class="calibre2">以上代码为<code class="calibre15">person</code>对象创建了一个迭代器。第一次调用<code class="calibre15">next()</code>方法，返回数组<code class="calibre15">["name","Nicholas"]</code>，第二次调用返回数组<code class="calibre15">["age", 29]</code>。以上代码的输入结果为：</p>
+  <pre class="calibre18"><code class="calibre15">name:Nicholas
+age:29
+</code></pre>
+
+  <p class="calibre2">如果为非数组对象创建迭代器，则迭代器会按照与使用<code class="calibre15">for-in</code>循环一样的顺序，返回对象的每个属性。这就意味着迭代器也只能返回对象的实例属性，而且返回属性的顺序也会因实现而异。为数组创建的迭代器也类似，即按数组元素顺序依次返回值，下面是一个例子。</p>
+  <pre class="calibre18"><b class="calibre3">var colors = ["red", "green", "blue"];</b>
+<b class="calibre3">var iterator = new Iterator(colors);</b>
+
+try {
+    while(true){
+        let value = iterator.next();
+        document.write(value.join(":") + "&lt;br&gt;");
+    }
+} catch(ex){
+
+}
+</pre>
+
+  <p class="calibre2">以上代码的输出结果如下：</p>
+  <pre class="calibre18"><code class="calibre15">0:red
+1:green
+2:blue
+</code></pre>
+
+  <p class="calibre2">如果你只想让<code class="calibre15">next()</code>方法返回对象的属性名或者数组的索引值，可以在创建迭代器时为<code class="calibre15">Iterator</code>构造函数传入第二个参数<code class="calibre15">true</code>，如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">var iterator = new Iterator(colors, true);
+</code></pre>
+
+  <p class="calibre2">在这样创建的迭代器上每次调用<code class="calibre15">next()</code>方法，只会返回数组中每个值的索引，而不会返回包含索引和值数组。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 如果想为自定义类型创建迭代器，需要定义一个特殊的方法<code class="calibre15">__iterator__()</code>，这个方法应该返回一个包含<code class="calibre15">next()</code>方法的对象。当把自定义类型传给<code class="calibre15">Iterator</code>构造函数时，就会调用那个特殊的方法。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_307"><strong class="calibre10">A.3.2　数组领悟</strong></h3>
+
+  <p class="calibre2">所谓数组领悟（array comprehensions），指的是用一组符合某个条件的值来初始化数组。Harmony定义的这项功能借鉴了Python中流行的一个语言结构。JavaScript中数组领悟的基本形式如下：</p>
+  <pre class="calibre18"><i class="calibre7">array</i> = [ <i class="calibre7">value</i> for each (<i class="calibre7">variable</i> in <i class="calibre7">values</i>) <i class="calibre7">condition</i> ];</pre>
+
+  <p class="calibre2">其中，<code class="calibre15">value</code>是实际会包含在数组中的值，它源自<code class="calibre15">values</code>数组。<code class="calibre15">for each</code>结构会循环<code class="calibre15">values</code>中的每一个值，并将每个值保存在变量<code class="calibre15">variable</code>中。如果保存在<code class="calibre15">variable</code>中的值符合<code class="calibre15">condition</code>条件，就会将这个值添加到结果数组中。下面是一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">//原始数组
+var numbers = [0,1,2,3,4,5,6,7,8,9,10];
+
+//把所有元素复制到新数组
+var duplicate = [i for each (i in numbers)];
+
+//只把偶数复制到新数组
+var evens = [i for each (i in numbers) if (i % 2 == 0)];
+
+//把每个数乘以2后的结果放到新数组中
+var doubled = [i*2 for each (i in numbers)];
+
+//把每个奇数乘以3后的结果放到新数组中
+var tripledOdds = [i*3 for each (i in numbers) if (i % 2 &gt; 0)];
+</code></pre>
+
+  <p class="calibre2">在以上代码的数组领悟部分，我们使用变量<code class="calibre15">i</code>迭代了<code class="calibre15">numbers</code>中的所有值，而其中一些语句给出了条件，以筛选最终包含在数组中的结果。本质上讲，只要条件求值为<code class="calibre15">true</code>，该值就会添加到数组中。与自己编写同样功能的<code class="calibre15">for</code>循环相比，数组领悟的语法稍有不同，但却更加简洁。Firefox 2+是唯一支持数组领悟的浏览器，而且要使用这个功能，必须将<code class="calibre15">&lt;script&gt;</code>的<code class="calibre15">type</code>属性值指定为<code class="calibre15">"application/javascript;version=1.7"</code>。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 数组领悟语法的<code class="calibre15">values</code>也可以是一个生成器或者一个迭代器。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_308"><strong class="calibre10">A.3.3　解构赋值</strong></h3>
+
+  <p class="calibre2">从一组值中挑出一或多个值，然后把它们分别赋给独立的变量，这也是一个很常见的需求。就拿迭代器的<code class="calibre15">next()</code>方法返回的数组来说，假设这个数组包含着对象中一个属性的名称和值。为了把这个属性和值分别保存在各自的变量中，需要写两个语句，如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">var nextValue = ["color", "red"];
+var name = nextValue[0];
+var value = nextValue[1];
+</code></pre>
+
+  <p class="calibre2">而使用解构赋值（destructuring assignments）语法，用一条语句即可解决问题：</p>
+  <pre class="calibre18"><code class="calibre15">var [name, value] = ["color", "red"];
+alert(name);     //"color"
+alert(value);    //"red"
+</code></pre>
+
+  <p class="calibre2">在传统的JavaScript中，数组字面量是不能出现在等于号（赋值操作符）左边的。解构赋值的这种语法表示的是把等于号右边数组中包含的值，分别赋给等于号左边数组中的变量。结果就是变量<code class="calibre15">name</code>的值为<code class="calibre15">"color"</code>，变量<code class="calibre15">value</code>的值为<code class="calibre15">"red"</code>。</p>
+
+  <p class="calibre2">如果你不想取得数组中所有的值，可以只在数组字面量中给出对应的变量，比如：</p>
+  <pre class="calibre18"><code class="calibre15">var [, value] = ["color", "red"];
+alert(value);   //"red"
+</code></pre>
+
+  <p class="calibre2">这样就只会给变量<code class="calibre15">value</code>赋值，值为<code class="calibre15">"red"</code>。</p>
+
+  <p class="calibre2">有了解构赋值，还可做点有创意的事儿，比如交换变量的值。在ECMAScript 3中，要交换两个变量的值，一般是要这样写代码的：</p>
+  <pre class="calibre18"><code class="calibre15">var value1 = 5;
+var value2 = 10;
+
+var temp = value1;
+value1 = value2;
+value2 = temp;
+</code></pre>
+
+  <p class="calibre2">利用解构后的数组赋值，可以省掉那个临时变量<code class="calibre15">temp</code>，比如：</p>
+  <pre class="calibre18"><code class="calibre15">var value1 = 5;
+var value2 = 10;
+
+[value2, value1] = [value1, value2];
+</code></pre>
+
+  <p class="calibre2">解构赋值同样适用于对象，看下面这个例子：</p>
+  <pre class="calibre18"><code class="calibre15">var person = {
+    name: "Nicholas",
+    age: 29
+}; 
+
+var { name: personName, age: personAge } = person;
+
+alert(personName); //"Nicholas"
+alert(personAge);  //29
+</code></pre>
+
+  <p class="calibre2">与使用数组字面量一样，看到等于号左边出现了对象字面量，那就是解构赋值表达式。这条语句实际上定义了两个变量，<code class="calibre15">personName</code>和<code class="calibre15">personAge</code>，它们分别得到了<code class="calibre15">person</code>对象中对应的值。与数组解构赋值一样，在对象解构赋值中也可以选择要取得的值，比如：</p>
+  <pre class="calibre18"><code class="calibre15">var { age: personAge } = person;
+alert(personAge); //29
+</code></pre>
+
+  <p class="calibre2">以上代码只取得了<code class="calibre15">person</code>对象中<code class="calibre15">age</code>属性的值，将它赋给了变量<code class="calibre15">personAge</code>。</p>
+</body>
+</html>

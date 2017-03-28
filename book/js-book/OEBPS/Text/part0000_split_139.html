@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_151">21.4　跨源资源共享</h2>
+
+  <p class="calibre2">通过XHR实现Ajax通信的一个主要限制，来源于跨域安全策略。默认情况下，XHR对象只能访问与包含它的页面位于同一个域中的资源。这种安全策略可以预防某些恶意行为。但是，实现合理的跨域请求对开发某些浏览器应用程序也是至关重要的。</p>
+
+  <p class="calibre2">CORS（Cross-Origin Resource Sharing，跨源资源共享）是W3C的一个工作草案，定义了在必须访问跨源资源时，浏览器与服务器应该如何沟通。CORS背后的基本思想，就是使用自定义的HTTP头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功，还是应该失败。</p>
+
+  <p class="calibre2">比如一个简单的使用<code class="calibre15">GET</code>或<code class="calibre15">POST</code>发送的请求，它没有自定义的头部，而主体内容是text/plain。在发送该请求时，需要给它附加一个额外的<code class="calibre15">Origin</code>头部，其中包含请求页面的源信息（协议、域名和端口），以便服务器根据这个头部信息来决定是否给予响应。下面是<code class="calibre15">Origin</code>头部的一个示例：</p>
+  <pre class="calibre18"><code class="calibre15">Origin: http://www.nczonline.net
+</code></pre>
+
+  <p class="calibre2">如果服务器认为这个请求可以接受，就在<code class="calibre15">Access-Control-Allow-Origin</code>头部中回发相同的源信息（如果是公共资源，可以回发<code class="calibre15">"*"</code>）。例如：</p>
+  <pre class="calibre18"><code class="calibre15">Access-Control-Allow-Origin: http://www.nczonline.net
+</code></pre>
+
+  <p class="calibre2">如果没有这个头部，或者有这个头部但源信息不匹配，浏览器就会驳回请求。正常情况下，浏览器会处理请求。注意，请求和响应都不包含cookie信息。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_253"><strong class="calibre10">21.4.1　IE对CORS的实现</strong></h3>
+
+  <p class="calibre2">微软在IE8中引入了XDR（<code class="calibre15">XDomainRequest</code>）类型。这个对象与XHR类似，但能实现安全可靠的跨域通信。XDR对象的安全机制部分实现了W3C的CORS规范。以下是XDR与XHR的一些不同之处。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">cookie不会随请求发送，也不会随响应返回。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">只能设置请求头部信息中的<code class="calibre15">Content-Type</code>字段。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">不能访问响应头部信息。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">只支持<code class="calibre15">GET</code>和<code class="calibre15">POST</code>请求。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">这些变化使CSRF（Cross-Site Request Forgery，跨站点请求伪造）和XSS（Cross-Site Scripting，跨站点脚本）的问题得到了缓解。被请求的资源可以根据它认为合适的任意数据（用户代理、来源页面等）来决定是否设置<code class="calibre15">Access-Control- Allow-Origin</code>头部。作为请求的一部分，<code class="calibre15">Origin</code>头部的值表示请求的来源域，以便远程资源明确地识别XDR请求。</p>
+
+  <p class="calibre2">XDR对象的使用方法与XHR对象非常相似。也是创建一个<code class="calibre15">XDomainRequest</code>的实例，调用<code class="calibre15">open()</code>方法，再调用<code class="calibre15">send()</code>方法。但与XHR对象的<code class="calibre15">open()</code>方法不同，XDR对象的<code class="calibre15">open()</code>方法只接收两个参数：请求的类型和URL。</p>
+
+  <p class="calibre2">所有XDR请求都是异步执行的，不能用它来创建同步请求。请求返回之后，会触发<code class="calibre15">load</code>事件，响应的数据也会保存在<code class="calibre15">responseText</code>属性中，如下所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var xdr = new XDomainRequest(); 
+xdr.onload = function(){
+    alert(xdr.responseText);
+};
+xdr.open("get", "http://www.somewhere-else.com/page/");
+xdr.send(null);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">XDomainRequestExample01.htm</i></p>
+
+  <p class="calibre2">在接收到响应后，你只能访问响应的原始文本；没有办法确定响应的状态代码。而且，只要响应有效就会触发<code class="calibre15">load</code>事件，如果失败（包括响应中缺少<code class="calibre15">Access-Control-Allow-Origin</code>头部）就会触发<code class="calibre15">error</code>事件。遗憾的是，除了错误本身之外，没有其他信息可用，因此唯一能够确定的就只有请求未成功了。要检测错误，可以像下面这样指定一个<code class="calibre15">onerror</code>事件处理程序。</p>
+  <pre class="calibre18">var xdr = new XDomainRequest();
+xdr.onload = function(){
+    alert(xdr.responseText);
+};
+<b class="calibre3">xdr.onerror = function(){</b>
+    <b class="calibre3">alert("An error occurred.");</b>
+<b class="calibre3">};</b>
+xdr.open("get", "http://www.somewhere-else.com/page/");
+xdr.send(null);
+</pre>
+
+  <p class="calibre8"><i class="calibre7">XDomainRequestExample01.htm</i></p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 鉴于导致XDR请求失败的因素很多，因此建议你不要忘记通过<code class="calibre15">onerror</code>事件处理程序来捕获该事件；否则，即使请求失败也不会有任何提示。</p>
+  </blockquote>
+
+  <p class="calibre2">在请求返回前调用<code class="calibre15">abort()</code>方法可以终止请求：</p>
+  <pre class="calibre18"><code class="calibre15">xdr.abort(); //终止请求
+</code></pre>
+
+  <p class="calibre2">与XHR一样，XDR对象也支持<code class="calibre15">timeout</code>属性以及<code class="calibre15">ontimeout</code>事件处理程序。下面是一个例子。</p>
+  <pre class="calibre18">var xdr = new XDomainRequest();
+xdr.onload = function(){
+    alert(xdr.responseText);
+};
+xdr.onerror = function(){
+    alert("An error occurred.");
+};
+<b class="calibre3">xdr.timeout = 1000;</b>
+<b class="calibre3">xdr.ontimeout = function(){</b>
+    <b class="calibre3">alert("Request took too long.");</b>
+<b class="calibre3">};</b>
+xdr.open("get", "http://www.somewhere-else.com/page/");
+xdr.send(null);
+</pre>
+
+  <p class="calibre2">这个例子会在运行1秒钟后超时，并随即调用<code class="calibre15">ontimeout</code>事件处理程序。</p>
+
+  <p class="calibre2">为支持<code class="calibre15">POST</code>请求，XDR对象提供了<code class="calibre15">contentType</code>属性，用来表示发送数据的格式，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">var xdr = new XDomainRequest();
+xdr.onload = function(){
+    alert(xdr.responseText);
+};
+xdr.onerror = function(){
+    alert("An error occurred.");
+};
+xdr.open("post", "http://www.somewhere-else.com/page/");
+xdr.contentType = "application/x-www-form-urlencoded";
+xdr.send("name1=value1&amp;name2=value2");
+</code></pre>
+
+  <p class="calibre2">这个属性是通过XDR对象影响头部信息的唯一方式。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_254"><strong class="calibre10">21.4.2　其他浏览器对CORS的实现</strong></h3>
+
+  <p class="calibre2">Firefox 3.5+、Safari 4+、Chrome、iOS版Safari和Android平台中的WebKit都通过<code class="calibre15">XMLHttpRequest</code>对象实现了对CORS的原生支持。在尝试打开不同来源的资源时，无需额外编写代码就可以触发这个行为。要请求位于另一个域中的资源，使用标准的XHR对象并在<code class="calibre15">open()</code>方法中传入绝对URL即可，例如：</p>
+  <pre class="calibre18">var xhr = createXHR();
+xhr.onreadystatechange = function(){
+    if (xhr.readyState == 4){
+        if ((xhr.status &gt;= 200 &amp;&amp; xhr.status &lt; 300) || xhr.status == 304){
+            alert(xhr.responseText);
+        } else {
+            alert("Request was unsuccessful: " + xhr.status);
+        }
+    }
+};
+<b class="calibre3">xhr.open("get", "http://www.somewhere-else.com/page/", true);</b>
+xhr.send(null);
+</pre>
+
+  <p class="calibre2">与IE中的XDR对象不同，通过跨域XHR对象可以访问<code class="calibre15">status</code>和<code class="calibre15">statusText</code>属性，而且还支持同步请求。跨域XHR对象也有一些限制，但为了安全这些限制是必需的。以下就是这些限制。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">不能使用<code class="calibre15">setRequestHeader()</code>设置自定义头部。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">不能发送和接收cookie。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">调用<code class="calibre15">getAllResponseHeaders()</code>方法总会返回空字符串。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">由于无论同源请求还是跨源请求都使用相同的接口，因此对于本地资源，最好使用相对URL，在访问远程资源时再使用绝对URL。这样做能消除歧义，避免出现限制访问头部或本地cookie信息等问题。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_255"><strong class="calibre10">21.4.3　Preflighted Reqeusts</strong></h3>
+
+  <p class="calibre2">CORS通过一种叫做Preflighted Requests的透明服务器验证机制支持开发人员使用自定义的头部、GET或POST之外的方法，以及不同类型的主体内容。在使用下列高级选项来发送请求时，就会向服务器发送一个Preflight请求。这种请求使用OPTIONS方法，发送下列头部。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Origin</code>：与简单的请求相同。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Access-Control-Request-Method</code>：请求自身使用的方法。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Access-Control-Request-Headers</code>：（可选）自定义的头部信息，多个头部以逗号分隔。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">以下是一个带有自定义头部NCZ的使用<code class="calibre15">POST</code>方法发送的请求。</p>
+  <pre class="calibre18"><code class="calibre15">Origin: http://www.nczonline.net
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: NCZ
+</code></pre>
+
+  <p class="calibre2">发送这个请求后，服务器可以决定是否允许这种类型的请求。服务器通过在响应中发送如下头部与浏览器进行沟通。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Access-Control-Allow-Origin</code>：与简单的请求相同。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Access-Control-Allow-Methods</code>：允许的方法，多个方法以逗号分隔。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Access-Control-Allow-Headers</code>：允许的头部，多个头部以逗号分隔。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Access-Control-Max-Age</code>：应该将这个Preflight请求缓存多长时间（以秒表示）。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">例如：</p>
+  <pre class="calibre18"><code class="calibre15">Access-Control-Allow-Origin: http://www.nczonline.net
+Access-Control-Allow-Methods: POST, GET
+Access-Control-Allow-Headers: NCZ
+Access-Control-Max-Age: 1728000
+</code></pre>
+
+  <p class="calibre2">Preflight请求结束后，结果将按照响应中指定的时间缓存起来。而为此付出的代价只是第一次发送这种请求时会多一次HTTP请求。</p>
+
+  <p class="calibre2">支持Preflight请求的浏览器包括Firefox 3.5+、Safari 4+和Chrome。IE 10及更早版本都不支持。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_256"><strong class="calibre10">21.4.4　带凭据的请求</strong></h3>
+
+  <p class="calibre2">默认情况下，跨源请求不提供凭据（cookie、HTTP认证及客户端SSL证明等）。通过将<code class="calibre15">withCredentials</code>属性设置为<code class="calibre15">true</code>，可以指定某个请求应该发送凭据。如果服务器接受带凭据的请求，会用下面的HTTP头部来响应。</p>
+  <pre class="calibre18"><code class="calibre15">Access-Control-Allow-Credentials: true
+</code></pre>
+
+  <p class="calibre2">如果发送的是带凭据的请求，但服务器的响应中没有包含这个头部，那么浏览器就不会把响应交给JavaScript（于是，<code class="calibre15">responseText</code>中将是空字符串，<code class="calibre15">status</code>的值为0，而且会调用<code class="calibre15">onerror()</code>事件处理程序）。另外，服务器还可以在Preflight响应中发送这个HTTP头部，表示允许源发送带凭据的请求。</p>
+
+  <p class="calibre2">支持<code class="calibre15">withCredentials</code>属性的浏览器有Firefox 3.5+、Safari 4+和Chrome。IE 10及更早版本都不支持。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_257"><strong class="calibre10">21.4.5　跨浏览器的CORS</strong></h3>
+
+  <p class="calibre2">即使浏览器对CORS的支持程度并不都一样，但所有浏览器都支持简单的（非Preflight和不带凭据的）请求，因此有必要实现一个跨浏览器的方案。检测XHR是否支持CORS的最简单方式，就是检查是否存在<code class="calibre15">withCredentials</code>属性。再结合检测<code class="calibre15">XDomainRequest</code>对象是否存在，就可以兼顾所有浏览器了。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function createCORSRequest(method, url){ 
+    var xhr = new XMLHttpRequest();
+    if ("withCredentials" in xhr){
+        xhr.open(method, url, true);
+    } else if (typeof XDomainRequest != "undefined"){
+        vxhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        xhr = null;
+    }
+    return xhr;
+}
+
+var request = createCORSRequest("get", "http://www.somewhere-else.com/page/");
+if (request){
+    request.onload = function(){
+        //对request.responseText进行处理
+    };
+    request.send();
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserCORSRequestExample01.htm</i></p>
+
+  <p class="calibre2">Firefox、Safari和Chrome中的<code class="calibre15">XMLHttpRequest</code>对象与IE中的<code class="calibre15">XDomainRequest</code>对象类似，都提供了够用的接口，因此以上模式还是相当有用的。这两个对象共同的属性/方法如下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">abort()</code>：用于停止正在进行的请求。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">onerror</code>：用于替代<code class="calibre15">onreadystatechange</code>检测错误。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">onload</code>：用于替代<code class="calibre15">onreadystatechange</code>检测成功。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">responseText</code>：用于取得响应内容。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">send()</code>：用于发送请求。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">以上成员都包含在<code class="calibre15">createCORSRequest()</code>函数返回的对象中，在所有浏览器中都能正常使用。</p>
+</body>
+</html>

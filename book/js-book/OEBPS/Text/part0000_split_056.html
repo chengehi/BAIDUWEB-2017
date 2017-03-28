@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_46">7.2　闭包</h2>
+
+  <p class="calibre2">有不少开发人员总是搞不清<strong class="calibre3">匿名函数</strong>和<strong class="calibre3">闭包</strong>这两个概念，因此经常混用。<strong class="calibre3">闭包</strong>是指有权访问另一个函数作用域中的变量的函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数，仍以前面的<code class="calibre15">createComparisonFunction()</code>函数为例，注意加粗的代码。</p>
+  <pre class="calibre18">function createComparisonFunction(propertyName) {
+
+    return function(object1, object2){
+        <b class="calibre3">var value1 = object1[propertyName];</b>
+        <b class="calibre3">var value2 = object2[propertyName];</b>
+
+        if (value1 &lt; value2){
+            return -1;
+        } else if (value1 &gt; value2){
+            return 1;
+        } else {
+            return 0;
+        }
+    };
+}
+</pre>
+
+  <p class="calibre2">在这个例子中，突出的那两行代码是内部函数（一个匿名函数）中的代码，这两行代码访问了外部函数中的变量<code class="calibre15">propertyName</code>。即使这个内部函数被返回了，而且是在其他地方被调用了，但它仍然可以访问变量<code class="calibre15">propertyName</code>。之所以还能够访问这个变量，是因为内部函数的作用域链中包含<code class="calibre15">createComparisonFunction()</code>的作用域。要彻底搞清楚其中的细节，必须从理解函数第一次被调用的时候都会发生什么入手。</p>
+
+  <p class="calibre2">第4章介绍了作用域链的概念。而有关如何创建作用域链以及作用域链有什么作用的细节，对彻底理解闭包至关重要。当某个函数第一次被调用时，会创建一个执行环境（execution context）及相应的作用域链，并把作用域链赋值给一个特殊的内部属性（即<code class="calibre15">[[Scope]]</code>）。然后，使用<code class="calibre15">this</code>、<code class="calibre15">arguments</code>和其他命名参数的值来初始化函数的活动对象（activation object）。但在作用域链中，外部函数的活动对象始终处于第二位，外部函数的外部函数的活动对象处于第三位，……直至作为作用域链终点的全局执行环境。</p>
+
+  <p class="calibre2">在函数执行过程中，为读取和写入变量的值，就需要在作用域链中查找变量。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">function compare(value1, value2){
+    if (value1 &lt; value2){
+        return -1;
+    } else if (value1 &gt; value2){
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+var result = compare(5, 10);
+</code></pre>
+
+  <p class="calibre2">以上代码先定义了<code class="calibre15">compare()</code>函数，然后又在全局作用域中调用了它。当第一次调用<code class="calibre15">compare()</code>时，会创建一个包含<code class="calibre15">this</code>、<code class="calibre15">arguments</code>、<code class="calibre15">value1</code>和<code class="calibre15">value2</code>的活动对象。全局执行环境的变量对象（包含<code class="calibre15">this</code>、<code class="calibre15">result</code>和<code class="calibre15">compare</code>）在<code class="calibre15">compare()</code>执行环境的作用域链中则处于第二位。图7-1展示了包含上述关系的<code class="calibre15">compare()</code>函数执行时的作用域链。</p>
+
+  <p class="p-img"><img alt="" class="calibre39" src="../Images/00019.gif" /></p>
+
+  <p class="calibre2"><strong class="calibre3">图　7-1</strong></p>
+
+  <p class="calibre2">后台的每个执行环境都有一个表示变量的对象——变量对象。全局环境的变量对象始终存在，而像<code class="calibre15">compare()</code>函数这样的局部环境的变量对象，则只在函数执行的过程中存在。在创建<code class="calibre15">compare()</code>函数时，会创建一个预先包含全局变量对象的作用域链，这个作用域链被保存在内部的<code class="calibre15">[[Scope]]</code>属性中。当调用<code class="calibre15">compare()</code>函数时，会为函数创建一个执行环境，然后通过复制函数的<code class="calibre15">[[Scope]]</code>属性中的对象构建起执行环境的作用域链。此后，又有一个活动对象（在此作为变量对象使用）被创建并被推入执行环境作用域链的前端。对于这个例子中<code class="calibre15">compare()</code>函数的执行环境而言，其作用域链中包含两个变量对象：本地活动对象和全局变量对象。显然，作用域链本质上是一个指向变量对象的指针列表，它只引用但不实际包含变量对象。</p>
+
+  <p class="calibre2">无论什么时候在函数中访问一个变量时，就会从作用域链中搜索具有相应名字的变量。一般来讲，当函数执行完毕后，局部活动对象就会被销毁，内存中仅保存全局作用域（全局执行环境的变量对象）。但是，闭包的情况又有所不同。</p>
+
+  <p class="calibre2">在另一个函数内部定义的函数会将包含函数（即外部函数）的活动对象添加到它的作用域链中。因此，在<code class="calibre15">createComparisonFunction()</code>函数内部定义的匿名函数的作用域链中，实际上将会包含外部函数<code class="calibre15">createComparisonFunction()</code>的活动对象。图7-2展示了当下列代码执行时，包含函数与内部匿名函数的作用域链。</p>
+  <pre class="calibre18"><code class="calibre15">var compare = createComparisonFunction("name");
+var result = compare({ name: "Nicholas" }, { name: "Greg" });
+</code></pre>
+
+  <p class="calibre2">在匿名函数从<code class="calibre15">createComparisonFunction()</code>中被返回后，它的作用域链被初始化为包含<code class="calibre15">createComparisonFunction()</code>函数的活动对象和全局变量对象。这样，匿名函数就可以访问在<code class="calibre15">createComparisonFunction()</code>中定义的所有变量。更为重要的是，<code class="calibre15">createComparisonFunction()</code>函数在执行完毕后，其活动对象也不会被销毁，因为匿名函数的作用域链仍然在引用这个活动对象。换句话说，当<code class="calibre15">createComparisonFunction()</code>函数返回后，其执行环境的作用域链会被销毁，但它的活动对象仍然会留在内存中；直到匿名函数被销毁后，<code class="calibre15">createComparisonFunction()</code>的活动对象才会被销毁，例如：</p>
+  <pre class="calibre18"><code class="calibre15">//创建函数
+var compareNames = createComparisonFunction("name");
+
+//调用函数
+var result = compareNames({ name: "Nicholas" }, { name: "Greg" });
+
+//解除对匿名函数的引用（以便释放内存）
+compareNames = null;
+</code></pre>
+
+  <p class="calibre2">首先，创建的比较函数被保存在变量<code class="calibre15">compareNames</code>中。而通过将<code class="calibre15">compareNames</code>设置为等于<code class="calibre15">null</code>解除该函数的引用，就等于通知垃圾回收例程将其清除。随着匿名函数的作用域链被销毁，其他作用域（除了全局作用域）也都可以安全地销毁了。图7-2展示了调用<code class="calibre15">compareNames()</code>的过程中产生的作用域链之间的关系。</p>
+
+  <p class="p-img"><img alt="" class="calibre39" src="../Images/00020.gif" /></p>
+
+  <p class="calibre2"><strong class="calibre3">图　7-2</strong></p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 由于闭包会携带包含它的函数的作用域，因此会比其他函数占用更多的内存。过度使用闭包可能会导致内存占用过多，我们建议读者只在绝对必要时再考虑使用闭包。虽然像V8等优化后的JavaScript引擎会尝试回收被闭包占用的内存，但请大家还是要慎重使用闭包。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_94"><strong class="calibre10">7.2.1　闭包与变量</strong></h3>
+
+  <p class="calibre2">作用域链的这种配置机制引出了一个值得注意的副作用，即闭包只能取得包含函数中任何变量的最后一个值。别忘了闭包所保存的是整个变量对象，而不是某个特殊的变量。下面这个例子可以清晰地说明这个问题。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function createFunctions(){
+    var result = new Array();
+
+    for (var i=0; i &lt; 10; i++){
+        result[i] = function(){
+            return i;
+        };
+    }
+
+    return result;
+} 
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ClosureExample01.htm</i></p>
+
+  <p class="calibre2">这个函数会返回一个函数数组。表面上看，似乎每个函数都应该返自己的索引值，即位置0的函数返回0，位置1的函数返回1，以此类推。但实际上，每个函数都返回10。因为每个函数的作用域链中都保存着<code class="calibre15">createFunctions()</code>函数的活动对象，所以它们引用的都是同一个变量<code class="calibre15">i</code>。当<code class="calibre15">createFunctions()</code>函数返回后，变量<code class="calibre15">i</code>的值是10，此时每个函数都引用着保存变量<code class="calibre15">i</code>的同一个变量对象，所以在每个函数内部<code class="calibre15">i</code>的值都是10。但是，我们可以通过创建另一个匿名函数强制让闭包的行为符合预期，如下所示。</p>
+  <pre class="calibre18">function createFunctions(){
+    var result = new Array();
+
+    for (var i=0; i &lt; 10; i++){
+        <b class="calibre3">result[i] = function(num){</b>
+            <b class="calibre3">return function(){</b>
+                <b class="calibre3">return num;</b>
+            <b class="calibre3">};</b>
+        <b class="calibre3">}(i);</b>
+    <b class="calibre3">}</b>
+
+    return result;
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">ClosureExample02.htm</i></p>
+
+  <p class="calibre2">在重写了前面的<code class="calibre15">createFunctions()</code>函数后，每个函数就会返回各自不同的索引值了。在这个版本中，我们没有直接把闭包赋值给数组，而是定义了一个匿名函数，并将立即执行该匿名函数的结果赋给数组。这里的匿名函数有一个参数<code class="calibre15">num</code>，也就是最终的函数要返回的值。在调用每个匿名函数时，我们传入了变量<code class="calibre15">i</code>。由于函数参数是按值传递的，所以就会将变量<code class="calibre15">i</code>的当前值复制给参数<code class="calibre15">num</code>。而在这个匿名函数内部，又创建并返回了一个访问<code class="calibre15">num</code>的闭包。这样一来，<code class="calibre15">result</code>数组中的每个函数都有自己<code class="calibre15">num</code>变量的一个副本，因此就可以返回各自不同的数值了。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_95"><strong class="calibre10">7.2.2　关于<code class="calibre30">this</code>对象</strong></h3>
+
+  <p class="calibre2">在闭包中使用<code class="calibre15">this</code>对象也可能会导致一些问题。我们知道，<code class="calibre15">this</code>对象是在运行时基于函数的执行环境绑定的：在全局函数中，<code class="calibre15">this</code>等于<code class="calibre15">window</code>，而当函数被作为某个对象的方法调用时，<code class="calibre15">this</code>等于那个对象。不过，匿名函数的执行环境具有全局性，因此其<code class="calibre15">this</code>对象通常指向<code class="calibre15">window</code><sup class="calibre13">1</sup>。但有时候由于编写闭包的方式不同，这一点可能不会那么明显。下面来看一个例子。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><sup class="calibre13">1</sup> 当然，在通过<code class="calibre15">call()</code>或<code class="calibre15">apply()</code>改变函数执行环境的情况下，<code class="calibre15">this</code>就会指向其他对象。</p>
+  </blockquote>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var name = "The Window";
+
+var object = {
+    name : "My Object",
+
+    getNameFunc : function(){
+        return function(){
+            return this.name;
+        };
+    }
+};
+
+alert(object.getNameFunc()());  //"The Window"（在非严格模式下）
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ThisObjectExample01.htm</i></p>
+
+  <p class="calibre2">以上代码先创建了一个全局变量<code class="calibre15">name</code>，又创建了一个包含<code class="calibre15">name</code>属性的对象。这个对象还包含一个方法——<code class="calibre15">getNameFunc()</code>，它返回一个匿名函数，而匿名函数又返回<code class="calibre15">this.name</code>。由于<code class="calibre15">getNameFunc()</code>返回一个函数，因此调用<code class="calibre15">object.getNameFunc()()</code>就会立即调用它返回的函数，结果就是返回一个字符串。然而，这个例子返回的字符串是<code class="calibre15">"The Window"</code>，即全局<code class="calibre15">name</code>变量的值。为什么匿名函数没有取得其包含作用域（或外部作用域）的<code class="calibre15">this</code>对象呢？</p>
+
+  <p class="calibre2">前面曾经提到过，每个函数在被调用时，其活动对象都会自动取得两个特殊变量：<code class="calibre15">this</code>和<code class="calibre15">arguments</code>。内部函数在搜索这两个变量时，只会搜索到其活动对象为止，因此永远不可能直接访问外部函数中的这两个变量（这一点通过图7-2可以看得更清楚）。不过，把外部作用域中的<code class="calibre15">this</code>对象保存在一个闭包能够访问到的变量里，就可以让闭包访问该对象了，如下所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var name = "The Window";
+
+var object = {
+    name : "My Object",
+
+    getNameFunc : function(){
+        <b class="calibre3">var that = this;</b>
+        return function(){
+            <b class="calibre3">return that.name;</b>
+        };
+    }
+};
+
+alert(object.getNameFunc()());  //"My Object"
+</pre>
+
+  <p class="calibre8"><i class="calibre7">ThisObjectExample02.htm</i></p>
+
+  <p class="calibre2">代码中突出的行展示了这个例子与前一个例子之间的不同之处。在定义匿名函数之前，我们把<code class="calibre15">this</code>对象赋值给了一个名叫<code class="calibre15">that</code>的变量。而在定义了闭包之后，闭包也可以访问这个变量，因为它是我们在包含函数中特意声名的一个变量。即使在函数返回之后，<code class="calibre15">that</code>也仍然引用着<code class="calibre15">object</code>，所以调用<code class="calibre15">object.getNameFunc()()</code>就返回了<code class="calibre15">"My Object"</code>。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> <code class="calibre15">this</code>和<code class="calibre15">arguments</code>也存在同样的问题。如果想访问作用域中的<code class="calibre15">arguments</code>对象，必须将对该对象的引用保存到另一个闭包能够访问的变量中。</p>
+  </blockquote>
+
+  <p class="calibre2">在几种特殊情况下，<code class="calibre15">this</code>的值可能会意外地改变。比如，下面的代码是修改前面例子的结果。</p>
+  <pre class="calibre18">var name = "The Window";
+
+var object = {
+    name : "My Object",
+
+    <b class="calibre3">getName: function(){</b>
+        <b class="calibre3">return this.name;</b>
+    <b class="calibre3">}</b>
+};
+</pre>
+
+  <p class="calibre2">这里的<code class="calibre15">getName()</code>方法只简单地返回<code class="calibre15">this.name</code>的值。以下是几种调用<code class="calibre15">object.getName()</code>的方式以及各自的结果。</p>
+  <pre class="calibre18"><code class="calibre15">object.getName();   //"My Object"
+(object.getName)(); //"My Object"
+(object.getName = object.getName)(); //"The Window"，在非严格模式下
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ThisObjectExample03.htm</i></p>
+
+  <p class="calibre2">第一行代码跟平常一样调用了<code class="calibre15">object.getName()</code>，返回的是<code class="calibre15">"My Object"</code>，因为<code class="calibre15">this.name</code>就是<code class="calibre15">object.name</code>。第二行代码在调用这个方法前先给它加上了括号。虽然加上括号之后，就好像只是在引用一个函数，但<code class="calibre15">this</code>的值得到了维持，因为<code class="calibre15">object.getName</code>和<code class="calibre15">(object.getName)</code>的定义是相同的。第三行代码先执行了一条赋值语句，然后再调用赋值后的结果。因为这个赋值表达式的值是函数本身，所以<code class="calibre15">this</code>的值不能得到维持，结果就返回了<code class="calibre15">"The Window"</code>。</p>
+
+  <p class="calibre2">当然，你不大可能会像第二行和第三行代码一样调用这个方法。不过，这个例子有助于说明即使是语法的细微变化，都有可能意外改变<code class="calibre15">this</code>的值。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_96"><strong class="calibre10">7.2.3　内存泄漏</strong></h3>
+
+  <p class="calibre2">由于IE9之前的版本对JScript对象和COM对象使用不同的垃圾收集例程（第4章曾经讨论过），因此闭包在IE的这些版本中会导致一些特殊的问题。具体来说，如果闭包的作用域链中保存着一个HTML元素，那么就意味着该元素将无法被销毁。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">function assignHandler(){
+    var element = document.getElementById("someElement");
+    element.onclick = function(){
+        alert(element.id);
+    };
+}
+</code></pre>
+
+  <p class="calibre2">以上代码创建了一个作为<code class="calibre15">element</code>元素事件处理程序的闭包，而这个闭包则又创建了一个循环引用（事件将在第13章讨论）。由于匿名函数保存了一个对<code class="calibre15">assignHandler()</code>的活动对象的引用，因此就会导致无法减少<code class="calibre15">element</code>的引用数。只要匿名函数存在，<code class="calibre15">element</code>的引用数至少也是1，因此它所占用的内存就永远不会被回收。不过，这个问题可以通过稍微改写一下代码来解决，如下所示。</p>
+  <pre class="calibre18">function assignHandler(){
+    var element = document.getElementById("someElement");
+    <b class="calibre3">var id = element.id;</b>
+
+    element.onclick = function(){
+        <b class="calibre3">alert(id);</b>
+    };
+
+    <b class="calibre3">element = null;</b>
+}
+</pre>
+
+  <p class="calibre2">在上面的代码中，通过把<code class="calibre15">element.id</code>的一个副本保存在一个变量中，并且在闭包中引用该变量消除了循环引用。但仅仅做到这一步，还是不能解决内存泄漏的问题。必须要记住：闭包会引用包含函数的整个活动对象，而其中包含着<code class="calibre15">element</code>。即使闭包不直接引用<code class="calibre15">element</code>，包含函数的活动对象中也仍然会保存一个引用。因此，有必要把<code class="calibre15">element</code>变量设置为<code class="calibre15">null</code>。这样就能够解除对DOM对象的引用，顺利地减少其引用数，确保正常回收其占用的内存。</p>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_241"><strong class="calibre10">B.2　变量</strong></h2>
+
+  <p class="calibre2">在严格模式下，什么时候创建变量以及怎么创建变量都是有限制的。首先，不允许意外创建全局变量。在非严格模式下，可以像下面这样创建全局变量：</p>
+  <pre class="calibre18"><code class="calibre15">//未声明变量
+//非严格模式：创建全局变量
+//严格模式：抛出ReferenceError
+
+message = "Hello world! ";
+</code></pre>
+
+  <p class="calibre2">即使<code class="calibre15">message</code>前面没有<code class="calibre15">var</code>关键字，即使没有将它定义为某个全局对象的属性，也能将<code class="calibre15">message</code>创建为全局变量。但在严格模式下，如果给一个没有声明的变量赋值，那代码在执行时就会抛出<code class="calibre15">ReferenceError</code>。</p>
+
+  <p class="calibre2">其次，不能对变量调用<code class="calibre15">delete</code>操作符。非严格模式允许这样操作，但会静默失败（返回<code class="calibre15">false</code>）。而在严格模式下，删除变量也会导致错误。</p>
+  <pre class="calibre18"><code class="calibre15">//删除变量 
+//非严格模式：静默失败
+//严格模式：抛出ReferenceError
+
+var color = "red";
+delete color;
+</code></pre>
+
+  <p class="calibre2">严格模式下对变量也有限制。特别地，不能使用<code class="calibre15">implements</code>、<code class="calibre15">interface</code>、<code class="calibre15">let</code>、<code class="calibre15">package</code>、<code class="calibre15">private</code>、<code class="calibre15">protected</code>、<code class="calibre15">public</code>、<code class="calibre15">static</code>和<code class="calibre15">yield</code>作为变量名。这些都是保留字，将来的ECMAScript版本中可能会用到它们。在严格模式下，用以上标识符作为变量名会导致语法错误。</p>
+</body>
+</html>

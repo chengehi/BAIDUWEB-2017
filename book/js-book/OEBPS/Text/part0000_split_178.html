@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_240"><strong class="calibre10">B.1　选择使用</strong></h2>
+
+  <p class="calibre2">要选择进入严格模式，可以使用严格模式的<strong class="calibre3">编译指示</strong>（pragma），实际上就是一个不会赋给任何变量的字符串：</p>
+  <pre class="calibre18"><code class="calibre15">"use strict";
+</code></pre>
+
+  <p class="calibre2">这种语法（从ECMAScript 3开始支持）可以向后兼容那些不支持严格模式的JavaScript引擎。支持严格模式的引擎会启动这种模式，而不支持该模式的引擎就当遇到了一个未赋值的字符串字面量，会忽略这个编译指示。</p>
+
+  <p class="calibre2">如果是在全局作用域中（函数外部）给出这个编译指示，则整个脚本都将使用严格模式。换句话说，如果把带有这个编译指示的脚本放到其他文件中，则该文件中的JavaScript代码也将处于严格模式下。</p>
+
+  <p class="calibre2">也可以只在函数中打开严格模式，就像下面这样：</p>
+  <pre class="calibre18"><code class="calibre15">function doSomething(){
+    "use strict";
+
+    //其他代码
+}
+</code></pre>
+
+  <p class="calibre2">如果你没有控制页面中所有脚本的权力，建议只在需要测试的特定函数中开启严格模式。</p>
+</body>
+</html>

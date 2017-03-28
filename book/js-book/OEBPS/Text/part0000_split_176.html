@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_236"><strong class="calibre10">A.6　模块</strong></h2>
+
+  <p class="calibre2">模块（或者“命名空间”、“包”）是组织JavaScript应用代码的重要方法。每个模块都包含着独立于其他模式的特定、独一无二的功能。JavaScript开发中曾出现过一些临时性的模块格式，而ECMAScript 6则对如何创建和管理模块给出了标准的定义。</p>
+
+  <p class="calibre2">模块在其自己的顶级执行环境中运行，因而不会污染导入它的全局执行环境。默认情况下，模块中声明的所有变量、函数、类等都是该模块私有的。对于应该向外部公开的成员，可以在前面加上<code class="calibre15">export</code>关键字。例如：</p>
+  <pre class="calibre18"><code class="calibre15">module MyModule {
+    //公开这些成员
+    export let myobject = {};
+    export function hello(){ alert("hello"); };
+
+    //隐藏这些成员
+    function goodbye(){
+        //...
+    }
+} 
+</code></pre>
+
+  <p class="calibre2">这个模块公开了一个名为<code class="calibre15">myobject</code>的对象和一个名为<code class="calibre15">hello()</code>的函数。可以在页面或其他模块中使用这个模块，也可以只导入模块中的一个成员或者两个成员。导入模块要使用<code class="calibre15">import</code>命令：</p>
+  <pre class="calibre18"><code class="calibre15">//只导入myobject
+import myobject from MyModule;
+console.log(myobject);
+
+//导入所有公开的成员
+import * from MyModule;
+console.log(myobject);
+console.log(hello);
+
+//列出要导入的成员名
+import {myobject, hello} from MyModule;
+console.log(myobject);
+console.log(hello);
+
+//不导入，直接使用模块
+console.log(MyModule.myobject);
+console.log(MyModule.hello);
+</code></pre>
+
+  <p class="calibre2">在执行环境能够访问到模块的情况下，可以直接调用模块中对外公开的成员。导入操作只不过是把模块中的个别成员拿到当前执行环境中，以便直接操作而不必引用模块。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_316"><strong class="calibre10">外部模块</strong></h3>
+
+  <p class="calibre2">通过提供模块所在外部文件的URL，也可以动态加载和导入模块。为此，首先要在模块声明后面加上外部文件的URL，然后再导入模块成员：</p>
+  <pre class="calibre18"><code class="calibre15">module MyModule from "mymodule.js";
+import myobject from MyModule;
+</code></pre>
+
+  <p class="calibre2">以上声明会通知JavaScript引擎下载<code class="calibre15">mymodule.js</code>文件，然后从中加载名为<code class="calibre15">MyModule</code>的模块。请读者注意，这个调用会阻塞进程。换句话说，JavaScript引擎在下载完外部文件并对其求值之前，不会处理后面的代码。</p>
+
+  <p class="calibre2">如果你只想包含模块中对外公开的某些成员，不想把整个模块都加载进来，可以像下面这样使用<code class="calibre15">import</code>指令：</p>
+  <pre class="calibre18"><code class="calibre15">import myobject from "mymodule.js";
+</code></pre>
+
+  <p class="calibre2">总之，模块就是一种组织相关功能的手段，而且能够保护全局作用域不受污染。</p>
+
+  <p class="calibre5" id="calibre_pb_237" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

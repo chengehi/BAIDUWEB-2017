@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_177">25.1　requestAnimationFrame()</h2>
+
+  <p class="calibre2">很长时间以来，计时器和循环间隔一直都是JavaScript动画的最核心技术。虽然CSS变换及动画为Web开发人员提供了实现动画的简单手段，但JavaScript动画开发领域的状况这些年来并没有大的变化。Firefox 4最早为JavaScript动画添加了一个新API，即<code class="calibre15">mozRequestAnimationFrame()</code>。这个方法会告诉浏览器：有一个动画开始了。进而浏览器就可以确定重绘的最佳方式。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_288"><strong class="calibre10">25.1.1　早期动画循环</strong></h3>
+
+  <p class="calibre2">在JavaScript中创建动画的典型方式，就是使用<code class="calibre15">setInterval()</code>方法来控制所有动画。以下是一个使用<code class="calibre15">setInterval()</code>的基本动画循环：</p>
+  <pre class="calibre18"><code class="calibre15">(function(){
+    function updateAnimations(){
+        doAnimation1();
+        doAnimation2();
+        //其他动画
+    } 
+
+    setInterval(updateAnimations, 100);
+})();
+</code></pre>
+
+  <p class="calibre2">为了创建一个小型动画库，<code class="calibre15">updateAnimations()</code>方法就得不断循环地运行每个动画，并相应地改变不同元素的状态（例如，同时显示一个新闻跑马灯和一个进度条）。如果没有动画需要更新，这个方法可以退出，什么也不用做，甚至可以把动画循环停下来，等待下一次需要更新的动画。</p>
+
+  <p class="calibre2">编写这种动画循环的关键是要知道延迟时间多长合适。一方面，循环间隔必须足够短，这样才能让不同的动画效果显得更平滑流畅；另一方面，循环间隔还要足够长，这样才能确保浏览器有能力渲染产生的变化。大多数电脑显示器的刷新频率是60Hz，大概相当于每秒钟重绘60次。大多数浏览器都会对重绘操作加以限制，不超过显示器的重绘频率，因为即使超过那个频率用户体验也不会有提升。</p>
+
+  <p class="calibre2">因此，最平滑动画的最佳循环间隔是1000ms/60，约等于17ms。以这个循环间隔重绘的动画是最平滑的，因为这个速度最接近浏览器的最高限速。为了适应17ms的循环间隔，多重动画可能需要加以节制，以便不会完成得太快。</p>
+
+  <p class="calibre2">虽然与使用多组<code class="calibre15">setTimeout()</code>的循环方式相比，使用<code class="calibre15">setInterval()</code>的动画循环效率更高，但后者也不是没有问题。无论是<code class="calibre15">setInterval()</code>还是<code class="calibre15">setTimeout()</code>都不十分精确。为它们传入的第二个参数，实际上只是指定了把动画代码添加到浏览器UI线程队列中以等待执行的时间。如果队列前面已经加入了其他任务，那动画代码就要等前面的任务完成后再执行。简言之，以毫秒表示的延迟时间并不代表到时候一定会执行动画代码，而仅代表到时候会把代码添加到任务队列中。如果UI线程繁忙，比如忙于处理用户操作，那么即使把代码加入队列也不会立即执行。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_289"><strong class="calibre10">25.1.2　循环间隔的问题</strong></h3>
+
+  <p class="calibre2">知道什么时候绘制下一帧是保证动画平滑的关键。然而，直至最近，开发人员都没有办法确保浏览器按时绘制下一帧。随着<code class="calibre15">&lt;canvas&gt;</code>元素越来越流行，新的基于浏览器的游戏也开始崭露头脚，面对不十分精确的<code class="calibre15">setInterval()</code>和<code class="calibre15">setTimeout()</code>，开发人员一筹莫展。</p>
+
+  <p class="calibre2">浏览器使用的计时器的精度进一步恶化了问题。具体地说，浏览器使用的计时器并非精确到毫秒级别。以下是几个浏览器的计时器精度。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">IE8及更早版本的计时器精度为15.625ms。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">IE9及更晚版本的计时器精度为4ms。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">Firefox和Safari的计时器精度大约为10ms。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">Chrome的计时器精度为4ms。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">IE9之前版本的计时器精度为15.625ms，因此介于0和15之间的任何值只能是0和15。IE9把计时器精度提高到了4ms，但这个精度对于动画来说仍然不够明确。Chrome的计时器精度为4ms，而Firefox和Safari的精度是10ms。更为复杂的是，浏览器都开始限制后台标签页或不活动标签页的计时器。因此，即使你优化了循环间隔，结果仍然只能接近你想要的效果。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_290"><strong class="calibre10">25.1.3　<code class="calibre30">mozRequestAnimationFrame</code></strong></h3>
+
+  <p class="calibre2">Mozilla的Robert O’Callahan认识到了这个问题，提出了一个非常独特的方案。他指出，CSS变换和动画的优势在于浏览器知道动画什么时候开始，因此会计算出正确的循环间隔，在恰当的时候刷新UI。而对于JavaScript动画，浏览器无从知晓什么时候开始。因此他的方案就是创造一个新方法<code class="calibre15">mozRequestAnimationFrame()</code>，通过它告诉浏览器某些JavaScript代码将要执行动画。这样浏览器可以在运行某些代码后进行适当的优化。</p>
+
+  <p class="calibre2"><code class="calibre15">mozRequestAnimationFrame()</code>方法接收一个参数，即在重绘屏幕前调用的一个函数。这个函数负责改变下一次重绘时的DOM样式。为了创建动画循环，可以像以前使用<code class="calibre15">setTimeout()</code>一样，把多个对<code class="calibre15">mozRequestAnimationFrame()</code>的调用连缀起来。比如：</p>
+  <pre class="calibre18"><code class="calibre15">function updateProgress(){ 
+    var div = document.getElementById("status");
+    div.style.width = (parseInt(div.style.width, 10) + 5) + "%";
+
+    if (div.style.left != "100%"){
+        mozRequestAnimationFrame(updateProgress);
+    }
+}
+
+mozRequestAnimationFrame(updateProgress);
+</code></pre>
+
+  <p class="calibre2">因为<code class="calibre15">mozRequestAnimationFrame()</code>只运行一次传入的函数，因此在需要再次修改UI从而生成动画时，需要再次手工调用它。同样，也需要同时考虑什么时候停止动画。这样就能得到非常平滑流畅的动画。</p>
+
+  <p class="calibre2">目前来看，<code class="calibre15">mozRequestAnimationFrame()</code>解决了浏览器不知道JavaScript动画什么时候开始、不知道最佳循环间隔时间的问题，但不知道代码到底什么时候执行的问题呢？同样的方案也可以解决这个问题。</p>
+
+  <p class="calibre2">我们传递的<code class="calibre15">mozRequestAnimationFrame()</code>函数也会接收一个参数，它是一个时间码（从1970年1月1日起至今的毫秒数），表示下一次重绘的实际发生时间。注意，这一点很重要：<code class="calibre15">mozRequestAnimationFrame()</code>会根据这个时间码设定将来的某个时刻进行重绘，而根据这个时间码，你也能知道那个时刻是什么时间。然后，再优化动画效果就有了依据。</p>
+
+  <p class="calibre2">要知道距离上一次重绘已经过去了多长时间，可以查询<code class="calibre15">mozAnimationStartTime</code>，其中包含上一次重绘的时间码。用传入回调函数的时间码减去这个时间码，就能计算出在屏幕上重绘下一组变化之前要经过多长时间。使用这个值的典型方式如下：</p>
+  <pre class="calibre18"><code class="calibre15">function draw(timestamp){
+
+    //计算两次重绘的时间间隔
+    var diff = timestamp - startTime;
+
+    //使用diff确定下一步的绘制时间
+
+    //把startTime重写为这一次的绘制时间
+    startTime = timestamp;
+
+    //重绘UI
+    mozRequestAnimationFrame(draw);
+}
+
+    var startTime = mozAnimationStartTime;
+    mozRequestAnimationFrame(draw);
+</code></pre>
+
+  <p class="calibre2">这里的关键是第一次读取<code class="calibre15">mozAnimationStartTime</code>的值，必须在传递给<code class="calibre15">mozRequestAnimation Frame()</code>的回调函数外面进行。如果是在回调函数内部读取<code class="calibre15">mozAnimationStartTime</code>，得到的值与传入的时间码是相等的。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_291"><strong class="calibre10">25.1.4　<code class="calibre30">webkitRequestAnimationFrame</code>与<code class="calibre30">msRequestAnimationFrame</code></strong></h3>
+
+  <p class="calibre2">基于<code class="calibre15">mozRequestAnimationFrame()</code>，Chrome和IE10+也都给出了自己的实现，分别叫<code class="calibre15">webkitRequestAnimationFrame()</code>和<code class="calibre15">msRequestAnimationFrame()</code>。这两个版本与Mozilla的版本有两个方面的微小差异。首先，不会给回调函数传递时间码，因此你无法知道下一次重绘将发生在什么时间。其次，Chrome又增加了第二个可选的参数，即将要发生变化的DOM元素。知道了重绘将发生在页面中哪个特定元素的区域内，就可以将重绘限定在该区域中。</p>
+
+  <p class="calibre2">既然没有下一次重绘的时间码，那Chrome和IE没有提供<code class="calibre15">mozAnimationStartTime</code>的实现也就很容易理解了——没有那个时间码，实现这个属性也没有什么用。不过，Chrome倒是又提供了另一个方法<code class="calibre15">webkitCancelAnimationFrame()</code>，用于取消之前计划执行的重绘操作。</p>
+
+  <p class="calibre2">假如你不需要知道精确的时间差，那么可以在Firefox 4+、IE10+和Chrome中可以参考以下模式创建动画循环。</p>
+  <pre class="calibre18"><code class="calibre15">(function(){
+
+    function draw(timestamp){
+
+        //计算两次重绘的时间间隔
+        var drawStart = (timestamp || Date.now()),
+            diff = drawStart - startTime;
+
+        //使用diff确定下一步的绘制时间
+
+        //把startTime重写为这一次的绘制时间
+        startTime = drawStart;
+
+        //重绘UI
+        requestAnimationFrame(draw);
+    }
+
+    var requestAnimationFrame = window.requestAnimationFrame ||
+                                window.mozRequestAnimationFrame ||
+                                window.webkitRequestAnimationFrame ||
+                                window.msRequestAnimationFrame,
+        startTime = window.mozAnimationStartTime || Date.now();
+    requestAnimationFrame(draw);
+})();
+</code></pre>
+
+  <p class="calibre2">以上模式利用已有的功能创建了一个动画循环，大致计算出了两次重绘的时间间隔。在Firefox中，计算时间间隔使用的是既有的时间码，而在Chrome和IE中，则使用不十分精确的<code class="calibre15">Date</code>对象。这个模式可以大致体现出两次重绘的时间间隔，但不会告诉你在Chrome和IE中的时间间隔到底是多少。不过，大致知道时间间隔总比一点儿概念也没有好些。</p>
+
+  <p class="calibre2">因为首先检测的是标准函数名，其次才是特定于浏览器的版本，所以这个动画循环在将来也能够使用。</p>
+
+  <p class="calibre2">目前，W3C已经着手起草<code class="calibre15">requestAnimationFrame()</code> API，而且作为Web Performance Group的一部分，Mozilla和Google正共同参与该标准草案的制定工作。</p>
+</body>
+</html>

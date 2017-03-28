@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_242"><strong class="calibre10">B.3　对象</strong></h2>
+
+  <p class="calibre2">在严格模式下操作对象比在非严格模式下更容易导致错误。一般来说，非严格模式下会静默失败的情形，在严格模式下就会抛出错误。因此，在开发中使用严格模式会加大早发现错误的可能性。</p>
+
+  <p class="calibre2">在下列情形下操作对象的属性会导致错误：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">为只读属性赋值会抛出<code class="calibre15">TypeError</code>；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">对不可配置的（nonconfigurable）的属性使用<code class="calibre15">delete</code>操作符会抛出<code class="calibre15">TypeError</code>；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">为不可扩展的（nonextensible）的对象添加属性会抛出<code class="calibre15">TypeError</code>。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">使用对象的另一个限制与通过对象字面量声明对象有关。在使用对象字面量时，属性名必须唯一。例如：</p>
+  <pre class="calibre18"><code class="calibre15">//重名属性
+//非严格模式：没有错误，以第二个属性为准
+//严格模式：抛出语法错误
+
+var person = { 
+                name: "Nicholas",
+                name: "Greg"
+             };
+</code></pre>
+
+  <p class="calibre2">这里的对象<code class="calibre15">person</code>有两个属性，都叫<code class="calibre15">name</code>。在非严格模式下，<code class="calibre15">person</code>对象的<code class="calibre15">name</code>属性值是第二个，而在严格模式下，这样的代码会导致语法错误。</p>
+</body>
+</html>

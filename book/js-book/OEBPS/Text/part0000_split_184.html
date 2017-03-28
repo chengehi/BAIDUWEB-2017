@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_246"><strong class="calibre10">B.7　抑制<code class="calibre30">this</code></strong></h2>
+
+  <p class="calibre2">JavaScript中一个最大的安全问题，也是最容易让人迷茫的地方，就是在某些情况下如何抑制this的值。在非严格模式下使用函数的<code class="calibre15">apply()</code>或<code class="calibre15">call()</code>方法时，<code class="calibre15">null</code>或<code class="calibre15">undefined</code>值会被转换为全局对象。而在严格模式下，函数的<code class="calibre15">this</code>值始终是指定的值，无论指定的是什么值。例如：</p>
+  <pre class="calibre18"><code class="calibre15">//访问属性
+//非严格模式：访问全局属性
+//严格模式：抛出错误，因为this的值为null
+
+var color = "red";
+
+function displayColor(){
+    alert(this.color);
+} 
+
+displayColor.call(null);
+</code></pre>
+
+  <p class="calibre2">以上代码向<code class="calibre15">displayColor.call()</code>中传入了<code class="calibre15">null</code>，如果在是非严格模式下，这意味着函数的<code class="calibre15">this</code>值是全局对象。结果就是弹出对话框显示<code class="calibre15">"red"</code>。而在严格模式下，这个函数的<code class="calibre15">this</code>的值是<code class="calibre15">null</code>，因此在访问<code class="calibre15">null</code>的属性时就会抛出错误。</p>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_141">19.4　全面启用E4X</h2>
+
+  <p class="calibre2">鉴于E4X在很多方面给标准JavaScript带来了不同，因此Firefox在默认情况下只启用E4X中与其他代码能够相安无事的那些特性。要想完整地启用E4X，需要将<code class="calibre15">&lt;script&gt;</code>标签的<code class="calibre15">type</code>特性设置为<code class="calibre15">"text/javascript;e4x=1"</code>，例如：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;script type="text/javascript;e4x=1" src="e4x_file.js"&gt;&lt;/script&gt;
+</code></pre>
+
+  <p class="calibre2">在打开这个“开关”之后，就会全面启用E4X，从而能够正确地解析嵌入在E4X字面量中的注释和CData片段。在没有完整启用E4X的情况下使用注释和/或CData片段会导致语法错误。</p>
+</body>
+</html>

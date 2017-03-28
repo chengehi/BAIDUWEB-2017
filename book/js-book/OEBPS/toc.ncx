@@ -1,0 +1,3371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN"
+ "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+  <head>
+    <meta name="dtb:uid" content="be674b41-e6a5-4cf0-b81e-4cba45bb51e7" />
+    <meta name="dtb:depth" content="3" />
+    <meta name="dtb:totalPageCount" content="0" />
+    <meta name="dtb:maxPageNumber" content="0" />
+  </head>
+  <docTitle>
+    <text>JavaScript高级程序设计（第3版）</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="navPoint-1" playOrder="1">
+      <navLabel>
+        <text>版权信息</text>
+      </navLabel>
+      <content src="Text/part0000_split_000.html" />
+    </navPoint>
+    
+    <navPoint id="navPoint-3" playOrder="3">
+      <navLabel>
+        <text>版权声明</text>
+      </navLabel>
+      <content src="Text/part0000_split_002.html" />
+    </navPoint>
+    <navPoint id="navPoint-4" playOrder="4">
+      <navLabel>
+        <text>序</text>
+      </navLabel>
+      <content src="Text/part0000_split_003.html" />
+    </navPoint>
+    <navPoint id="navPoint-5" playOrder="5">
+      <navLabel>
+        <text>前言</text>
+      </navLabel>
+      <content src="Text/part0000_split_004.html" />
+    </navPoint>
+    <navPoint id="navPoint-6" playOrder="6">
+      <navLabel>
+        <text>第1章 JavaScript简介</text>
+      </navLabel>
+      <content src="Text/part0000_split_015.html" />
+      <navPoint id="navPoint-7" playOrder="7">
+        <navLabel>
+          <text>1.1 JavaScript简史</text>
+        </navLabel>
+        <content src="Text/part0000_split_016.html" />
+      </navPoint>
+      <navPoint id="navPoint-8" playOrder="8">
+        <navLabel>
+          <text>1.2 JavaScript实现</text>
+        </navLabel>
+        <content src="Text/part0000_split_017.html" />
+        <navPoint id="navPoint-9" playOrder="9">
+          <navLabel>
+            <text>1.2.1 ECMAScript</text>
+          </navLabel>
+          <content src="Text/part0000_split_017.html#sigil_toc_id_1" />
+        </navPoint>
+        <navPoint id="navPoint-10" playOrder="10">
+          <navLabel>
+            <text>1.2.2 文档对象模型（DOM）</text>
+          </navLabel>
+          <content src="Text/part0000_split_017.html#sigil_toc_id_2" />
+        </navPoint>
+        <navPoint id="navPoint-11" playOrder="11">
+          <navLabel>
+            <text>1.2.3 浏览器对象模型（BOM）</text>
+          </navLabel>
+          <content src="Text/part0000_split_017.html#sigil_toc_id_3" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-12" playOrder="12">
+        <navLabel>
+          <text>1.3 JavaScript版本</text>
+        </navLabel>
+        <content src="Text/part0000_split_018.html" />
+      </navPoint>
+      <navPoint id="navPoint-13" playOrder="13">
+        <navLabel>
+          <text>1.4 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_019.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-14" playOrder="14">
+      <navLabel>
+        <text>第2章 在HTML中使用JavaScript</text>
+      </navLabel>
+      <content src="Text/part0000_split_020.html" />
+      <navPoint id="navPoint-15" playOrder="15">
+        <navLabel>
+          <text>2.1 &lt;script&gt;元素</text>
+        </navLabel>
+        <content src="Text/part0000_split_021.html" />
+        <navPoint id="navPoint-16" playOrder="16">
+          <navLabel>
+            <text>2.1.1 标签的位置</text>
+          </navLabel>
+          <content src="Text/part0000_split_021.html#sigil_toc_id_4" />
+        </navPoint>
+        <navPoint id="navPoint-17" playOrder="17">
+          <navLabel>
+            <text>2.1.2 延迟脚本</text>
+          </navLabel>
+          <content src="Text/part0000_split_021.html#sigil_toc_id_5" />
+        </navPoint>
+        <navPoint id="navPoint-18" playOrder="18">
+          <navLabel>
+            <text>2.1.3 异步脚本</text>
+          </navLabel>
+          <content src="Text/part0000_split_021.html#sigil_toc_id_6" />
+        </navPoint>
+        <navPoint id="navPoint-19" playOrder="19">
+          <navLabel>
+            <text>2.1.4 在XHTML中的用法1</text>
+          </navLabel>
+          <content src="Text/part0000_split_021.html#sigil_toc_id_7" />
+        </navPoint>
+        <navPoint id="navPoint-20" playOrder="20">
+          <navLabel>
+            <text>2.1.5 不推荐使用的语法</text>
+          </navLabel>
+          <content src="Text/part0000_split_021.html#sigil_toc_id_8" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-21" playOrder="21">
+        <navLabel>
+          <text>2.2 嵌入代码与外部文件</text>
+        </navLabel>
+        <content src="Text/part0000_split_022.html" />
+      </navPoint>
+      <navPoint id="navPoint-22" playOrder="22">
+        <navLabel>
+          <text>2.3 文档模式</text>
+        </navLabel>
+        <content src="Text/part0000_split_023.html" />
+      </navPoint>
+      <navPoint id="navPoint-23" playOrder="23">
+        <navLabel>
+          <text>2.4 &lt;noscript&gt;元素</text>
+        </navLabel>
+        <content src="Text/part0000_split_024.html" />
+      </navPoint>
+      <navPoint id="navPoint-24" playOrder="24">
+        <navLabel>
+          <text>2.5 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_025.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-25" playOrder="25">
+      <navLabel>
+        <text>第3章 基本概念</text>
+      </navLabel>
+      <content src="Text/part0000_split_026.html" />
+      <navPoint id="navPoint-26" playOrder="26">
+        <navLabel>
+          <text>3.1 语法</text>
+        </navLabel>
+        <content src="Text/part0000_split_027.html" />
+        <navPoint id="navPoint-27" playOrder="27">
+          <navLabel>
+            <text>3.1.1 区分大小写</text>
+          </navLabel>
+          <content src="Text/part0000_split_027.html#sigil_toc_id_9" />
+        </navPoint>
+        <navPoint id="navPoint-28" playOrder="28">
+          <navLabel>
+            <text>3.1.2 标识符</text>
+          </navLabel>
+          <content src="Text/part0000_split_027.html#sigil_toc_id_10" />
+        </navPoint>
+        <navPoint id="navPoint-29" playOrder="29">
+          <navLabel>
+            <text>3.1.3 注释</text>
+          </navLabel>
+          <content src="Text/part0000_split_027.html#sigil_toc_id_11" />
+        </navPoint>
+        <navPoint id="navPoint-30" playOrder="30">
+          <navLabel>
+            <text>3.1.4 严格模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_027.html#sigil_toc_id_12" />
+        </navPoint>
+        <navPoint id="navPoint-31" playOrder="31">
+          <navLabel>
+            <text>3.1.5 语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_027.html#sigil_toc_id_13" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-32" playOrder="32">
+        <navLabel>
+          <text>3.2 关键字和保留字</text>
+        </navLabel>
+        <content src="Text/part0000_split_028.html" />
+      </navPoint>
+      <navPoint id="navPoint-33" playOrder="33">
+        <navLabel>
+          <text>3.3 变量</text>
+        </navLabel>
+        <content src="Text/part0000_split_029.html" />
+      </navPoint>
+      <navPoint id="navPoint-34" playOrder="34">
+        <navLabel>
+          <text>3.4 数据类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_030.html" />
+        <navPoint id="navPoint-35" playOrder="35">
+          <navLabel>
+            <text>3.4.1 typeof操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_030.html#sigil_toc_id_14" />
+        </navPoint>
+        <navPoint id="navPoint-36" playOrder="36">
+          <navLabel>
+            <text>3.4.2 Undefined类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_030.html#sigil_toc_id_15" />
+        </navPoint>
+        <navPoint id="navPoint-37" playOrder="37">
+          <navLabel>
+            <text>3.4.3 Null类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_030.html#sigil_toc_id_16" />
+        </navPoint>
+        <navPoint id="navPoint-38" playOrder="38">
+          <navLabel>
+            <text>3.4.4 Boolean类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_030.html#sigil_toc_id_17" />
+        </navPoint>
+        <navPoint id="navPoint-39" playOrder="39">
+          <navLabel>
+            <text>3.4.5 Number类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_030.html#sigil_toc_id_18" />
+        </navPoint>
+        <navPoint id="navPoint-40" playOrder="40">
+          <navLabel>
+            <text>3.4.6 String类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_030.html#sigil_toc_id_19" />
+        </navPoint>
+        <navPoint id="navPoint-41" playOrder="41">
+          <navLabel>
+            <text>3.4.7 Object类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_030.html#sigil_toc_id_20" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-42" playOrder="42">
+        <navLabel>
+          <text>3.5 操作符</text>
+        </navLabel>
+        <content src="Text/part0000_split_031.html" />
+        <navPoint id="navPoint-43" playOrder="43">
+          <navLabel>
+            <text>3.5.1 一元操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_21" />
+        </navPoint>
+        <navPoint id="navPoint-44" playOrder="44">
+          <navLabel>
+            <text>3.5.2 位操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_22" />
+        </navPoint>
+        <navPoint id="navPoint-45" playOrder="45">
+          <navLabel>
+            <text>3.5.3 布尔操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_23" />
+        </navPoint>
+        <navPoint id="navPoint-46" playOrder="46">
+          <navLabel>
+            <text>3.5.4 乘性操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_24" />
+        </navPoint>
+        <navPoint id="navPoint-47" playOrder="47">
+          <navLabel>
+            <text>3.5.5 加性操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_25" />
+        </navPoint>
+        <navPoint id="navPoint-48" playOrder="48">
+          <navLabel>
+            <text>3.5.6 关系操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_26" />
+        </navPoint>
+        <navPoint id="navPoint-49" playOrder="49">
+          <navLabel>
+            <text>3.5.7 相等操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_27" />
+        </navPoint>
+        <navPoint id="navPoint-50" playOrder="50">
+          <navLabel>
+            <text>3.5.8 条件操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_28" />
+        </navPoint>
+        <navPoint id="navPoint-51" playOrder="51">
+          <navLabel>
+            <text>3.5.9 赋值操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_29" />
+        </navPoint>
+        <navPoint id="navPoint-52" playOrder="52">
+          <navLabel>
+            <text>3.5.10 逗号操作符</text>
+          </navLabel>
+          <content src="Text/part0000_split_031.html#sigil_toc_id_30" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-53" playOrder="53">
+        <navLabel>
+          <text>3.6 语句</text>
+        </navLabel>
+        <content src="Text/part0000_split_032.html" />
+        <navPoint id="navPoint-54" playOrder="54">
+          <navLabel>
+            <text>3.6.1 if语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_032.html#sigil_toc_id_31" />
+        </navPoint>
+        <navPoint id="navPoint-55" playOrder="55">
+          <navLabel>
+            <text>3.6.2 do-while语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_032.html#sigil_toc_id_32" />
+        </navPoint>
+        <navPoint id="navPoint-56" playOrder="56">
+          <navLabel>
+            <text>3.6.3 while语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_032.html#sigil_toc_id_33" />
+        </navPoint>
+        <navPoint id="navPoint-57" playOrder="57">
+          <navLabel>
+            <text>3.6.4 for语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_032.html#sigil_toc_id_34" />
+        </navPoint>
+        <navPoint id="navPoint-58" playOrder="58">
+          <navLabel>
+            <text>3.6.5 for-in语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_032.html#sigil_toc_id_35" />
+        </navPoint>
+        <navPoint id="navPoint-59" playOrder="59">
+          <navLabel>
+            <text>3.6.6 label语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_032.html#sigil_toc_id_36" />
+        </navPoint>
+        <navPoint id="navPoint-60" playOrder="60">
+          <navLabel>
+            <text>3.6.7 break和continue语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_032.html#sigil_toc_id_37" />
+        </navPoint>
+        <navPoint id="navPoint-61" playOrder="61">
+          <navLabel>
+            <text>3.6.8 with语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_032.html#sigil_toc_id_38" />
+        </navPoint>
+        <navPoint id="navPoint-62" playOrder="62">
+          <navLabel>
+            <text>3.6.9 switch语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_032.html#sigil_toc_id_39" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-63" playOrder="63">
+        <navLabel>
+          <text>3.7 函数</text>
+        </navLabel>
+        <content src="Text/part0000_split_033.html" />
+        <navPoint id="navPoint-64" playOrder="64">
+          <navLabel>
+            <text>3.7.1 理解参数</text>
+          </navLabel>
+          <content src="Text/part0000_split_033.html#sigil_toc_id_40" />
+        </navPoint>
+        <navPoint id="navPoint-65" playOrder="65">
+          <navLabel>
+            <text>3.7.2 没有重载</text>
+          </navLabel>
+          <content src="Text/part0000_split_033.html#sigil_toc_id_41" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-66" playOrder="66">
+        <navLabel>
+          <text>3.8 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_034.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-67" playOrder="67">
+      <navLabel>
+        <text>第4章 变量、作用域和内存问题</text>
+      </navLabel>
+      <content src="Text/part0000_split_035.html" />
+      <navPoint id="navPoint-68" playOrder="68">
+        <navLabel>
+          <text>4.1 基本类型和引用类型的值</text>
+        </navLabel>
+        <content src="Text/part0000_split_036.html" />
+        <navPoint id="navPoint-69" playOrder="69">
+          <navLabel>
+            <text>4.1.1 动态的属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_036.html#sigil_toc_id_42" />
+        </navPoint>
+        <navPoint id="navPoint-70" playOrder="70">
+          <navLabel>
+            <text>4.1.2 复制变量值</text>
+          </navLabel>
+          <content src="Text/part0000_split_036.html#sigil_toc_id_43" />
+        </navPoint>
+        <navPoint id="navPoint-71" playOrder="71">
+          <navLabel>
+            <text>4.1.3 传递参数</text>
+          </navLabel>
+          <content src="Text/part0000_split_036.html#sigil_toc_id_44" />
+        </navPoint>
+        <navPoint id="navPoint-72" playOrder="72">
+          <navLabel>
+            <text>4.1.4 检测类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_036.html#sigil_toc_id_45" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-73" playOrder="73">
+        <navLabel>
+          <text>4.2 执行环境及作用域</text>
+        </navLabel>
+        <content src="Text/part0000_split_037.html" />
+        <navPoint id="navPoint-74" playOrder="74">
+          <navLabel>
+            <text>4.2.1 延长作用域链</text>
+          </navLabel>
+          <content src="Text/part0000_split_037.html#sigil_toc_id_46" />
+        </navPoint>
+        <navPoint id="navPoint-75" playOrder="75">
+          <navLabel>
+            <text>4.2.2 没有块级作用域</text>
+          </navLabel>
+          <content src="Text/part0000_split_037.html#sigil_toc_id_47" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-76" playOrder="76">
+        <navLabel>
+          <text>4.3 垃圾收集</text>
+        </navLabel>
+        <content src="Text/part0000_split_038.html" />
+        <navPoint id="navPoint-77" playOrder="77">
+          <navLabel>
+            <text>4.3.1 标记清除</text>
+          </navLabel>
+          <content src="Text/part0000_split_038.html#sigil_toc_id_48" />
+        </navPoint>
+        <navPoint id="navPoint-78" playOrder="78">
+          <navLabel>
+            <text>4.3.2 引用计数</text>
+          </navLabel>
+          <content src="Text/part0000_split_038.html#sigil_toc_id_49" />
+        </navPoint>
+        <navPoint id="navPoint-79" playOrder="79">
+          <navLabel>
+            <text>4.3.3 性能问题</text>
+          </navLabel>
+          <content src="Text/part0000_split_038.html#sigil_toc_id_50" />
+        </navPoint>
+        <navPoint id="navPoint-80" playOrder="80">
+          <navLabel>
+            <text>4.3.4 管理内存</text>
+          </navLabel>
+          <content src="Text/part0000_split_038.html#sigil_toc_id_51" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-81" playOrder="81">
+        <navLabel>
+          <text>4.4 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_039.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-82" playOrder="82">
+      <navLabel>
+        <text>第5章 引用类型</text>
+      </navLabel>
+      <content src="Text/part0000_split_040.html" />
+      <navPoint id="navPoint-83" playOrder="83">
+        <navLabel>
+          <text>5.1 Object类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_041.html" />
+      </navPoint>
+      <navPoint id="navPoint-84" playOrder="84">
+        <navLabel>
+          <text>5.2 Array类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_042.html" />
+        <navPoint id="navPoint-85" playOrder="85">
+          <navLabel>
+            <text>5.2.1 检测数组</text>
+          </navLabel>
+          <content src="Text/part0000_split_042.html#sigil_toc_id_52" />
+        </navPoint>
+        <navPoint id="navPoint-86" playOrder="86">
+          <navLabel>
+            <text>5.2.2 转换方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_042.html#sigil_toc_id_53" />
+        </navPoint>
+        <navPoint id="navPoint-87" playOrder="87">
+          <navLabel>
+            <text>5.2.3 栈方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_042.html#sigil_toc_id_54" />
+        </navPoint>
+        <navPoint id="navPoint-88" playOrder="88">
+          <navLabel>
+            <text>5.2.4 队列方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_042.html#sigil_toc_id_55" />
+        </navPoint>
+        <navPoint id="navPoint-89" playOrder="89">
+          <navLabel>
+            <text>5.2.5 重排序方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_042.html#sigil_toc_id_56" />
+        </navPoint>
+        <navPoint id="navPoint-90" playOrder="90">
+          <navLabel>
+            <text>5.2.6 操作方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_042.html#sigil_toc_id_57" />
+        </navPoint>
+        <navPoint id="navPoint-91" playOrder="91">
+          <navLabel>
+            <text>5.2.7 位置方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_042.html#sigil_toc_id_58" />
+        </navPoint>
+        <navPoint id="navPoint-92" playOrder="92">
+          <navLabel>
+            <text>5.2.8 迭代方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_042.html#sigil_toc_id_59" />
+        </navPoint>
+        <navPoint id="navPoint-93" playOrder="93">
+          <navLabel>
+            <text>5.2.9 缩小方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_042.html#sigil_toc_id_60" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-94" playOrder="94">
+        <navLabel>
+          <text>5.3 Date类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_043.html" />
+        <navPoint id="navPoint-95" playOrder="95">
+          <navLabel>
+            <text>5.3.1 继承的方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_043.html#sigil_toc_id_61" />
+        </navPoint>
+        <navPoint id="navPoint-96" playOrder="96">
+          <navLabel>
+            <text>5.3.2 日期格式化方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_043.html#sigil_toc_id_62" />
+        </navPoint>
+        <navPoint id="navPoint-97" playOrder="97">
+          <navLabel>
+            <text>5.3.3 日期/时间组件方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_043.html#sigil_toc_id_63" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-98" playOrder="98">
+        <navLabel>
+          <text>5.4 RegExp类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_044.html" />
+        <navPoint id="navPoint-99" playOrder="99">
+          <navLabel>
+            <text>5.4.1 RegExp实例属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_044.html#sigil_toc_id_64" />
+        </navPoint>
+        <navPoint id="navPoint-100" playOrder="100">
+          <navLabel>
+            <text>5.4.2 RegExp实例方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_044.html#sigil_toc_id_65" />
+        </navPoint>
+        <navPoint id="navPoint-101" playOrder="101">
+          <navLabel>
+            <text>5.4.3 RegExp构造函数属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_044.html#sigil_toc_id_66" />
+        </navPoint>
+        <navPoint id="navPoint-102" playOrder="102">
+          <navLabel>
+            <text>5.4.4 模式的局限性</text>
+          </navLabel>
+          <content src="Text/part0000_split_044.html#sigil_toc_id_67" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-103" playOrder="103">
+        <navLabel>
+          <text>5.5 Function类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_045.html" />
+        <navPoint id="navPoint-104" playOrder="104">
+          <navLabel>
+            <text>5.5.1 没有重载（深入理解）</text>
+          </navLabel>
+          <content src="Text/part0000_split_045.html#sigil_toc_id_68" />
+        </navPoint>
+        <navPoint id="navPoint-105" playOrder="105">
+          <navLabel>
+            <text>5.5.2 函数声明与函数表达式</text>
+          </navLabel>
+          <content src="Text/part0000_split_045.html#sigil_toc_id_69" />
+        </navPoint>
+        <navPoint id="navPoint-106" playOrder="106">
+          <navLabel>
+            <text>5.5.3 作为值的函数</text>
+          </navLabel>
+          <content src="Text/part0000_split_045.html#sigil_toc_id_70" />
+        </navPoint>
+        <navPoint id="navPoint-107" playOrder="107">
+          <navLabel>
+            <text>5.5.4 函数内部属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_045.html#sigil_toc_id_71" />
+        </navPoint>
+        <navPoint id="navPoint-108" playOrder="108">
+          <navLabel>
+            <text>5.5.5 函数属性和方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_045.html#sigil_toc_id_72" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-109" playOrder="109">
+        <navLabel>
+          <text>5.6 基本包装类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_046.html" />
+        <navPoint id="navPoint-110" playOrder="110">
+          <navLabel>
+            <text>5.6.1 Boolean类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_046.html#sigil_toc_id_73" />
+        </navPoint>
+        <navPoint id="navPoint-111" playOrder="111">
+          <navLabel>
+            <text>5.6.2 Number类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_046.html#sigil_toc_id_74" />
+        </navPoint>
+        <navPoint id="navPoint-112" playOrder="112">
+          <navLabel>
+            <text>5.6.3 String类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_046.html#sigil_toc_id_75" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-113" playOrder="113">
+        <navLabel>
+          <text>5.7 单体内置对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_047.html" />
+        <navPoint id="navPoint-114" playOrder="114">
+          <navLabel>
+            <text>5.7.1 Global对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_047.html#sigil_toc_id_76" />
+        </navPoint>
+        <navPoint id="navPoint-115" playOrder="115">
+          <navLabel>
+            <text>5.7.2 Math对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_047.html#sigil_toc_id_77" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-116" playOrder="116">
+        <navLabel>
+          <text>5.8 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_048.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-117" playOrder="117">
+      <navLabel>
+        <text>第6章 面向对象的程序设计</text>
+      </navLabel>
+      <content src="Text/part0000_split_049.html" />
+      <navPoint id="navPoint-118" playOrder="118">
+        <navLabel>
+          <text>6.1 理解对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_050.html" />
+        <navPoint id="navPoint-119" playOrder="119">
+          <navLabel>
+            <text>6.1.1 属性类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_050.html#sigil_toc_id_78" />
+        </navPoint>
+        <navPoint id="navPoint-120" playOrder="120">
+          <navLabel>
+            <text>6.1.2 定义多个属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_050.html#sigil_toc_id_79" />
+        </navPoint>
+        <navPoint id="navPoint-121" playOrder="121">
+          <navLabel>
+            <text>6.1.3 读取属性的特性</text>
+          </navLabel>
+          <content src="Text/part0000_split_050.html#sigil_toc_id_80" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-122" playOrder="122">
+        <navLabel>
+          <text>6.2 创建对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_051.html" />
+        <navPoint id="navPoint-123" playOrder="123">
+          <navLabel>
+            <text>6.2.1 工厂模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_051.html#sigil_toc_id_81" />
+        </navPoint>
+        <navPoint id="navPoint-124" playOrder="124">
+          <navLabel>
+            <text>6.2.2 构造函数模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_051.html#sigil_toc_id_82" />
+        </navPoint>
+        <navPoint id="navPoint-125" playOrder="125">
+          <navLabel>
+            <text>6.2.3 原型模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_051.html#sigil_toc_id_83" />
+        </navPoint>
+        <navPoint id="navPoint-126" playOrder="126">
+          <navLabel>
+            <text>6.2.4 组合使用构造函数模式和原型模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_051.html#sigil_toc_id_84" />
+        </navPoint>
+        <navPoint id="navPoint-127" playOrder="127">
+          <navLabel>
+            <text>6.2.5 动态原型模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_051.html#sigil_toc_id_85" />
+        </navPoint>
+        <navPoint id="navPoint-128" playOrder="128">
+          <navLabel>
+            <text>6.2.6 寄生构造函数模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_051.html#sigil_toc_id_86" />
+        </navPoint>
+        <navPoint id="navPoint-129" playOrder="129">
+          <navLabel>
+            <text>6.2.7 稳妥构造函数模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_051.html#sigil_toc_id_87" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-130" playOrder="130">
+        <navLabel>
+          <text>6.3 继承</text>
+        </navLabel>
+        <content src="Text/part0000_split_052.html" />
+        <navPoint id="navPoint-131" playOrder="131">
+          <navLabel>
+            <text>6.3.1 原型链</text>
+          </navLabel>
+          <content src="Text/part0000_split_052.html#sigil_toc_id_88" />
+        </navPoint>
+        <navPoint id="navPoint-132" playOrder="132">
+          <navLabel>
+            <text>6.3.2 借用构造函数</text>
+          </navLabel>
+          <content src="Text/part0000_split_052.html#sigil_toc_id_89" />
+        </navPoint>
+        <navPoint id="navPoint-133" playOrder="133">
+          <navLabel>
+            <text>6.3.3 组合继承</text>
+          </navLabel>
+          <content src="Text/part0000_split_052.html#sigil_toc_id_90" />
+        </navPoint>
+        <navPoint id="navPoint-134" playOrder="134">
+          <navLabel>
+            <text>6.3.4 原型式继承</text>
+          </navLabel>
+          <content src="Text/part0000_split_052.html#sigil_toc_id_91" />
+        </navPoint>
+        <navPoint id="navPoint-135" playOrder="135">
+          <navLabel>
+            <text>6.3.5 寄生式继承</text>
+          </navLabel>
+          <content src="Text/part0000_split_052.html#sigil_toc_id_92" />
+        </navPoint>
+        <navPoint id="navPoint-136" playOrder="136">
+          <navLabel>
+            <text>6.3.6 寄生组合式继承</text>
+          </navLabel>
+          <content src="Text/part0000_split_052.html#sigil_toc_id_93" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-137" playOrder="137">
+        <navLabel>
+          <text>6.4 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_053.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-138" playOrder="138">
+      <navLabel>
+        <text>第7章 函数表达式</text>
+      </navLabel>
+      <content src="Text/part0000_split_054.html" />
+      <navPoint id="navPoint-139" playOrder="139">
+        <navLabel>
+          <text>7.1 递归</text>
+        </navLabel>
+        <content src="Text/part0000_split_055.html" />
+      </navPoint>
+      <navPoint id="navPoint-140" playOrder="140">
+        <navLabel>
+          <text>7.2 闭包</text>
+        </navLabel>
+        <content src="Text/part0000_split_056.html" />
+        <navPoint id="navPoint-141" playOrder="141">
+          <navLabel>
+            <text>7.2.1 闭包与变量</text>
+          </navLabel>
+          <content src="Text/part0000_split_056.html#sigil_toc_id_94" />
+        </navPoint>
+        <navPoint id="navPoint-142" playOrder="142">
+          <navLabel>
+            <text>7.2.2 关于this对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_056.html#sigil_toc_id_95" />
+        </navPoint>
+        <navPoint id="navPoint-143" playOrder="143">
+          <navLabel>
+            <text>7.2.3 内存泄漏</text>
+          </navLabel>
+          <content src="Text/part0000_split_056.html#sigil_toc_id_96" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-144" playOrder="144">
+        <navLabel>
+          <text>7.3 模仿块级作用域</text>
+        </navLabel>
+        <content src="Text/part0000_split_057.html" />
+      </navPoint>
+      <navPoint id="navPoint-145" playOrder="145">
+        <navLabel>
+          <text>7.4 私有变量</text>
+        </navLabel>
+        <content src="Text/part0000_split_058.html" />
+        <navPoint id="navPoint-146" playOrder="146">
+          <navLabel>
+            <text>7.4.1 静态私有变量</text>
+          </navLabel>
+          <content src="Text/part0000_split_058.html#sigil_toc_id_97" />
+        </navPoint>
+        <navPoint id="navPoint-147" playOrder="147">
+          <navLabel>
+            <text>7.4.2 模块模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_058.html#sigil_toc_id_98" />
+        </navPoint>
+        <navPoint id="navPoint-148" playOrder="148">
+          <navLabel>
+            <text>7.4.3 增强的模块模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_058.html#sigil_toc_id_99" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-149" playOrder="149">
+        <navLabel>
+          <text>7.5 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_059.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-150" playOrder="150">
+      <navLabel>
+        <text>第8章 BOM</text>
+      </navLabel>
+      <content src="Text/part0000_split_060.html" />
+      <navPoint id="navPoint-151" playOrder="151">
+        <navLabel>
+          <text>8.1 window对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_061.html" />
+        <navPoint id="navPoint-152" playOrder="152">
+          <navLabel>
+            <text>8.1.1 全局作用域</text>
+          </navLabel>
+          <content src="Text/part0000_split_061.html#sigil_toc_id_100" />
+        </navPoint>
+        <navPoint id="navPoint-153" playOrder="153">
+          <navLabel>
+            <text>8.1.2 窗口关系及框架</text>
+          </navLabel>
+          <content src="Text/part0000_split_061.html#sigil_toc_id_101" />
+        </navPoint>
+        <navPoint id="navPoint-154" playOrder="154">
+          <navLabel>
+            <text>8.1.3 窗口位置</text>
+          </navLabel>
+          <content src="Text/part0000_split_061.html#sigil_toc_id_102" />
+        </navPoint>
+        <navPoint id="navPoint-155" playOrder="155">
+          <navLabel>
+            <text>8.1.4 窗口大小</text>
+          </navLabel>
+          <content src="Text/part0000_split_061.html#sigil_toc_id_103" />
+        </navPoint>
+        <navPoint id="navPoint-156" playOrder="156">
+          <navLabel>
+            <text>8.1.5 导航和打开窗口</text>
+          </navLabel>
+          <content src="Text/part0000_split_061.html#sigil_toc_id_104" />
+        </navPoint>
+        <navPoint id="navPoint-157" playOrder="157">
+          <navLabel>
+            <text>8.1.6 间歇调用和超时调用</text>
+          </navLabel>
+          <content src="Text/part0000_split_061.html#sigil_toc_id_105" />
+        </navPoint>
+        <navPoint id="navPoint-158" playOrder="158">
+          <navLabel>
+            <text>8.1.7 系统对话框</text>
+          </navLabel>
+          <content src="Text/part0000_split_061.html#sigil_toc_id_106" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-159" playOrder="159">
+        <navLabel>
+          <text>8.2 location对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_062.html" />
+        <navPoint id="navPoint-160" playOrder="160">
+          <navLabel>
+            <text>8.2.1 查询字符串参数</text>
+          </navLabel>
+          <content src="Text/part0000_split_062.html#sigil_toc_id_107" />
+        </navPoint>
+        <navPoint id="navPoint-161" playOrder="161">
+          <navLabel>
+            <text>8.2.2 位置操作</text>
+          </navLabel>
+          <content src="Text/part0000_split_062.html#sigil_toc_id_108" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-162" playOrder="162">
+        <navLabel>
+          <text>8.3 navigator对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_063.html" />
+        <navPoint id="navPoint-163" playOrder="163">
+          <navLabel>
+            <text>8.3.1 检测插件</text>
+          </navLabel>
+          <content src="Text/part0000_split_063.html#sigil_toc_id_109" />
+        </navPoint>
+        <navPoint id="navPoint-164" playOrder="164">
+          <navLabel>
+            <text>8.3.2 注册处理程序</text>
+          </navLabel>
+          <content src="Text/part0000_split_063.html#sigil_toc_id_110" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-165" playOrder="165">
+        <navLabel>
+          <text>8.4 screen对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_064.html" />
+      </navPoint>
+      <navPoint id="navPoint-166" playOrder="166">
+        <navLabel>
+          <text>8.5 history对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_065.html" />
+      </navPoint>
+      <navPoint id="navPoint-167" playOrder="167">
+        <navLabel>
+          <text>8.6 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_066.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-168" playOrder="168">
+      <navLabel>
+        <text>第9章 客户端检测</text>
+      </navLabel>
+      <content src="Text/part0000_split_067.html" />
+      <navPoint id="navPoint-169" playOrder="169">
+        <navLabel>
+          <text>9.1 能力检测</text>
+        </navLabel>
+        <content src="Text/part0000_split_068.html" />
+        <navPoint id="navPoint-170" playOrder="170">
+          <navLabel>
+            <text>9.1.1 更可靠的能力检测</text>
+          </navLabel>
+          <content src="Text/part0000_split_068.html#sigil_toc_id_111" />
+        </navPoint>
+        <navPoint id="navPoint-171" playOrder="171">
+          <navLabel>
+            <text>9.1.2 能力检测，不是浏览器检测</text>
+          </navLabel>
+          <content src="Text/part0000_split_068.html#sigil_toc_id_112" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-172" playOrder="172">
+        <navLabel>
+          <text>9.2 怪癖检测</text>
+        </navLabel>
+        <content src="Text/part0000_split_069.html" />
+      </navPoint>
+      <navPoint id="navPoint-173" playOrder="173">
+        <navLabel>
+          <text>9.3 用户代理检测</text>
+        </navLabel>
+        <content src="Text/part0000_split_070.html" />
+        <navPoint id="navPoint-174" playOrder="174">
+          <navLabel>
+            <text>9.3.1 用户代理字符串的历史</text>
+          </navLabel>
+          <content src="Text/part0000_split_070.html#nav_point_61" />
+        </navPoint>
+        <navPoint id="navPoint-175" playOrder="175">
+          <navLabel>
+            <text>9.3.2 用户代理字符串检测技术</text>
+          </navLabel>
+          <content src="Text/part0000_split_070.html#nav_point_62" />
+        </navPoint>
+        <navPoint id="navPoint-176" playOrder="176">
+          <navLabel>
+            <text>9.3.3 完整的代码</text>
+          </navLabel>
+          <content src="Text/part0000_split_070.html#nav_point_63" />
+        </navPoint>
+        <navPoint id="navPoint-177" playOrder="177">
+          <navLabel>
+            <text>9.3.4 使用方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_070.html#nav_point_64" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-178" playOrder="178">
+        <navLabel>
+          <text>9.4 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_071.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-179" playOrder="179">
+      <navLabel>
+        <text>第10章 DOM</text>
+      </navLabel>
+      <content src="Text/part0000_split_072.html" />
+      <navPoint id="navPoint-180" playOrder="180">
+        <navLabel>
+          <text>10.1 节点层次</text>
+        </navLabel>
+        <content src="Text/part0000_split_073.html" />
+        <navPoint id="navPoint-181" playOrder="181">
+          <navLabel>
+            <text>10.1.1 Node类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_073.html#nav_point_68" />
+        </navPoint>
+        <navPoint id="navPoint-182" playOrder="182">
+          <navLabel>
+            <text>10.1.2 Document类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_073.html#nav_point_69" />
+        </navPoint>
+        <navPoint id="navPoint-183" playOrder="183">
+          <navLabel>
+            <text>10.1.3 Element类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_073.html#nav_point_70" />
+        </navPoint>
+        <navPoint id="navPoint-184" playOrder="184">
+          <navLabel>
+            <text>10.1.4 Text类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_073.html#nav_point_71" />
+        </navPoint>
+        <navPoint id="navPoint-185" playOrder="185">
+          <navLabel>
+            <text>10.1.5 Comment类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_073.html#nav_point_72" />
+        </navPoint>
+        <navPoint id="navPoint-186" playOrder="186">
+          <navLabel>
+            <text>10.1.6 CDATASection类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_073.html#nav_point_73" />
+        </navPoint>
+        <navPoint id="navPoint-187" playOrder="187">
+          <navLabel>
+            <text>10.1.7 DocumentType类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_073.html#nav_point_74" />
+        </navPoint>
+        <navPoint id="navPoint-188" playOrder="188">
+          <navLabel>
+            <text>10.1.8 DocumentFragment类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_073.html#nav_point_75" />
+        </navPoint>
+        <navPoint id="navPoint-189" playOrder="189">
+          <navLabel>
+            <text>10.1.9 Attr类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_073.html#nav_point_76" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-190" playOrder="190">
+        <navLabel>
+          <text>10.2 DOM操作技术</text>
+        </navLabel>
+        <content src="Text/part0000_split_074.html" />
+        <navPoint id="navPoint-191" playOrder="191">
+          <navLabel>
+            <text>10.2.1 动态脚本</text>
+          </navLabel>
+          <content src="Text/part0000_split_074.html#sigil_toc_id_113" />
+        </navPoint>
+        <navPoint id="navPoint-192" playOrder="192">
+          <navLabel>
+            <text>10.2.2 动态样式</text>
+          </navLabel>
+          <content src="Text/part0000_split_074.html#sigil_toc_id_114" />
+        </navPoint>
+        <navPoint id="navPoint-193" playOrder="193">
+          <navLabel>
+            <text>10.2.3 操作表格</text>
+          </navLabel>
+          <content src="Text/part0000_split_074.html#sigil_toc_id_115" />
+        </navPoint>
+        <navPoint id="navPoint-194" playOrder="194">
+          <navLabel>
+            <text>10.2.4 使用NodeList</text>
+          </navLabel>
+          <content src="Text/part0000_split_074.html#sigil_toc_id_116" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-195" playOrder="195">
+        <navLabel>
+          <text>10.3 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_075.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-196" playOrder="196">
+      <navLabel>
+        <text>第11章 DOM扩展</text>
+      </navLabel>
+      <content src="Text/part0000_split_076.html" />
+      <navPoint id="navPoint-197" playOrder="197">
+        <navLabel>
+          <text>11.1 选择符API</text>
+        </navLabel>
+        <content src="Text/part0000_split_077.html" />
+        <navPoint id="navPoint-198" playOrder="198">
+          <navLabel>
+            <text>11.1.1 querySelector()方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_077.html#sigil_toc_id_117" />
+        </navPoint>
+        <navPoint id="navPoint-199" playOrder="199">
+          <navLabel>
+            <text>11.1.2 querySelectorAll()方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_077.html#sigil_toc_id_118" />
+        </navPoint>
+        <navPoint id="navPoint-200" playOrder="200">
+          <navLabel>
+            <text>11.1.3 matchesSelector()方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_077.html#sigil_toc_id_119" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-201" playOrder="201">
+        <navLabel>
+          <text>11.2 元素遍历</text>
+        </navLabel>
+        <content src="Text/part0000_split_078.html" />
+      </navPoint>
+      <navPoint id="navPoint-202" playOrder="202">
+        <navLabel>
+          <text>11.3 HTML5</text>
+        </navLabel>
+        <content src="Text/part0000_split_079.html" />
+        <navPoint id="navPoint-203" playOrder="203">
+          <navLabel>
+            <text>11.3.1 与类相关的扩充</text>
+          </navLabel>
+          <content src="Text/part0000_split_079.html#sigil_toc_id_120" />
+        </navPoint>
+        <navPoint id="navPoint-204" playOrder="204">
+          <navLabel>
+            <text>11.3.2 焦点管理</text>
+          </navLabel>
+          <content src="Text/part0000_split_079.html#sigil_toc_id_121" />
+        </navPoint>
+        <navPoint id="navPoint-205" playOrder="205">
+          <navLabel>
+            <text>11.3.3 HTMLDocument的变化</text>
+          </navLabel>
+          <content src="Text/part0000_split_079.html#sigil_toc_id_122" />
+        </navPoint>
+        <navPoint id="navPoint-206" playOrder="206">
+          <navLabel>
+            <text>11.3.4 字符集属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_079.html#sigil_toc_id_123" />
+        </navPoint>
+        <navPoint id="navPoint-207" playOrder="207">
+          <navLabel>
+            <text>11.3.5 自定义数据属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_079.html#sigil_toc_id_124" />
+        </navPoint>
+        <navPoint id="navPoint-208" playOrder="208">
+          <navLabel>
+            <text>11.3.6 插入标记</text>
+          </navLabel>
+          <content src="Text/part0000_split_079.html#sigil_toc_id_125" />
+        </navPoint>
+        <navPoint id="navPoint-209" playOrder="209">
+          <navLabel>
+            <text>11.3.7 scrollIntoView()方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_079.html#sigil_toc_id_126" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-210" playOrder="210">
+        <navLabel>
+          <text>11.4 专有扩展</text>
+        </navLabel>
+        <content src="Text/part0000_split_080.html" />
+        <navPoint id="navPoint-211" playOrder="211">
+          <navLabel>
+            <text>11.4.1 文档模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_080.html#sigil_toc_id_127" />
+        </navPoint>
+        <navPoint id="navPoint-212" playOrder="212">
+          <navLabel>
+            <text>11.4.2 children属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_080.html#sigil_toc_id_128" />
+        </navPoint>
+        <navPoint id="navPoint-213" playOrder="213">
+          <navLabel>
+            <text>11.4.3 contains()方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_080.html#sigil_toc_id_129" />
+        </navPoint>
+        <navPoint id="navPoint-214" playOrder="214">
+          <navLabel>
+            <text>11.4.4 插入文本</text>
+          </navLabel>
+          <content src="Text/part0000_split_080.html#sigil_toc_id_130" />
+        </navPoint>
+        <navPoint id="navPoint-215" playOrder="215">
+          <navLabel>
+            <text>11.4.5 滚动</text>
+          </navLabel>
+          <content src="Text/part0000_split_080.html#sigil_toc_id_131" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-216" playOrder="216">
+        <navLabel>
+          <text>11.5 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_081.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-217" playOrder="217">
+      <navLabel>
+        <text>第12章 DOM2和DOM3</text>
+      </navLabel>
+      <content src="Text/part0000_split_082.html" />
+      <navPoint id="navPoint-218" playOrder="218">
+        <navLabel>
+          <text>12.1 DOM变化</text>
+        </navLabel>
+        <content src="Text/part0000_split_083.html" />
+        <navPoint id="navPoint-219" playOrder="219">
+          <navLabel>
+            <text>12.1.1 针对XML命名空间的变化</text>
+          </navLabel>
+          <content src="Text/part0000_split_083.html#sigil_toc_id_132" />
+        </navPoint>
+        <navPoint id="navPoint-220" playOrder="220">
+          <navLabel>
+            <text>12.1.2 其他方面的变化</text>
+          </navLabel>
+          <content src="Text/part0000_split_083.html#sigil_toc_id_133" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-221" playOrder="221">
+        <navLabel>
+          <text>12.2 样式</text>
+        </navLabel>
+        <content src="Text/part0000_split_084.html" />
+        <navPoint id="navPoint-222" playOrder="222">
+          <navLabel>
+            <text>12.2.1 访问元素的样式</text>
+          </navLabel>
+          <content src="Text/part0000_split_084.html#sigil_toc_id_134" />
+        </navPoint>
+        <navPoint id="navPoint-223" playOrder="223">
+          <navLabel>
+            <text>12.2.2 操作样式表</text>
+          </navLabel>
+          <content src="Text/part0000_split_084.html#sigil_toc_id_135" />
+        </navPoint>
+        <navPoint id="navPoint-224" playOrder="224">
+          <navLabel>
+            <text>12.2.3 元素大小</text>
+          </navLabel>
+          <content src="Text/part0000_split_084.html#sigil_toc_id_136" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-225" playOrder="225">
+        <navLabel>
+          <text>12.3 遍历</text>
+        </navLabel>
+        <content src="Text/part0000_split_085.html" />
+        <navPoint id="navPoint-226" playOrder="226">
+          <navLabel>
+            <text>12.3.1 NodeIterator</text>
+          </navLabel>
+          <content src="Text/part0000_split_085.html#sigil_toc_id_137" />
+        </navPoint>
+        <navPoint id="navPoint-227" playOrder="227">
+          <navLabel>
+            <text>12.3.2 TreeWalker</text>
+          </navLabel>
+          <content src="Text/part0000_split_085.html#sigil_toc_id_138" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-228" playOrder="228">
+        <navLabel>
+          <text>12.4 范围</text>
+        </navLabel>
+        <content src="Text/part0000_split_086.html" />
+        <navPoint id="navPoint-229" playOrder="229">
+          <navLabel>
+            <text>12.4.1 DOM中的范围</text>
+          </navLabel>
+          <content src="Text/part0000_split_086.html#sigil_toc_id_139" />
+        </navPoint>
+        <navPoint id="navPoint-230" playOrder="230">
+          <navLabel>
+            <text>12.4.2 IE8及更早版本中的范围</text>
+          </navLabel>
+          <content src="Text/part0000_split_086.html#sigil_toc_id_140" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-231" playOrder="231">
+        <navLabel>
+          <text>12.5 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_087.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-232" playOrder="232">
+      <navLabel>
+        <text>第13章 事件</text>
+      </navLabel>
+      <content src="Text/part0000_split_088.html" />
+      <navPoint id="navPoint-233" playOrder="233">
+        <navLabel>
+          <text>13.1 事件流</text>
+        </navLabel>
+        <content src="Text/part0000_split_089.html" />
+        <navPoint id="navPoint-234" playOrder="234">
+          <navLabel>
+            <text>13.1.1 事件冒泡</text>
+          </navLabel>
+          <content src="Text/part0000_split_089.html#sigil_toc_id_141" />
+        </navPoint>
+        <navPoint id="navPoint-235" playOrder="235">
+          <navLabel>
+            <text>13.1.2 事件捕获</text>
+          </navLabel>
+          <content src="Text/part0000_split_089.html#sigil_toc_id_142" />
+        </navPoint>
+        <navPoint id="navPoint-236" playOrder="236">
+          <navLabel>
+            <text>13.1.3 DOM事件流</text>
+          </navLabel>
+          <content src="Text/part0000_split_089.html#sigil_toc_id_143" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-237" playOrder="237">
+        <navLabel>
+          <text>13.2 事件处理程序</text>
+        </navLabel>
+        <content src="Text/part0000_split_090.html" />
+        <navPoint id="navPoint-238" playOrder="238">
+          <navLabel>
+            <text>13.2.1 HTML事件处理程序</text>
+          </navLabel>
+          <content src="Text/part0000_split_090.html#sigil_toc_id_144" />
+        </navPoint>
+        <navPoint id="navPoint-239" playOrder="239">
+          <navLabel>
+            <text>13.2.2 DOM0级事件处理程序</text>
+          </navLabel>
+          <content src="Text/part0000_split_090.html#sigil_toc_id_145" />
+        </navPoint>
+        <navPoint id="navPoint-240" playOrder="240">
+          <navLabel>
+            <text>13.2.3 DOM2级事件处理程序</text>
+          </navLabel>
+          <content src="Text/part0000_split_090.html#sigil_toc_id_146" />
+        </navPoint>
+        <navPoint id="navPoint-241" playOrder="241">
+          <navLabel>
+            <text>13.2.4 IE事件处理程序</text>
+          </navLabel>
+          <content src="Text/part0000_split_090.html#sigil_toc_id_147" />
+        </navPoint>
+        <navPoint id="navPoint-242" playOrder="242">
+          <navLabel>
+            <text>13.2.5 跨浏览器的事件处理程序</text>
+          </navLabel>
+          <content src="Text/part0000_split_090.html#sigil_toc_id_148" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-243" playOrder="243">
+        <navLabel>
+          <text>13.3 事件对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_091.html" />
+        <navPoint id="navPoint-244" playOrder="244">
+          <navLabel>
+            <text>13.3.1 DOM中的事件对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_091.html#sigil_toc_id_149" />
+        </navPoint>
+        <navPoint id="navPoint-245" playOrder="245">
+          <navLabel>
+            <text>13.3.2 IE中的事件对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_091.html#sigil_toc_id_150" />
+        </navPoint>
+        <navPoint id="navPoint-246" playOrder="246">
+          <navLabel>
+            <text>13.3.3 跨浏览器的事件对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_091.html#sigil_toc_id_151" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-247" playOrder="247">
+        <navLabel>
+          <text>13.4 事件类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_092.html" />
+        <navPoint id="navPoint-248" playOrder="248">
+          <navLabel>
+            <text>13.4.1 UI事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_092.html#nav_point_96" />
+        </navPoint>
+        <navPoint id="navPoint-249" playOrder="249">
+          <navLabel>
+            <text>13.4.2 焦点事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_092.html#nav_point_97" />
+        </navPoint>
+        <navPoint id="navPoint-250" playOrder="250">
+          <navLabel>
+            <text>13.4.3 鼠标与滚轮事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_092.html#nav_point_98" />
+        </navPoint>
+        <navPoint id="navPoint-251" playOrder="251">
+          <navLabel>
+            <text>13.4.4 键盘与文本事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_092.html#nav_point_99" />
+        </navPoint>
+        <navPoint id="navPoint-252" playOrder="252">
+          <navLabel>
+            <text>13.4.5 复合事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_092.html#nav_point_100" />
+        </navPoint>
+        <navPoint id="navPoint-253" playOrder="253">
+          <navLabel>
+            <text>13.4.6 变动事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_092.html#nav_point_101" />
+        </navPoint>
+        <navPoint id="navPoint-254" playOrder="254">
+          <navLabel>
+            <text>13.4.7 HTML5事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_092.html#nav_point_102" />
+        </navPoint>
+        <navPoint id="navPoint-255" playOrder="255">
+          <navLabel>
+            <text>13.4.8 设备事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_092.html#nav_point_103" />
+        </navPoint>
+        <navPoint id="navPoint-256" playOrder="256">
+          <navLabel>
+            <text>13.4.9 触摸与手势事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_092.html#nav_point_104" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-257" playOrder="257">
+        <navLabel>
+          <text>13.5 内存和性能</text>
+        </navLabel>
+        <content src="Text/part0000_split_093.html" />
+        <navPoint id="navPoint-258" playOrder="258">
+          <navLabel>
+            <text>13.5.1 事件委托</text>
+          </navLabel>
+          <content src="Text/part0000_split_093.html#sigil_toc_id_152" />
+        </navPoint>
+        <navPoint id="navPoint-259" playOrder="259">
+          <navLabel>
+            <text>13.5.2 移除事件处理程序</text>
+          </navLabel>
+          <content src="Text/part0000_split_093.html#sigil_toc_id_153" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-260" playOrder="260">
+        <navLabel>
+          <text>13.6 模拟事件</text>
+        </navLabel>
+        <content src="Text/part0000_split_094.html" />
+        <navPoint id="navPoint-261" playOrder="261">
+          <navLabel>
+            <text>13.6.1 DOM中的事件模拟</text>
+          </navLabel>
+          <content src="Text/part0000_split_094.html#sigil_toc_id_154" />
+        </navPoint>
+        <navPoint id="navPoint-262" playOrder="262">
+          <navLabel>
+            <text>13.6.2 IE中的事件模拟</text>
+          </navLabel>
+          <content src="Text/part0000_split_094.html#sigil_toc_id_155" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-263" playOrder="263">
+        <navLabel>
+          <text>13.7 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_095.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-264" playOrder="264">
+      <navLabel>
+        <text>第14章 表单脚本</text>
+      </navLabel>
+      <content src="Text/part0000_split_096.html" />
+      <navPoint id="navPoint-265" playOrder="265">
+        <navLabel>
+          <text>14.1 表单的基础知识</text>
+        </navLabel>
+        <content src="Text/part0000_split_097.html" />
+        <navPoint id="navPoint-266" playOrder="266">
+          <navLabel>
+            <text>14.1.1 提交表单</text>
+          </navLabel>
+          <content src="Text/part0000_split_097.html#sigil_toc_id_156" />
+        </navPoint>
+        <navPoint id="navPoint-267" playOrder="267">
+          <navLabel>
+            <text>14.1.2 重置表单</text>
+          </navLabel>
+          <content src="Text/part0000_split_097.html#sigil_toc_id_157" />
+        </navPoint>
+        <navPoint id="navPoint-268" playOrder="268">
+          <navLabel>
+            <text>14.1.3 表单字段</text>
+          </navLabel>
+          <content src="Text/part0000_split_097.html#sigil_toc_id_158" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-269" playOrder="269">
+        <navLabel>
+          <text>14.2 文本框脚本</text>
+        </navLabel>
+        <content src="Text/part0000_split_098.html" />
+        <navPoint id="navPoint-270" playOrder="270">
+          <navLabel>
+            <text>14.2.1 选择文本</text>
+          </navLabel>
+          <content src="Text/part0000_split_098.html#sigil_toc_id_159" />
+        </navPoint>
+        <navPoint id="navPoint-271" playOrder="271">
+          <navLabel>
+            <text>14.2.2 过滤输入</text>
+          </navLabel>
+          <content src="Text/part0000_split_098.html#sigil_toc_id_160" />
+        </navPoint>
+        <navPoint id="navPoint-272" playOrder="272">
+          <navLabel>
+            <text>14.2.3 自动切换焦点</text>
+          </navLabel>
+          <content src="Text/part0000_split_098.html#sigil_toc_id_161" />
+        </navPoint>
+        <navPoint id="navPoint-273" playOrder="273">
+          <navLabel>
+            <text>14.2.4 HTML5约束验证API</text>
+          </navLabel>
+          <content src="Text/part0000_split_098.html#sigil_toc_id_162" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-274" playOrder="274">
+        <navLabel>
+          <text>14.3 选择框脚本</text>
+        </navLabel>
+        <content src="Text/part0000_split_099.html" />
+        <navPoint id="navPoint-275" playOrder="275">
+          <navLabel>
+            <text>14.3.1 选择选项</text>
+          </navLabel>
+          <content src="Text/part0000_split_099.html#sigil_toc_id_163" />
+        </navPoint>
+        <navPoint id="navPoint-276" playOrder="276">
+          <navLabel>
+            <text>14.3.2 添加选项</text>
+          </navLabel>
+          <content src="Text/part0000_split_099.html#sigil_toc_id_164" />
+        </navPoint>
+        <navPoint id="navPoint-277" playOrder="277">
+          <navLabel>
+            <text>14.3.3 移除选项</text>
+          </navLabel>
+          <content src="Text/part0000_split_099.html#sigil_toc_id_165" />
+        </navPoint>
+        <navPoint id="navPoint-278" playOrder="278">
+          <navLabel>
+            <text>14.3.4 移动和重排选项</text>
+          </navLabel>
+          <content src="Text/part0000_split_099.html#sigil_toc_id_166" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-279" playOrder="279">
+        <navLabel>
+          <text>14.4 表单序列化</text>
+        </navLabel>
+        <content src="Text/part0000_split_100.html" />
+      </navPoint>
+      <navPoint id="navPoint-280" playOrder="280">
+        <navLabel>
+          <text>14.5 富文本编辑</text>
+        </navLabel>
+        <content src="Text/part0000_split_101.html" />
+        <navPoint id="navPoint-281" playOrder="281">
+          <navLabel>
+            <text>14.5.1 使用contenteditable属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_101.html#sigil_toc_id_167" />
+        </navPoint>
+        <navPoint id="navPoint-282" playOrder="282">
+          <navLabel>
+            <text>14.5.2 操作富文本</text>
+          </navLabel>
+          <content src="Text/part0000_split_101.html#sigil_toc_id_168" />
+        </navPoint>
+        <navPoint id="navPoint-283" playOrder="283">
+          <navLabel>
+            <text>14.5.3 富文本选区</text>
+          </navLabel>
+          <content src="Text/part0000_split_101.html#sigil_toc_id_169" />
+        </navPoint>
+        <navPoint id="navPoint-284" playOrder="284">
+          <navLabel>
+            <text>14.5.4 表单与富文本</text>
+          </navLabel>
+          <content src="Text/part0000_split_101.html#sigil_toc_id_170" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-285" playOrder="285">
+        <navLabel>
+          <text>14.6 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_102.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-286" playOrder="286">
+      <navLabel>
+        <text>第15章 使用Canvas绘图</text>
+      </navLabel>
+      <content src="Text/part0000_split_103.html" />
+      <navPoint id="navPoint-287" playOrder="287">
+        <navLabel>
+          <text>15.1 基本用法</text>
+        </navLabel>
+        <content src="Text/part0000_split_104.html" />
+      </navPoint>
+      <navPoint id="navPoint-288" playOrder="288">
+        <navLabel>
+          <text>15.2 2D上下文</text>
+        </navLabel>
+        <content src="Text/part0000_split_105.html" />
+        <navPoint id="navPoint-289" playOrder="289">
+          <navLabel>
+            <text>15.2.1 填充和描边</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_171" />
+        </navPoint>
+        <navPoint id="navPoint-290" playOrder="290">
+          <navLabel>
+            <text>15.2.2 绘制矩形</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_172" />
+        </navPoint>
+        <navPoint id="navPoint-291" playOrder="291">
+          <navLabel>
+            <text>15.2.3 绘制路径</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_173" />
+        </navPoint>
+        <navPoint id="navPoint-292" playOrder="292">
+          <navLabel>
+            <text>15.2.4 绘制文本</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_174" />
+        </navPoint>
+        <navPoint id="navPoint-293" playOrder="293">
+          <navLabel>
+            <text>15.2.5 变换</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_175" />
+        </navPoint>
+        <navPoint id="navPoint-294" playOrder="294">
+          <navLabel>
+            <text>15.2.6 绘制图像</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_176" />
+        </navPoint>
+        <navPoint id="navPoint-295" playOrder="295">
+          <navLabel>
+            <text>15.2.7 阴影</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_177" />
+        </navPoint>
+        <navPoint id="navPoint-296" playOrder="296">
+          <navLabel>
+            <text>15.2.8 渐变</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_178" />
+        </navPoint>
+        <navPoint id="navPoint-297" playOrder="297">
+          <navLabel>
+            <text>15.2.9 模式</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_179" />
+        </navPoint>
+        <navPoint id="navPoint-298" playOrder="298">
+          <navLabel>
+            <text>15.2.10 使用图像数据</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_180" />
+        </navPoint>
+        <navPoint id="navPoint-299" playOrder="299">
+          <navLabel>
+            <text>15.2.11 合成</text>
+          </navLabel>
+          <content src="Text/part0000_split_105.html#sigil_toc_id_181" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-300" playOrder="300">
+        <navLabel>
+          <text>15.3 WebGL</text>
+        </navLabel>
+        <content src="Text/part0000_split_106.html" />
+        <navPoint id="navPoint-301" playOrder="301">
+          <navLabel>
+            <text>15.3.1 类型化数组</text>
+          </navLabel>
+          <content src="Text/part0000_split_106.html#sigil_toc_id_182" />
+        </navPoint>
+        <navPoint id="navPoint-302" playOrder="302">
+          <navLabel>
+            <text>15.3.2 WebGL上下文</text>
+          </navLabel>
+          <content src="Text/part0000_split_106.html#sigil_toc_id_183" />
+        </navPoint>
+        <navPoint id="navPoint-303" playOrder="303">
+          <navLabel>
+            <text>15.3.3 支持</text>
+          </navLabel>
+          <content src="Text/part0000_split_106.html#sigil_toc_id_184" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-304" playOrder="304">
+        <navLabel>
+          <text>15.4 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_107.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-305" playOrder="305">
+      <navLabel>
+        <text>第16章 HTML5脚本编程</text>
+      </navLabel>
+      <content src="Text/part0000_split_108.html" />
+      <navPoint id="navPoint-306" playOrder="306">
+        <navLabel>
+          <text>16.1 跨文档消息传递</text>
+        </navLabel>
+        <content src="Text/part0000_split_109.html" />
+      </navPoint>
+      <navPoint id="navPoint-307" playOrder="307">
+        <navLabel>
+          <text>16.2 原生拖放</text>
+        </navLabel>
+        <content src="Text/part0000_split_110.html" />
+        <navPoint id="navPoint-308" playOrder="308">
+          <navLabel>
+            <text>16.2.1 拖放事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_110.html#sigil_toc_id_185" />
+        </navPoint>
+        <navPoint id="navPoint-309" playOrder="309">
+          <navLabel>
+            <text>16.2.2 自定义放置目标</text>
+          </navLabel>
+          <content src="Text/part0000_split_110.html#sigil_toc_id_186" />
+        </navPoint>
+        <navPoint id="navPoint-310" playOrder="310">
+          <navLabel>
+            <text>16.2.3 dataTransfer对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_110.html#sigil_toc_id_187" />
+        </navPoint>
+        <navPoint id="navPoint-311" playOrder="311">
+          <navLabel>
+            <text>16.2.4 dropEffect与effectAllowed</text>
+          </navLabel>
+          <content src="Text/part0000_split_110.html#sigil_toc_id_188" />
+        </navPoint>
+        <navPoint id="navPoint-312" playOrder="312">
+          <navLabel>
+            <text>16.2.5 可拖动</text>
+          </navLabel>
+          <content src="Text/part0000_split_110.html#sigil_toc_id_189" />
+        </navPoint>
+        <navPoint id="navPoint-313" playOrder="313">
+          <navLabel>
+            <text>16.2.6 其他成员</text>
+          </navLabel>
+          <content src="Text/part0000_split_110.html#sigil_toc_id_190" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-314" playOrder="314">
+        <navLabel>
+          <text>16.3 媒体元素</text>
+        </navLabel>
+        <content src="Text/part0000_split_111.html" />
+        <navPoint id="navPoint-315" playOrder="315">
+          <navLabel>
+            <text>16.3.1 属性</text>
+          </navLabel>
+          <content src="Text/part0000_split_111.html#sigil_toc_id_191" />
+        </navPoint>
+        <navPoint id="navPoint-316" playOrder="316">
+          <navLabel>
+            <text>16.3.2 事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_111.html#sigil_toc_id_192" />
+        </navPoint>
+        <navPoint id="navPoint-317" playOrder="317">
+          <navLabel>
+            <text>16.3.3 自定义媒体播放器</text>
+          </navLabel>
+          <content src="Text/part0000_split_111.html#sigil_toc_id_193" />
+        </navPoint>
+        <navPoint id="navPoint-318" playOrder="318">
+          <navLabel>
+            <text>16.3.4 检测编解码器的支持情况</text>
+          </navLabel>
+          <content src="Text/part0000_split_111.html#sigil_toc_id_194" />
+        </navPoint>
+        <navPoint id="navPoint-319" playOrder="319">
+          <navLabel>
+            <text>16.3.5 Audio类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_111.html#sigil_toc_id_195" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-320" playOrder="320">
+        <navLabel>
+          <text>16.4 历史状态管理</text>
+        </navLabel>
+        <content src="Text/part0000_split_112.html" />
+      </navPoint>
+      <navPoint id="navPoint-321" playOrder="321">
+        <navLabel>
+          <text>16.5 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_113.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-322" playOrder="322">
+      <navLabel>
+        <text>第17章 错误处理与调试</text>
+      </navLabel>
+      <content src="Text/part0000_split_114.html" />
+      <navPoint id="navPoint-323" playOrder="323">
+        <navLabel>
+          <text>17.1 浏览器报告的错误</text>
+        </navLabel>
+        <content src="Text/part0000_split_115.html" />
+        <navPoint id="navPoint-324" playOrder="324">
+          <navLabel>
+            <text>17.1.1 IE</text>
+          </navLabel>
+          <content src="Text/part0000_split_115.html#sigil_toc_id_196" />
+        </navPoint>
+        <navPoint id="navPoint-325" playOrder="325">
+          <navLabel>
+            <text>17.1.2 Firefox</text>
+          </navLabel>
+          <content src="Text/part0000_split_115.html#sigil_toc_id_197" />
+        </navPoint>
+        <navPoint id="navPoint-326" playOrder="326">
+          <navLabel>
+            <text>17.1.3 Safari</text>
+          </navLabel>
+          <content src="Text/part0000_split_115.html#sigil_toc_id_198" />
+        </navPoint>
+        <navPoint id="navPoint-327" playOrder="327">
+          <navLabel>
+            <text>17.1.4 Opera</text>
+          </navLabel>
+          <content src="Text/part0000_split_115.html#sigil_toc_id_199" />
+        </navPoint>
+        <navPoint id="navPoint-328" playOrder="328">
+          <navLabel>
+            <text>17.1.5 Chrome</text>
+          </navLabel>
+          <content src="Text/part0000_split_115.html#sigil_toc_id_200" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-329" playOrder="329">
+        <navLabel>
+          <text>17.2 错误处理</text>
+        </navLabel>
+        <content src="Text/part0000_split_116.html" />
+        <navPoint id="navPoint-330" playOrder="330">
+          <navLabel>
+            <text>17.2.1 try-catch语句</text>
+          </navLabel>
+          <content src="Text/part0000_split_116.html#sigil_toc_id_201" />
+        </navPoint>
+        <navPoint id="navPoint-331" playOrder="331">
+          <navLabel>
+            <text>17.2.2 抛出错误</text>
+          </navLabel>
+          <content src="Text/part0000_split_116.html#sigil_toc_id_202" />
+        </navPoint>
+        <navPoint id="navPoint-332" playOrder="332">
+          <navLabel>
+            <text>17.2.3 错误（error）事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_116.html#sigil_toc_id_203" />
+        </navPoint>
+        <navPoint id="navPoint-333" playOrder="333">
+          <navLabel>
+            <text>17.2.4 处理错误的策略</text>
+          </navLabel>
+          <content src="Text/part0000_split_116.html#sigil_toc_id_204" />
+        </navPoint>
+        <navPoint id="navPoint-334" playOrder="334">
+          <navLabel>
+            <text>17.2.5 常见的错误类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_116.html#sigil_toc_id_205" />
+        </navPoint>
+        <navPoint id="navPoint-335" playOrder="335">
+          <navLabel>
+            <text>17.2.6 区分致命错误和非致命错误</text>
+          </navLabel>
+          <content src="Text/part0000_split_116.html#sigil_toc_id_206" />
+        </navPoint>
+        <navPoint id="navPoint-336" playOrder="336">
+          <navLabel>
+            <text>17.2.7 把错误记录到服务器</text>
+          </navLabel>
+          <content src="Text/part0000_split_116.html#sigil_toc_id_207" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-337" playOrder="337">
+        <navLabel>
+          <text>17.3 调试技术</text>
+        </navLabel>
+        <content src="Text/part0000_split_117.html" />
+        <navPoint id="navPoint-338" playOrder="338">
+          <navLabel>
+            <text>17.3.1 将消息记录到控制台</text>
+          </navLabel>
+          <content src="Text/part0000_split_117.html#sigil_toc_id_208" />
+        </navPoint>
+        <navPoint id="navPoint-339" playOrder="339">
+          <navLabel>
+            <text>17.3.2 将消息记录到当前页面</text>
+          </navLabel>
+          <content src="Text/part0000_split_117.html#sigil_toc_id_209" />
+        </navPoint>
+        <navPoint id="navPoint-340" playOrder="340">
+          <navLabel>
+            <text>17.3.3 抛出错误</text>
+          </navLabel>
+          <content src="Text/part0000_split_117.html#sigil_toc_id_210" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-341" playOrder="341">
+        <navLabel>
+          <text>17.4 常见的IE错误</text>
+        </navLabel>
+        <content src="Text/part0000_split_118.html" />
+        <navPoint id="navPoint-342" playOrder="342">
+          <navLabel>
+            <text>17.4.1 操作终止</text>
+          </navLabel>
+          <content src="Text/part0000_split_118.html#sigil_toc_id_211" />
+        </navPoint>
+        <navPoint id="navPoint-343" playOrder="343">
+          <navLabel>
+            <text>17.4.2 无效字符</text>
+          </navLabel>
+          <content src="Text/part0000_split_118.html#sigil_toc_id_212" />
+        </navPoint>
+        <navPoint id="navPoint-344" playOrder="344">
+          <navLabel>
+            <text>17.4.3 未找到成员</text>
+          </navLabel>
+          <content src="Text/part0000_split_118.html#sigil_toc_id_213" />
+        </navPoint>
+        <navPoint id="navPoint-345" playOrder="345">
+          <navLabel>
+            <text>17.4.4 未知运行时错误</text>
+          </navLabel>
+          <content src="Text/part0000_split_118.html#sigil_toc_id_214" />
+        </navPoint>
+        <navPoint id="navPoint-346" playOrder="346">
+          <navLabel>
+            <text>17.4.5 语法错误</text>
+          </navLabel>
+          <content src="Text/part0000_split_118.html#sigil_toc_id_215" />
+        </navPoint>
+        <navPoint id="navPoint-347" playOrder="347">
+          <navLabel>
+            <text>17.4.6 系统无法找到指定资源</text>
+          </navLabel>
+          <content src="Text/part0000_split_118.html#sigil_toc_id_216" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-348" playOrder="348">
+        <navLabel>
+          <text>17.5 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_119.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-349" playOrder="349">
+      <navLabel>
+        <text>第18章 JavaScript与XML</text>
+      </navLabel>
+      <content src="Text/part0000_split_120.html" />
+      <navPoint id="navPoint-350" playOrder="350">
+        <navLabel>
+          <text>18.1 浏览器对XML DOM的支持</text>
+        </navLabel>
+        <content src="Text/part0000_split_121.html" />
+        <navPoint id="navPoint-351" playOrder="351">
+          <navLabel>
+            <text>18.1.1 DOM2级核心</text>
+          </navLabel>
+          <content src="Text/part0000_split_121.html#sigil_toc_id_217" />
+        </navPoint>
+        <navPoint id="navPoint-352" playOrder="352">
+          <navLabel>
+            <text>18.1.2 DOMParser类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_121.html#sigil_toc_id_218" />
+        </navPoint>
+        <navPoint id="navPoint-353" playOrder="353">
+          <navLabel>
+            <text>18.1.3 XMLSerializer类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_121.html#sigil_toc_id_219" />
+        </navPoint>
+        <navPoint id="navPoint-354" playOrder="354">
+          <navLabel>
+            <text>18.1.4 IE8及之前版本中的XML</text>
+          </navLabel>
+          <content src="Text/part0000_split_121.html#sigil_toc_id_220" />
+        </navPoint>
+        <navPoint id="navPoint-355" playOrder="355">
+          <navLabel>
+            <text>18.1.5 跨浏览器处理XML</text>
+          </navLabel>
+          <content src="Text/part0000_split_121.html#sigil_toc_id_221" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-356" playOrder="356">
+        <navLabel>
+          <text>18.2 浏览器对XPath的支持</text>
+        </navLabel>
+        <content src="Text/part0000_split_122.html" />
+        <navPoint id="navPoint-357" playOrder="357">
+          <navLabel>
+            <text>18.2.1 DOM3级XPath</text>
+          </navLabel>
+          <content src="Text/part0000_split_122.html#sigil_toc_id_222" />
+        </navPoint>
+        <navPoint id="navPoint-358" playOrder="358">
+          <navLabel>
+            <text>18.2.2 IE中的XPath</text>
+          </navLabel>
+          <content src="Text/part0000_split_122.html#sigil_toc_id_223" />
+        </navPoint>
+        <navPoint id="navPoint-359" playOrder="359">
+          <navLabel>
+            <text>18.2.3 跨浏览器使用XPath</text>
+          </navLabel>
+          <content src="Text/part0000_split_122.html#sigil_toc_id_224" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-360" playOrder="360">
+        <navLabel>
+          <text>18.3 浏览器对XSLT的支持</text>
+        </navLabel>
+        <content src="Text/part0000_split_123.html" />
+        <navPoint id="navPoint-361" playOrder="361">
+          <navLabel>
+            <text>18.3.1 IE中的XSLT</text>
+          </navLabel>
+          <content src="Text/part0000_split_123.html#sigil_toc_id_225" />
+        </navPoint>
+        <navPoint id="navPoint-362" playOrder="362">
+          <navLabel>
+            <text>18.3.2 XSLTProcessor类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_123.html#sigil_toc_id_226" />
+        </navPoint>
+        <navPoint id="navPoint-363" playOrder="363">
+          <navLabel>
+            <text>18.3.3 跨浏览器使用XSLT</text>
+          </navLabel>
+          <content src="Text/part0000_split_123.html#sigil_toc_id_227" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-364" playOrder="364">
+        <navLabel>
+          <text>18.4 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_124.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-365" playOrder="365">
+      <navLabel>
+        <text>第19章 E4X</text>
+      </navLabel>
+      <content src="Text/part0000_split_125.html" />
+      <navPoint id="navPoint-366" playOrder="366">
+        <navLabel>
+          <text>19.1 E4X的类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_126.html" />
+        <navPoint id="navPoint-367" playOrder="367">
+          <navLabel>
+            <text>19.1.1 XML类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_126.html#sigil_toc_id_228" />
+        </navPoint>
+        <navPoint id="navPoint-368" playOrder="368">
+          <navLabel>
+            <text>19.1.2 XMLList类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_126.html#sigil_toc_id_229" />
+        </navPoint>
+        <navPoint id="navPoint-369" playOrder="369">
+          <navLabel>
+            <text>19.1.3 Namespace类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_126.html#sigil_toc_id_230" />
+        </navPoint>
+        <navPoint id="navPoint-370" playOrder="370">
+          <navLabel>
+            <text>19.1.4 QName类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_126.html#sigil_toc_id_231" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-371" playOrder="371">
+        <navLabel>
+          <text>19.2 一般用法</text>
+        </navLabel>
+        <content src="Text/part0000_split_127.html" />
+        <navPoint id="navPoint-372" playOrder="372">
+          <navLabel>
+            <text>19.2.1 访问特性</text>
+          </navLabel>
+          <content src="Text/part0000_split_127.html#sigil_toc_id_232" />
+        </navPoint>
+        <navPoint id="navPoint-373" playOrder="373">
+          <navLabel>
+            <text>19.2.2 其他节点类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_127.html#sigil_toc_id_233" />
+        </navPoint>
+        <navPoint id="navPoint-374" playOrder="374">
+          <navLabel>
+            <text>19.2.3 查询</text>
+          </navLabel>
+          <content src="Text/part0000_split_127.html#sigil_toc_id_234" />
+        </navPoint>
+        <navPoint id="navPoint-375" playOrder="375">
+          <navLabel>
+            <text>19.2.4 构建和操作XML</text>
+          </navLabel>
+          <content src="Text/part0000_split_127.html#sigil_toc_id_235" />
+        </navPoint>
+        <navPoint id="navPoint-376" playOrder="376">
+          <navLabel>
+            <text>19.2.5 解析和序列化</text>
+          </navLabel>
+          <content src="Text/part0000_split_127.html#sigil_toc_id_236" />
+        </navPoint>
+        <navPoint id="navPoint-377" playOrder="377">
+          <navLabel>
+            <text>19.2.6 命名空间</text>
+          </navLabel>
+          <content src="Text/part0000_split_127.html#sigil_toc_id_237" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-378" playOrder="378">
+        <navLabel>
+          <text>19.3 其他变化</text>
+        </navLabel>
+        <content src="Text/part0000_split_128.html" />
+      </navPoint>
+      <navPoint id="navPoint-379" playOrder="379">
+        <navLabel>
+          <text>19.4 全面启用E4X</text>
+        </navLabel>
+        <content src="Text/part0000_split_129.html" />
+      </navPoint>
+      <navPoint id="navPoint-380" playOrder="380">
+        <navLabel>
+          <text>19.5 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_130.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-381" playOrder="381">
+      <navLabel>
+        <text>第20章 JSON</text>
+      </navLabel>
+      <content src="Text/part0000_split_131.html" />
+      <navPoint id="navPoint-382" playOrder="382">
+        <navLabel>
+          <text>20.1 语法</text>
+        </navLabel>
+        <content src="Text/part0000_split_132.html" />
+        <navPoint id="navPoint-383" playOrder="383">
+          <navLabel>
+            <text>20.1.1 简单值</text>
+          </navLabel>
+          <content src="Text/part0000_split_132.html#sigil_toc_id_238" />
+        </navPoint>
+        <navPoint id="navPoint-384" playOrder="384">
+          <navLabel>
+            <text>20.1.2 对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_132.html#sigil_toc_id_239" />
+        </navPoint>
+        <navPoint id="navPoint-385" playOrder="385">
+          <navLabel>
+            <text>20.1.3 数组</text>
+          </navLabel>
+          <content src="Text/part0000_split_132.html#sigil_toc_id_240" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-386" playOrder="386">
+        <navLabel>
+          <text>20.2 解析与序列化</text>
+        </navLabel>
+        <content src="Text/part0000_split_133.html" />
+        <navPoint id="navPoint-387" playOrder="387">
+          <navLabel>
+            <text>20.2.1 JSON对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_133.html#sigil_toc_id_241" />
+        </navPoint>
+        <navPoint id="navPoint-388" playOrder="388">
+          <navLabel>
+            <text>20.2.2 序列化选项</text>
+          </navLabel>
+          <content src="Text/part0000_split_133.html#sigil_toc_id_242" />
+        </navPoint>
+        <navPoint id="navPoint-389" playOrder="389">
+          <navLabel>
+            <text>20.2.3 解析选项</text>
+          </navLabel>
+          <content src="Text/part0000_split_133.html#sigil_toc_id_243" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-390" playOrder="390">
+        <navLabel>
+          <text>20.3 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_134.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-391" playOrder="391">
+      <navLabel>
+        <text>第21章 Ajax与Comet</text>
+      </navLabel>
+      <content src="Text/part0000_split_135.html" />
+      <navPoint id="navPoint-392" playOrder="392">
+        <navLabel>
+          <text>21.1 XMLHttpRequest对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_136.html" />
+        <navPoint id="navPoint-393" playOrder="393">
+          <navLabel>
+            <text>21.1.1 XHR的用法</text>
+          </navLabel>
+          <content src="Text/part0000_split_136.html#sigil_toc_id_244" />
+        </navPoint>
+        <navPoint id="navPoint-394" playOrder="394">
+          <navLabel>
+            <text>21.1.2 HTTP头部信息</text>
+          </navLabel>
+          <content src="Text/part0000_split_136.html#sigil_toc_id_245" />
+        </navPoint>
+        <navPoint id="navPoint-395" playOrder="395">
+          <navLabel>
+            <text>21.1.3 GET请求</text>
+          </navLabel>
+          <content src="Text/part0000_split_136.html#sigil_toc_id_246" />
+        </navPoint>
+        <navPoint id="navPoint-396" playOrder="396">
+          <navLabel>
+            <text>21.1.4 POST请求</text>
+          </navLabel>
+          <content src="Text/part0000_split_136.html#sigil_toc_id_247" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-397" playOrder="397">
+        <navLabel>
+          <text>21.2 XMLHttpRequest 2级</text>
+        </navLabel>
+        <content src="Text/part0000_split_137.html" />
+        <navPoint id="navPoint-398" playOrder="398">
+          <navLabel>
+            <text>21.2.1 FormData</text>
+          </navLabel>
+          <content src="Text/part0000_split_137.html#sigil_toc_id_248" />
+        </navPoint>
+        <navPoint id="navPoint-399" playOrder="399">
+          <navLabel>
+            <text>21.2.2 超时设定</text>
+          </navLabel>
+          <content src="Text/part0000_split_137.html#sigil_toc_id_249" />
+        </navPoint>
+        <navPoint id="navPoint-400" playOrder="400">
+          <navLabel>
+            <text>21.2.3 overrideMimeType()方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_137.html#sigil_toc_id_250" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-401" playOrder="401">
+        <navLabel>
+          <text>21.3 进度事件</text>
+        </navLabel>
+        <content src="Text/part0000_split_138.html" />
+        <navPoint id="navPoint-402" playOrder="402">
+          <navLabel>
+            <text>21.3.1 load事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_138.html#sigil_toc_id_251" />
+        </navPoint>
+        <navPoint id="navPoint-403" playOrder="403">
+          <navLabel>
+            <text>21.3.2 progress事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_138.html#sigil_toc_id_252" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-404" playOrder="404">
+        <navLabel>
+          <text>21.4 跨源资源共享</text>
+        </navLabel>
+        <content src="Text/part0000_split_139.html" />
+        <navPoint id="navPoint-405" playOrder="405">
+          <navLabel>
+            <text>21.4.1 IE对CORS的实现</text>
+          </navLabel>
+          <content src="Text/part0000_split_139.html#sigil_toc_id_253" />
+        </navPoint>
+        <navPoint id="navPoint-406" playOrder="406">
+          <navLabel>
+            <text>21.4.2 其他浏览器对CORS的实现</text>
+          </navLabel>
+          <content src="Text/part0000_split_139.html#sigil_toc_id_254" />
+        </navPoint>
+        <navPoint id="navPoint-407" playOrder="407">
+          <navLabel>
+            <text>21.4.3 Preflighted Reqeusts</text>
+          </navLabel>
+          <content src="Text/part0000_split_139.html#sigil_toc_id_255" />
+        </navPoint>
+        <navPoint id="navPoint-408" playOrder="408">
+          <navLabel>
+            <text>21.4.4 带凭据的请求</text>
+          </navLabel>
+          <content src="Text/part0000_split_139.html#sigil_toc_id_256" />
+        </navPoint>
+        <navPoint id="navPoint-409" playOrder="409">
+          <navLabel>
+            <text>21.4.5 跨浏览器的CORS</text>
+          </navLabel>
+          <content src="Text/part0000_split_139.html#sigil_toc_id_257" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-410" playOrder="410">
+        <navLabel>
+          <text>21.5 其他跨域技术</text>
+        </navLabel>
+        <content src="Text/part0000_split_140.html" />
+        <navPoint id="navPoint-411" playOrder="411">
+          <navLabel>
+            <text>21.5.1 图像Ping</text>
+          </navLabel>
+          <content src="Text/part0000_split_140.html#sigil_toc_id_258" />
+        </navPoint>
+        <navPoint id="navPoint-412" playOrder="412">
+          <navLabel>
+            <text>21.5.2 JSONP</text>
+          </navLabel>
+          <content src="Text/part0000_split_140.html#sigil_toc_id_259" />
+        </navPoint>
+        <navPoint id="navPoint-413" playOrder="413">
+          <navLabel>
+            <text>21.5.3 Comet</text>
+          </navLabel>
+          <content src="Text/part0000_split_140.html#sigil_toc_id_260" />
+        </navPoint>
+        <navPoint id="navPoint-414" playOrder="414">
+          <navLabel>
+            <text>21.5.4 服务器发送事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_140.html#sigil_toc_id_261" />
+        </navPoint>
+        <navPoint id="navPoint-415" playOrder="415">
+          <navLabel>
+            <text>21.5.5 Web Sockets</text>
+          </navLabel>
+          <content src="Text/part0000_split_140.html#sigil_toc_id_262" />
+        </navPoint>
+        <navPoint id="navPoint-416" playOrder="416">
+          <navLabel>
+            <text>21.5.6 SSE与Web Sockets</text>
+          </navLabel>
+          <content src="Text/part0000_split_140.html#sigil_toc_id_263" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-417" playOrder="417">
+        <navLabel>
+          <text>21.6 安全</text>
+        </navLabel>
+        <content src="Text/part0000_split_141.html" />
+      </navPoint>
+      <navPoint id="navPoint-418" playOrder="418">
+        <navLabel>
+          <text>21.7 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_142.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-419" playOrder="419">
+      <navLabel>
+        <text>第22章 高级技巧</text>
+      </navLabel>
+      <content src="Text/part0000_split_143.html" />
+      <navPoint id="navPoint-420" playOrder="420">
+        <navLabel>
+          <text>22.1 高级函数</text>
+        </navLabel>
+        <content src="Text/part0000_split_144.html" />
+        <navPoint id="navPoint-421" playOrder="421">
+          <navLabel>
+            <text>22.1.1 安全的类型检测</text>
+          </navLabel>
+          <content src="Text/part0000_split_144.html#sigil_toc_id_264" />
+        </navPoint>
+        <navPoint id="navPoint-422" playOrder="422">
+          <navLabel>
+            <text>22.1.2 作用域安全的构造函数</text>
+          </navLabel>
+          <content src="Text/part0000_split_144.html#sigil_toc_id_265" />
+        </navPoint>
+        <navPoint id="navPoint-423" playOrder="423">
+          <navLabel>
+            <text>22.1.3 惰性载入函数</text>
+          </navLabel>
+          <content src="Text/part0000_split_144.html#sigil_toc_id_266" />
+        </navPoint>
+        <navPoint id="navPoint-424" playOrder="424">
+          <navLabel>
+            <text>22.1.4 函数绑定</text>
+          </navLabel>
+          <content src="Text/part0000_split_144.html#sigil_toc_id_267" />
+        </navPoint>
+        <navPoint id="navPoint-425" playOrder="425">
+          <navLabel>
+            <text>22.1.5 函数柯里化</text>
+          </navLabel>
+          <content src="Text/part0000_split_144.html#sigil_toc_id_268" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-426" playOrder="426">
+        <navLabel>
+          <text>22.2 防篡改对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_145.html" />
+        <navPoint id="navPoint-427" playOrder="427">
+          <navLabel>
+            <text>22.2.1 不可扩展对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_145.html#sigil_toc_id_269" />
+        </navPoint>
+        <navPoint id="navPoint-428" playOrder="428">
+          <navLabel>
+            <text>22.2.2 密封的对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_145.html#sigil_toc_id_270" />
+        </navPoint>
+        <navPoint id="navPoint-429" playOrder="429">
+          <navLabel>
+            <text>22.2.3 冻结的对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_145.html#sigil_toc_id_271" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-430" playOrder="430">
+        <navLabel>
+          <text>22.3 高级定时器</text>
+        </navLabel>
+        <content src="Text/part0000_split_146.html" />
+        <navPoint id="navPoint-431" playOrder="431">
+          <navLabel>
+            <text>22.3.1 重复的定时器</text>
+          </navLabel>
+          <content src="Text/part0000_split_146.html#sigil_toc_id_272" />
+        </navPoint>
+        <navPoint id="navPoint-432" playOrder="432">
+          <navLabel>
+            <text>22.3.2 Yielding Processes</text>
+          </navLabel>
+          <content src="Text/part0000_split_146.html#sigil_toc_id_273" />
+        </navPoint>
+        <navPoint id="navPoint-433" playOrder="433">
+          <navLabel>
+            <text>22.3.3 函数节流</text>
+          </navLabel>
+          <content src="Text/part0000_split_146.html#sigil_toc_id_274" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-434" playOrder="434">
+        <navLabel>
+          <text>22.4 自定义事件</text>
+        </navLabel>
+        <content src="Text/part0000_split_147.html" />
+      </navPoint>
+      <navPoint id="navPoint-435" playOrder="435">
+        <navLabel>
+          <text>22.5 拖放</text>
+        </navLabel>
+        <content src="Text/part0000_split_148.html" />
+        <navPoint id="navPoint-436" playOrder="436">
+          <navLabel>
+            <text>22.5.1 修缮拖动功能</text>
+          </navLabel>
+          <content src="Text/part0000_split_148.html#sigil_toc_id_275" />
+        </navPoint>
+        <navPoint id="navPoint-437" playOrder="437">
+          <navLabel>
+            <text>22.5.2 添加自定义事件</text>
+          </navLabel>
+          <content src="Text/part0000_split_148.html#sigil_toc_id_276" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-438" playOrder="438">
+        <navLabel>
+          <text>22.6 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_149.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-439" playOrder="439">
+      <navLabel>
+        <text>第23章 离线应用与客户端存储</text>
+      </navLabel>
+      <content src="Text/part0000_split_150.html" />
+      <navPoint id="navPoint-440" playOrder="440">
+        <navLabel>
+          <text>23.1 离线检测</text>
+        </navLabel>
+        <content src="Text/part0000_split_151.html" />
+      </navPoint>
+      <navPoint id="navPoint-441" playOrder="441">
+        <navLabel>
+          <text>23.2 应用缓存</text>
+        </navLabel>
+        <content src="Text/part0000_split_152.html" />
+      </navPoint>
+      <navPoint id="navPoint-442" playOrder="442">
+        <navLabel>
+          <text>23.3 数据存储</text>
+        </navLabel>
+        <content src="Text/part0000_split_153.html" />
+        <navPoint id="navPoint-443" playOrder="443">
+          <navLabel>
+            <text>23.3.1 Cookie</text>
+          </navLabel>
+          <content src="Text/part0000_split_153.html#nav_point_166" />
+        </navPoint>
+        <navPoint id="navPoint-444" playOrder="444">
+          <navLabel>
+            <text>23.3.2 IE用户数据</text>
+          </navLabel>
+          <content src="Text/part0000_split_153.html#nav_point_167" />
+        </navPoint>
+        <navPoint id="navPoint-445" playOrder="445">
+          <navLabel>
+            <text>23.3.3 Web存储机制</text>
+          </navLabel>
+          <content src="Text/part0000_split_153.html#nav_point_168" />
+        </navPoint>
+        <navPoint id="navPoint-446" playOrder="446">
+          <navLabel>
+            <text>23.3.4 IndexedDB</text>
+          </navLabel>
+          <content src="Text/part0000_split_153.html#nav_point_169" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-447" playOrder="447">
+        <navLabel>
+          <text>23.4 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_154.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-448" playOrder="448">
+      <navLabel>
+        <text>第24章 最佳实践</text>
+      </navLabel>
+      <content src="Text/part0000_split_155.html" />
+      <navPoint id="navPoint-449" playOrder="449">
+        <navLabel>
+          <text>24.1 可维护性</text>
+        </navLabel>
+        <content src="Text/part0000_split_156.html" />
+        <navPoint id="navPoint-450" playOrder="450">
+          <navLabel>
+            <text>24.1.1 什么是可维护的代码</text>
+          </navLabel>
+          <content src="Text/part0000_split_156.html#sigil_toc_id_277" />
+        </navPoint>
+        <navPoint id="navPoint-451" playOrder="451">
+          <navLabel>
+            <text>24.1.2 代码约定</text>
+          </navLabel>
+          <content src="Text/part0000_split_156.html#sigil_toc_id_278" />
+        </navPoint>
+        <navPoint id="navPoint-452" playOrder="452">
+          <navLabel>
+            <text>24.1.3 松散耦合</text>
+          </navLabel>
+          <content src="Text/part0000_split_156.html#sigil_toc_id_279" />
+        </navPoint>
+        <navPoint id="navPoint-453" playOrder="453">
+          <navLabel>
+            <text>24.1.4 编程实践</text>
+          </navLabel>
+          <content src="Text/part0000_split_156.html#sigil_toc_id_280" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-454" playOrder="454">
+        <navLabel>
+          <text>24.2 性能</text>
+        </navLabel>
+        <content src="Text/part0000_split_157.html" />
+        <navPoint id="navPoint-455" playOrder="455">
+          <navLabel>
+            <text>24.2.1 注意作用域</text>
+          </navLabel>
+          <content src="Text/part0000_split_157.html#sigil_toc_id_281" />
+        </navPoint>
+        <navPoint id="navPoint-456" playOrder="456">
+          <navLabel>
+            <text>24.2.2 选择正确方法</text>
+          </navLabel>
+          <content src="Text/part0000_split_157.html#sigil_toc_id_282" />
+        </navPoint>
+        <navPoint id="navPoint-457" playOrder="457">
+          <navLabel>
+            <text>24.2.3 最小化语句数</text>
+          </navLabel>
+          <content src="Text/part0000_split_157.html#sigil_toc_id_283" />
+        </navPoint>
+        <navPoint id="navPoint-458" playOrder="458">
+          <navLabel>
+            <text>24.2.4 优化DOM交互</text>
+          </navLabel>
+          <content src="Text/part0000_split_157.html#sigil_toc_id_284" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-459" playOrder="459">
+        <navLabel>
+          <text>24.3 部署</text>
+        </navLabel>
+        <content src="Text/part0000_split_158.html" />
+        <navPoint id="navPoint-460" playOrder="460">
+          <navLabel>
+            <text>24.3.1 构建过程</text>
+          </navLabel>
+          <content src="Text/part0000_split_158.html#sigil_toc_id_285" />
+        </navPoint>
+        <navPoint id="navPoint-461" playOrder="461">
+          <navLabel>
+            <text>24.3.2 验证</text>
+          </navLabel>
+          <content src="Text/part0000_split_158.html#sigil_toc_id_286" />
+        </navPoint>
+        <navPoint id="navPoint-462" playOrder="462">
+          <navLabel>
+            <text>24.3.3 压缩</text>
+          </navLabel>
+          <content src="Text/part0000_split_158.html#sigil_toc_id_287" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-463" playOrder="463">
+        <navLabel>
+          <text>24.4 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_159.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-464" playOrder="464">
+      <navLabel>
+        <text>第25章 新兴的API</text>
+      </navLabel>
+      <content src="Text/part0000_split_160.html" />
+      <navPoint id="navPoint-465" playOrder="465">
+        <navLabel>
+          <text>25.1 requestAnimationFrame()</text>
+        </navLabel>
+        <content src="Text/part0000_split_161.html" />
+        <navPoint id="navPoint-466" playOrder="466">
+          <navLabel>
+            <text>25.1.1 早期动画循环</text>
+          </navLabel>
+          <content src="Text/part0000_split_161.html#sigil_toc_id_288" />
+        </navPoint>
+        <navPoint id="navPoint-467" playOrder="467">
+          <navLabel>
+            <text>25.1.2 循环间隔的问题</text>
+          </navLabel>
+          <content src="Text/part0000_split_161.html#sigil_toc_id_289" />
+        </navPoint>
+        <navPoint id="navPoint-468" playOrder="468">
+          <navLabel>
+            <text>25.1.3 mozRequestAnimationFrame</text>
+          </navLabel>
+          <content src="Text/part0000_split_161.html#sigil_toc_id_290" />
+        </navPoint>
+        <navPoint id="navPoint-469" playOrder="469">
+          <navLabel>
+            <text>25.1.4 webkitRequestAnimationFrame与msRequestAnimationFrame</text>
+          </navLabel>
+          <content src="Text/part0000_split_161.html#sigil_toc_id_291" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-470" playOrder="470">
+        <navLabel>
+          <text>25.2 Page Visibility API</text>
+        </navLabel>
+        <content src="Text/part0000_split_162.html" />
+      </navPoint>
+      <navPoint id="navPoint-471" playOrder="471">
+        <navLabel>
+          <text>25.3 Geolocation API</text>
+        </navLabel>
+        <content src="Text/part0000_split_163.html" />
+      </navPoint>
+      <navPoint id="navPoint-472" playOrder="472">
+        <navLabel>
+          <text>25.4 File API</text>
+        </navLabel>
+        <content src="Text/part0000_split_164.html" />
+        <navPoint id="navPoint-473" playOrder="473">
+          <navLabel>
+            <text>25.4.1 FileReader类型</text>
+          </navLabel>
+          <content src="Text/part0000_split_164.html#sigil_toc_id_292" />
+        </navPoint>
+        <navPoint id="navPoint-474" playOrder="474">
+          <navLabel>
+            <text>25.4.2 读取部分内容</text>
+          </navLabel>
+          <content src="Text/part0000_split_164.html#sigil_toc_id_293" />
+        </navPoint>
+        <navPoint id="navPoint-475" playOrder="475">
+          <navLabel>
+            <text>25.4.3 对象URL</text>
+          </navLabel>
+          <content src="Text/part0000_split_164.html#sigil_toc_id_294" />
+        </navPoint>
+        <navPoint id="navPoint-476" playOrder="476">
+          <navLabel>
+            <text>25.4.4 读取拖放的文件</text>
+          </navLabel>
+          <content src="Text/part0000_split_164.html#sigil_toc_id_295" />
+        </navPoint>
+        <navPoint id="navPoint-477" playOrder="477">
+          <navLabel>
+            <text>25.4.5 使用XHR上传文件</text>
+          </navLabel>
+          <content src="Text/part0000_split_164.html#sigil_toc_id_296" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-478" playOrder="478">
+        <navLabel>
+          <text>25.5 Web计时</text>
+        </navLabel>
+        <content src="Text/part0000_split_165.html" />
+      </navPoint>
+      <navPoint id="navPoint-479" playOrder="479">
+        <navLabel>
+          <text>25.6 Web Workers</text>
+        </navLabel>
+        <content src="Text/part0000_split_166.html" />
+        <navPoint id="navPoint-480" playOrder="480">
+          <navLabel>
+            <text>25.6.1 使用Worker</text>
+          </navLabel>
+          <content src="Text/part0000_split_166.html#sigil_toc_id_297" />
+        </navPoint>
+        <navPoint id="navPoint-481" playOrder="481">
+          <navLabel>
+            <text>25.6.2 Worker全局作用域</text>
+          </navLabel>
+          <content src="Text/part0000_split_166.html#sigil_toc_id_298" />
+        </navPoint>
+        <navPoint id="navPoint-482" playOrder="482">
+          <navLabel>
+            <text>25.6.3 包含其他脚本</text>
+          </navLabel>
+          <content src="Text/part0000_split_166.html#sigil_toc_id_299" />
+        </navPoint>
+        <navPoint id="navPoint-483" playOrder="483">
+          <navLabel>
+            <text>25.6.4 Web Workers的未来</text>
+          </navLabel>
+          <content src="Text/part0000_split_166.html#sigil_toc_id_300" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-484" playOrder="484">
+        <navLabel>
+          <text>25.7 小结</text>
+        </navLabel>
+        <content src="Text/part0000_split_167.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-485" playOrder="485">
+      <navLabel>
+        <text>附录A ECMAScript Harmony</text>
+      </navLabel>
+      <content src="Text/part0000_split_168.html" />
+      <navPoint id="navPoint-486" playOrder="486">
+        <navLabel>
+          <text>A.1 一般性变化</text>
+        </navLabel>
+        <content src="Text/part0000_split_169.html" />
+        <navPoint id="navPoint-487" playOrder="487">
+          <navLabel>
+            <text>A.1.1 常量</text>
+          </navLabel>
+          <content src="Text/part0000_split_169.html#sigil_toc_id_301" />
+        </navPoint>
+        <navPoint id="navPoint-488" playOrder="488">
+          <navLabel>
+            <text>A.1.2 块级作用域及其他作用域</text>
+          </navLabel>
+          <content src="Text/part0000_split_169.html#sigil_toc_id_302" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-489" playOrder="489">
+        <navLabel>
+          <text>A.2 函数</text>
+        </navLabel>
+        <content src="Text/part0000_split_170.html" />
+        <navPoint id="navPoint-490" playOrder="490">
+          <navLabel>
+            <text>A.2.1 剩余参数与分布参数</text>
+          </navLabel>
+          <content src="Text/part0000_split_170.html#sigil_toc_id_303" />
+        </navPoint>
+        <navPoint id="navPoint-491" playOrder="491">
+          <navLabel>
+            <text>A.2.2 默认参数值</text>
+          </navLabel>
+          <content src="Text/part0000_split_170.html#sigil_toc_id_304" />
+        </navPoint>
+        <navPoint id="navPoint-492" playOrder="492">
+          <navLabel>
+            <text>A.2.3 生成器</text>
+          </navLabel>
+          <content src="Text/part0000_split_170.html#sigil_toc_id_305" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-493" playOrder="493">
+        <navLabel>
+          <text>A.3 数组及其他结构</text>
+        </navLabel>
+        <content src="Text/part0000_split_171.html" />
+        <navPoint id="navPoint-494" playOrder="494">
+          <navLabel>
+            <text>A.3.1 迭代器</text>
+          </navLabel>
+          <content src="Text/part0000_split_171.html#sigil_toc_id_306" />
+        </navPoint>
+        <navPoint id="navPoint-495" playOrder="495">
+          <navLabel>
+            <text>A.3.2 数组领悟</text>
+          </navLabel>
+          <content src="Text/part0000_split_171.html#sigil_toc_id_307" />
+        </navPoint>
+        <navPoint id="navPoint-496" playOrder="496">
+          <navLabel>
+            <text>A.3.3 解构赋值</text>
+          </navLabel>
+          <content src="Text/part0000_split_171.html#sigil_toc_id_308" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-497" playOrder="497">
+        <navLabel>
+          <text>A.4 新对象类型</text>
+        </navLabel>
+        <content src="Text/part0000_split_172.html" />
+        <navPoint id="navPoint-498" playOrder="498">
+          <navLabel>
+            <text>A.4.1 代理对象</text>
+          </navLabel>
+          <content src="Text/part0000_split_172.html#sigil_toc_id_309" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-499" playOrder="499">
+        <navLabel>
+          <text>A.4.2 代理函数</text>
+        </navLabel>
+        <content src="Text/part0000_split_173.html" />
+        <navPoint id="navPoint-500" playOrder="500">
+          <navLabel>
+            <text>A.4.3 映射与集合</text>
+          </navLabel>
+          <content src="Text/part0000_split_173.html#sigil_toc_id_310" />
+        </navPoint>
+        <navPoint id="navPoint-501" playOrder="501">
+          <navLabel>
+            <text>A.4.4 WeakMap</text>
+          </navLabel>
+          <content src="Text/part0000_split_173.html#sigil_toc_id_311" />
+        </navPoint>
+        <navPoint id="navPoint-502" playOrder="502">
+          <navLabel>
+            <text>A.4.5 StructType</text>
+          </navLabel>
+          <content src="Text/part0000_split_173.html#sigil_toc_id_312" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-503" playOrder="503">
+        <navLabel>
+          <text>A.4.6 ArrayType</text>
+        </navLabel>
+        <content src="Text/part0000_split_174.html" />
+      </navPoint>
+      <navPoint id="navPoint-504" playOrder="504">
+        <navLabel>
+          <text>A.5 类</text>
+        </navLabel>
+        <content src="Text/part0000_split_175.html" />
+        <navPoint id="navPoint-505" playOrder="505">
+          <navLabel>
+            <text>A.5.1 私有成员</text>
+          </navLabel>
+          <content src="Text/part0000_split_175.html#sigil_toc_id_313" />
+        </navPoint>
+        <navPoint id="navPoint-506" playOrder="506">
+          <navLabel>
+            <text>A.5.2 getter和setter</text>
+          </navLabel>
+          <content src="Text/part0000_split_175.html#sigil_toc_id_314" />
+        </navPoint>
+        <navPoint id="navPoint-507" playOrder="507">
+          <navLabel>
+            <text>A.5.3 继承</text>
+          </navLabel>
+          <content src="Text/part0000_split_175.html#sigil_toc_id_315" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-508" playOrder="508">
+        <navLabel>
+          <text>A.6 模块</text>
+        </navLabel>
+        <content src="Text/part0000_split_176.html" />
+        <navPoint id="navPoint-509" playOrder="509">
+          <navLabel>
+            <text>外部模块</text>
+          </navLabel>
+          <content src="Text/part0000_split_176.html#sigil_toc_id_316" />
+        </navPoint>
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-510" playOrder="510">
+      <navLabel>
+        <text>附录B 严格模式</text>
+      </navLabel>
+      <content src="Text/part0000_split_177.html" />
+      <navPoint id="navPoint-511" playOrder="511">
+        <navLabel>
+          <text>B.1 选择使用</text>
+        </navLabel>
+        <content src="Text/part0000_split_178.html" />
+      </navPoint>
+      <navPoint id="navPoint-512" playOrder="512">
+        <navLabel>
+          <text>B.2 变量</text>
+        </navLabel>
+        <content src="Text/part0000_split_179.html" />
+      </navPoint>
+      <navPoint id="navPoint-513" playOrder="513">
+        <navLabel>
+          <text>B.3 对象</text>
+        </navLabel>
+        <content src="Text/part0000_split_180.html" />
+      </navPoint>
+      <navPoint id="navPoint-514" playOrder="514">
+        <navLabel>
+          <text>B.4 函数</text>
+        </navLabel>
+        <content src="Text/part0000_split_181.html" />
+      </navPoint>
+      <navPoint id="navPoint-515" playOrder="515">
+        <navLabel>
+          <text>B.5 eval()</text>
+        </navLabel>
+        <content src="Text/part0000_split_182.html" />
+      </navPoint>
+      <navPoint id="navPoint-516" playOrder="516">
+        <navLabel>
+          <text>B.6 eval与arguments</text>
+        </navLabel>
+        <content src="Text/part0000_split_183.html" />
+      </navPoint>
+      <navPoint id="navPoint-517" playOrder="517">
+        <navLabel>
+          <text>B.7 抑制this</text>
+        </navLabel>
+        <content src="Text/part0000_split_184.html" />
+      </navPoint>
+      <navPoint id="navPoint-518" playOrder="518">
+        <navLabel>
+          <text>B.8 其他变化</text>
+        </navLabel>
+        <content src="Text/part0000_split_185.html" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-519" playOrder="519">
+      <navLabel>
+        <text>附录C JavaScript库</text>
+      </navLabel>
+      <content src="Text/part0000_split_186.html" />
+      <navPoint id="navPoint-520" playOrder="520">
+        <navLabel>
+          <text>C.1 通用库</text>
+        </navLabel>
+        <content src="Text/part0000_split_187.html" />
+        <navPoint id="navPoint-521" playOrder="521">
+          <navLabel>
+            <text>C.1.1 YUI</text>
+          </navLabel>
+          <content src="Text/part0000_split_187.html#sigil_toc_id_317" />
+        </navPoint>
+        <navPoint id="navPoint-522" playOrder="522">
+          <navLabel>
+            <text>C.1.2 Prototype</text>
+          </navLabel>
+          <content src="Text/part0000_split_187.html#sigil_toc_id_318" />
+        </navPoint>
+        <navPoint id="navPoint-523" playOrder="523">
+          <navLabel>
+            <text>C.1.3 Dojo Toolkit</text>
+          </navLabel>
+          <content src="Text/part0000_split_187.html#sigil_toc_id_319" />
+        </navPoint>
+        <navPoint id="navPoint-524" playOrder="524">
+          <navLabel>
+            <text>C.1.4 MooTools</text>
+          </navLabel>
+          <content src="Text/part0000_split_187.html#sigil_toc_id_320" />
+        </navPoint>
+        <navPoint id="navPoint-525" playOrder="525">
+          <navLabel>
+            <text>C.1.5 jQuery</text>
+          </navLabel>
+          <content src="Text/part0000_split_187.html#sigil_toc_id_321" />
+        </navPoint>
+        <navPoint id="navPoint-526" playOrder="526">
+          <navLabel>
+            <text>C.1.6 MochiKit</text>
+          </navLabel>
+          <content src="Text/part0000_split_187.html#sigil_toc_id_322" />
+        </navPoint>
+        <navPoint id="navPoint-527" playOrder="527">
+          <navLabel>
+            <text>C.1.7 Underscore.js</text>
+          </navLabel>
+          <content src="Text/part0000_split_187.html#sigil_toc_id_323" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-528" playOrder="528">
+        <navLabel>
+          <text>C.2 互联网应用</text>
+        </navLabel>
+        <content src="Text/part0000_split_188.html" />
+        <navPoint id="navPoint-529" playOrder="529">
+          <navLabel>
+            <text>C.2.1 Backbone.js</text>
+          </navLabel>
+          <content src="Text/part0000_split_188.html#sigil_toc_id_324" />
+        </navPoint>
+        <navPoint id="navPoint-530" playOrder="530">
+          <navLabel>
+            <text>C.2.2 Rico</text>
+          </navLabel>
+          <content src="Text/part0000_split_188.html#sigil_toc_id_325" />
+        </navPoint>
+        <navPoint id="navPoint-531" playOrder="531">
+          <navLabel>
+            <text>C.2.3 qooxdoo</text>
+          </navLabel>
+          <content src="Text/part0000_split_188.html#sigil_toc_id_326" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-532" playOrder="532">
+        <navLabel>
+          <text>C.3 动画和特效</text>
+        </navLabel>
+        <content src="Text/part0000_split_189.html" />
+        <navPoint id="navPoint-533" playOrder="533">
+          <navLabel>
+            <text>C.3.1 script.aculo.us</text>
+          </navLabel>
+          <content src="Text/part0000_split_189.html#sigil_toc_id_327" />
+        </navPoint>
+        <navPoint id="navPoint-534" playOrder="534">
+          <navLabel>
+            <text>C.3.2 moo.fx</text>
+          </navLabel>
+          <content src="Text/part0000_split_189.html#sigil_toc_id_328" />
+        </navPoint>
+        <navPoint id="navPoint-535" playOrder="535">
+          <navLabel>
+            <text>C.3.3 Lightbox</text>
+          </navLabel>
+          <content src="Text/part0000_split_189.html#sigil_toc_id_329" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-536" playOrder="536">
+        <navLabel>
+          <text>C.4 加密</text>
+        </navLabel>
+        <content src="Text/part0000_split_190.html" />
+        <navPoint id="navPoint-537" playOrder="537">
+          <navLabel>
+            <text>C.4.1 JavaScript MD5</text>
+          </navLabel>
+          <content src="Text/part0000_split_190.html#sigil_toc_id_330" />
+        </navPoint>
+        <navPoint id="navPoint-538" playOrder="538">
+          <navLabel>
+            <text>C.4.2 JavaScrypt</text>
+          </navLabel>
+          <content src="Text/part0000_split_190.html#sigil_toc_id_331" />
+        </navPoint>
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-539" playOrder="539">
+      <navLabel>
+        <text>附录D JavaScript工具</text>
+      </navLabel>
+      <content src="Text/part0000_split_191.html" />
+      <navPoint id="navPoint-540" playOrder="540">
+        <navLabel>
+          <text>D.1 校验器</text>
+        </navLabel>
+        <content src="Text/part0000_split_192.html" />
+        <navPoint id="navPoint-541" playOrder="541">
+          <navLabel>
+            <text>D.1.1 JSLint</text>
+          </navLabel>
+          <content src="Text/part0000_split_192.html#sigil_toc_id_332" />
+        </navPoint>
+        <navPoint id="navPoint-542" playOrder="542">
+          <navLabel>
+            <text>D.1.2 JSHint</text>
+          </navLabel>
+          <content src="Text/part0000_split_192.html#sigil_toc_id_333" />
+        </navPoint>
+        <navPoint id="navPoint-543" playOrder="543">
+          <navLabel>
+            <text>D.1.3 JavaScript Lint</text>
+          </navLabel>
+          <content src="Text/part0000_split_192.html#sigil_toc_id_334" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-544" playOrder="544">
+        <navLabel>
+          <text>D.2 压缩器</text>
+        </navLabel>
+        <content src="Text/part0000_split_193.html" />
+        <navPoint id="navPoint-545" playOrder="545">
+          <navLabel>
+            <text>D.2.1 JSMin</text>
+          </navLabel>
+          <content src="Text/part0000_split_193.html#sigil_toc_id_335" />
+        </navPoint>
+        <navPoint id="navPoint-546" playOrder="546">
+          <navLabel>
+            <text>D.2.2 Dojo ShrinkSafe</text>
+          </navLabel>
+          <content src="Text/part0000_split_193.html#sigil_toc_id_336" />
+        </navPoint>
+        <navPoint id="navPoint-547" playOrder="547">
+          <navLabel>
+            <text>D.2.3 YUI Compressor</text>
+          </navLabel>
+          <content src="Text/part0000_split_193.html#sigil_toc_id_337" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-548" playOrder="548">
+        <navLabel>
+          <text>D.3 单元测试</text>
+        </navLabel>
+        <content src="Text/part0000_split_194.html" />
+        <navPoint id="navPoint-549" playOrder="549">
+          <navLabel>
+            <text>D.3.1 JsUnit</text>
+          </navLabel>
+          <content src="Text/part0000_split_194.html#sigil_toc_id_338" />
+        </navPoint>
+        <navPoint id="navPoint-550" playOrder="550">
+          <navLabel>
+            <text>D.3.2 YUI Test</text>
+          </navLabel>
+          <content src="Text/part0000_split_194.html#sigil_toc_id_339" />
+        </navPoint>
+        <navPoint id="navPoint-551" playOrder="551">
+          <navLabel>
+            <text>D.3.3 DOH</text>
+          </navLabel>
+          <content src="Text/part0000_split_194.html#sigil_toc_id_340" />
+        </navPoint>
+        <navPoint id="navPoint-552" playOrder="552">
+          <navLabel>
+            <text>D.3.4 qUnit</text>
+          </navLabel>
+          <content src="Text/part0000_split_194.html#sigil_toc_id_341" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-553" playOrder="553">
+        <navLabel>
+          <text>D.4 文档生成器</text>
+        </navLabel>
+        <content src="Text/part0000_split_195.html" />
+        <navPoint id="navPoint-554" playOrder="554">
+          <navLabel>
+            <text>D.4.1 JsDoc Toolkit</text>
+          </navLabel>
+          <content src="Text/part0000_split_195.html#sigil_toc_id_342" />
+        </navPoint>
+        <navPoint id="navPoint-555" playOrder="555">
+          <navLabel>
+            <text>D.4.2 YUI Doc</text>
+          </navLabel>
+          <content src="Text/part0000_split_195.html#sigil_toc_id_343" />
+        </navPoint>
+        <navPoint id="navPoint-556" playOrder="556">
+          <navLabel>
+            <text>D.4.3 AjaxDoc</text>
+          </navLabel>
+          <content src="Text/part0000_split_195.html#sigil_toc_id_344" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint-557" playOrder="557">
+        <navLabel>
+          <text>D.5 安全执行环境</text>
+        </navLabel>
+        <content src="Text/part0000_split_196.html" />
+        <navPoint id="navPoint-558" playOrder="558">
+          <navLabel>
+            <text>D.5.1 ADsafe</text>
+          </navLabel>
+          <content src="Text/part0000_split_196.html#sigil_toc_id_345" />
+        </navPoint>
+        <navPoint id="navPoint-559" playOrder="559">
+          <navLabel>
+            <text>D.5.2 Caja</text>
+          </navLabel>
+          <content src="Text/part0000_split_196.html#sigil_toc_id_346" />
+        </navPoint>
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint-2" playOrder="600">
+      <navLabel>
+        <text>目录</text>
+      </navLabel>
+      <content src="Text/part0000_split_001.html" />
+    </navPoint>
+  </navMap>
+</ncx>

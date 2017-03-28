@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_156">22.1　高级函数</h2>
+
+  <p class="calibre2">函数是JavaScript中最有趣的部分之一。它们本质上是十分简单和过程化的，但也可以是非常复杂和动态的。一些额外的功能可以通过使用闭包来实现。此外，由于所有的函数都是对象，所以使用函数指针非常简单。这些令JavaScript函数不仅有趣而且强大。以下几节描绘了几种在JavaScript中使用函数的高级方法。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_264"><strong class="calibre10">22.1.1　安全的类型检测</strong></h3>
+
+  <p class="calibre2">JavaScript内置的类型检测机制并非完全可靠。事实上，发生错误否定及错误肯定的情况也不在少数。比如说<code class="calibre15">typeof</code>操作符吧，由于它有一些无法预知的行为，经常会导致检测数据类型时得到不靠谱的结果。Safari（直至第4版）在对正则表达式应用<code class="calibre15">typeof</code>操作符时会返回<code class="calibre15">"function"</code>，因此很难确定某个值到底是不是函数。</p>
+
+  <p class="calibre2">再比如，<code class="calibre15">instanceof</code>操作符在存在多个全局作用域（像一个页面包含多个框架）的情况下，也是问题多多。一个经典的例子（第5章也提到过）就是像下面这样将对象标识为数组。</p>
+  <pre class="calibre18"><code class="calibre15">var isArray = value instanceof Array;
+</code></pre>
+
+  <p class="calibre2">以上代码要返回<code class="calibre15">true</code>，<code class="calibre15">value</code>必须是一个数组，而且还必须与<code class="calibre15">Array</code>构造函数在同个全局作用域中。（别忘了，<code class="calibre15">Array</code>是<code class="calibre15">window</code>的属性。）如果<code class="calibre15">value</code>是在另个框架中定义的数组，那么以上代码就会返回<code class="calibre15">false</code>。</p>
+
+  <p class="calibre2">在检测某个对象到底是原生对象还是开发人员自定义的对象的时候，也会有问题。出现这个问题的原因是浏览器开始原生支持<code class="calibre15">JSON</code>对象了。因为很多人一直在使用Douglas Crockford的JSON库，而该库定义了一个全局<code class="calibre15">JSON</code>对象。于是开发人员很难确定页面中的<code class="calibre15">JSON</code>对象到底是不是原生的。</p>
+
+  <p class="calibre2">解决上述问题的办法都一样。大家知道，在任何值上调用<code class="calibre15">Object</code>原生的<code class="calibre15">toString()</code>方法，都会返回一个<code class="calibre15">[object NativeConstructorName]</code>格式的字符串。每个类在内部都有一个<code class="calibre15">[[Class]]</code>属性，这个属性中就指定了上述字符串中的构造函数名。举个例子吧。</p>
+  <pre class="calibre18"><code class="calibre15">alert(Object.prototype.toString.call(value));    //"[object Array]"
+</code></pre>
+
+  <p class="calibre2">由于原生数组的构造函数名与全局作用域无关，因此使用<code class="calibre15">toString()</code>就能保证返回一致的值。利用这一点，可以创建如下函数：</p>
+  <pre class="calibre18"><code class="calibre15">function isArray(value){
+    return Object.prototype.toString.call(value) == "[object Array]";
+} 
+</code></pre>
+
+  <p class="calibre2">同样，也可以基于这一思路来测试某个值是不是原生函数或正则表达式：</p>
+  <pre class="calibre18"><code class="calibre15">function isFunction(value){
+    return Object.prototype.toString.call(value) == "[object Function]";
+}
+function isRegExp(value){
+    return Object.prototype.toString.call(value) == "[object RegExp]";
+}
+</code></pre>
+
+  <p class="calibre2">不过要注意，对于在IE中以COM对象形式实现的任何函数，<code class="calibre15">isFunction()</code>都将返回<code class="calibre15">false</code>（因为它们并非原生的JavaScript函数，请参考第10章中更详细的介绍）。</p>
+
+  <p class="calibre2">这一技巧也广泛应用于检测原生<code class="calibre15">JSON</code>对象。<code class="calibre15">Object</code>的<code class="calibre15">toString()</code>方法不能检测非原生构造函数的构造函数名。因此，开发人员定义的任何构造函数都将返回[object Object]。有些JavaScript库会包含与下面类似的代码。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var isNativeJSON = window.JSON &amp;&amp; Object.prototype.toString.call(JSON) ==
+"[object JSON]";
+</code></pre>
+
+  <p class="calibre2">在Web开发中能够区分原生与非原生JavaScript对象非常重要。只有这样才能确切知道某个对象到底有哪些功能。这个技巧可以对任何对象给出正确的结论。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00001.gif" /> 请注意，<code class="calibre15">Object.prototpye.toString()</code>本身也可能会被修改。本节讨论的技巧假设<code class="calibre15">Object.prototpye.toString()</code>是未被修改过的原生版本。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_265"><strong class="calibre10">22.1.2　作用域安全的构造函数</strong></h3>
+
+  <p class="calibre2">第6章讲述了用于自定义对象的构造函数的定义和用法。你应该还记得，构造函数其实就是一个使用<code class="calibre15">new</code>操作符调用的函数。当使用<code class="calibre15">new</code>调用时，构造函数内用到的<code class="calibre15">this</code>对象会指向新创建的对象实例，如下面的例子所示：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function Person(name, age, job){
+    this.name = name;
+    this.age = age;
+    this.job = job;
+}
+
+var person = new Person("Nicholas", 29, "Software Engineer");
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ScopeSafeConstructorsExample01.htm</i></p>
+
+  <p class="calibre2">上面这个例子中，<code class="calibre15">Person</code>构造函数使用<code class="calibre15">this</code>对象给三个属性赋值：<code class="calibre15">name</code>、<code class="calibre15">age</code>和<code class="calibre15">job</code>。当和<code class="calibre15">new</code>操作符连用时，则会创建一个新的<code class="calibre15">Person</code>对象，同时会给它分配这些属性。问题出在当没有使用<code class="calibre15">new</code>操作符来调用该构造函数的情况上。由于该<code class="calibre15">this</code>对象是在运行时绑定的，所以直接调用<code class="calibre15">Person()</code>，<code class="calibre15">this</code>会映射到全局对象<code class="calibre15">window</code>上，导致错误对象属性的意外增加。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var person = Person("Nicholas", 29, "Software Engineer");
+alert(window.name);        //"Nicholas"
+alert(window.age);         //29
+alert(window.job);         //"Software Engineer"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ScopeSafeConstructorsExample01.htm</i></p>
+
+  <p class="calibre2">这里，原本针对<code class="calibre15">Person</code>实例的三个属性被加到<code class="calibre15">window</code>对象上，因为构造函数是作为普通函数调用的，忽略了<code class="calibre15">new</code>操作符。这个问题是由<code class="calibre15">this</code>对象的晚绑定造成的，在这里<code class="calibre15">this</code>被解析成了<code class="calibre15">window</code>对象。由于<code class="calibre15">window</code>的<code class="calibre15">name</code>属性是用于识别链接目标和框架的，所以这里对该属性的偶然覆盖可能会导致该页面上出现其他错误。这个问题的解决方法就是创建一个<strong class="calibre3">作用域安全的构造函数</strong>。</p>
+
+  <p class="calibre2">作用域安全的构造函数在进行任何更改前，首先确认<code class="calibre15">this</code>对象是正确类型的实例。如果不是，那么会创建新的实例并返回。请看以下例子：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">function Person(name, age, job){
+    <b class="calibre3">if (this instanceof Person){</b>
+        this.name = name;
+        this.age = age;
+        this.job = job;
+    <b class="calibre3">} else {</b>
+        <b class="calibre3">return new Person(name, age, job);</b>
+    <b class="calibre3">}</b>
+}
+
+<b class="calibre3">var person1 = Person("Nicholas", 29, "Software Engineer");</b>
+<b class="calibre3">alert(window.name);      //""</b>
+<b class="calibre3">alert(person1.name);     //"Nicholas"</b>
+
+<b class="calibre3">var person2 = new Person("Shelby", 34, "Ergonomist");</b>
+<b class="calibre3">alert(person2.name);     //"Shelby"</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">ScopeSafeConstructorsExample02.htm</i></p>
+
+  <p class="calibre2">这段代码中的<code class="calibre15">Person</code>构造函数添加了一个检查并确保<code class="calibre15">this</code>对象是<code class="calibre15">Person</code>实例的<code class="calibre15">if</code>语句，它表示要么使用<code class="calibre15">new</code>操作符，要么在现有的<code class="calibre15">Person</code>实例环境中调用构造函数。任何一种情况下，对象初始化都能正常进行。如果<code class="calibre15">this</code>并非<code class="calibre15">Person</code>的实例，那么会再次使用<code class="calibre15">new</code>操作符调用构造函数并返回结果。最后的结果是，调用<code class="calibre15">Person</code>构造函数时无论是否使用<code class="calibre15">new</code>操作符，都会返回一个<code class="calibre15">Person</code>的新实例，这就避免了在全局对象上意外设置属性。</p>
+
+  <p class="calibre2">关于作用域安全的构造函数的贴心提示。实现这个模式后，你就锁定了可以调用构造函数的环境。如果你使用构造函数窃取模式的继承且不使用原型链，那么这个继承很可能被破坏。这里有个例子：</p>
+  <pre class="calibre18"><code class="calibre15">function Polygon(sides){
+    if (this instanceof Polygon) {
+        this.sides = sides;
+        this.getArea = function(){
+            return 0;
+        };
+    } else {
+        return new Polygon(sides);
+    }
+}
+
+function Rectangle(width, height){
+    Polygon.call(this, 2);
+    this.width = width;
+    this.height = height;
+    this.getArea = function(){
+        return this.width * this.height;
+    };
+}
+
+var rect = new Rectangle(5, 10);
+alert(rect.sides);        //undefined
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ScopeSafeConstructorsExample03.htm</i></p>
+
+  <p class="calibre2">在这段代码中，<code class="calibre15">Polygon</code>构造函数是作用域安全的，然而<code class="calibre15">Rectangle</code>构造函数则不是。新创建一个<code class="calibre15">Rectangle</code>实例之后，这个实例应该通过<code class="calibre15">Polygon.call()</code>来继承<code class="calibre15">Polygon</code>的<code class="calibre15">sides</code>属性。但是，由于<code class="calibre15">Polygon</code>构造函数是作用域安全的，<code class="calibre15">this</code>对象并非<code class="calibre15">Polygon</code>的实例，所以会创建并返回一个新的<code class="calibre15">Polygon</code>对象。<code class="calibre15">Rectangle</code>构造函数中的<code class="calibre15">this</code>对象并没有得到增长，同时<code class="calibre15">Polygon.call()</code>返回的值也没有用到，所以<code class="calibre15">Rectangle</code>实例中就不会有<code class="calibre15">sides</code>属性。</p>
+
+  <p class="calibre2">如果构造函数窃取结合使用原型链或者寄生组合则可以解决这个问题。考虑以下例子：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">function Polygon(sides){
+    if (this instanceof Polygon) {
+        this.sides = sides;
+        this.getArea = function(){
+            return 0;
+        };
+    } else {
+        return new Polygon(sides);
+    }
+}
+
+function Rectangle(width, height){
+    Polygon.call(this, 2);
+    this.width = width;
+    this.height = height;
+    this.getArea = function(){
+        return this.width * this.height;
+    };
+}
+
+<b class="calibre3">Rectangle.prototype = new Polygon();</b>
+
+var rect = new Rectangle(5, 10);
+alert(rect.sides);        //2
+</pre>
+
+  <p class="calibre8"><i class="calibre7">ScopeSafeConstructorsExample04.htm</i></p>
+
+  <p class="calibre2">上面这段重写的代码中，一个<code class="calibre15">Rectangle</code>实例也同时是一个<code class="calibre15">Polygon</code>实例，所以<code class="calibre15">Polygon.call()</code>会照原意执行，最终为<code class="calibre15">Rectangle</code>实例添加了<code class="calibre15">sides</code>属性。</p>
+
+  <p class="calibre2">多个程序员在同一个页面上写JavaScript代码的环境中，作用域安全构造函数就很有用了。届时，对全局对象意外的更改可能会导致一些常常难以追踪的错误。除非你单纯基于构造函数窃取来实现继承，推荐作用域安全的构造函数作为最佳实践。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_266"><strong class="calibre10">22.1.3　惰性载入函数</strong></h3>
+
+  <p class="calibre2">因为浏览器之间行为的差异，多数JavaScript代码包含了大量的<code class="calibre15">if</code>语句，将执行引导到正确的代码中。看看下面来自上一章的<code class="calibre15">createXHR()</code>函数。</p>
+  <pre class="calibre18"><code class="calibre15">function createXHR(){
+    if (typeof XMLHttpRequest != "undefined"){
+        return new XMLHttpRequest();
+    } else if (typeof ActiveXObject != "undefined"){
+        if (typeof arguments.callee.activeXString != "string"){
+            var versions = ["MSXML2.XMLHttp.6.0", "MSXML2.XMLHttp.3.0",
+                            "MSXML2.XMLHttp"],
+                i,len;
+
+            for (i=0,len=versions.length; i &lt; len; i++){
+                 try {
+                     new ActiveXObject(versions[i]);
+                     arguments.callee.activeXString = versions[i];
+                      break;
+                 } catch (ex){
+                      //跳过
+                 }
+             }
+        }
+
+        return new ActiveXObject(arguments.callee.activeXString);
+    } else {
+        throw new Error("No XHR object available.");
+    }
+}
+</code></pre>
+
+  <p class="calibre2">每次调用<code class="calibre15">createXHR()</code>的时候，它都要对浏览器所支持的能力仔细检查。首先检查内置的XHR，然后测试有没有基于ActiveX的XHR，最后如果都没有发现的话就抛出一个错误。每次调用该函数都是这样，即使每次调用时分支的结果都不变：如果浏览器支持内置XHR，那么它就一直支持了，那么这种测试就变得没必要了。即使只有一个<code class="calibre15">if</code>语句的代码，也肯定要比没有<code class="calibre15">if</code>语句的慢，所以如果<code class="calibre15">if</code>语句不必每次执行，那么代码可以运行地更快一些。解决方案就是称之为惰性载入的技巧。</p>
+
+  <p class="calibre2">惰性载入表示函数执行的分支仅会发生一次。有两种实现惰性载入的方式，第一种就是在函数被调用时再处理函数。在第一次调用的过程中，该函数会被覆盖为另外一个按合适方式执行的函数，这样任何对原函数的调用都不用再经过执行的分支了。例如，可以用下面的方式使用惰性载入重写<code class="calibre15">createXHR()</code>。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">function createXHR(){ 
+    if (typeof XMLHttpRequest != "undefined"){
+        <b class="calibre3">createXHR = function(){</b>
+            <b class="calibre3">return new XMLHttpRequest();</b>
+        <b class="calibre3">};</b>
+        } else if (typeof ActiveXObject != "undefined"){
+            <b class="calibre3">createXHR = function(){</b>
+                <b class="calibre3">if (typeof arguments.callee.activeXString != "string"){</b>
+                    <b class="calibre3">var versions = ["MSXML2.XMLHttp.6.0", "MSXML2.XMLHttp.3.0",</b>
+                                     <b class="calibre3">"MSXML2.XMLHttp"],</b>
+                        <b class="calibre3">i, len;</b>
+
+                    <b class="calibre3">for (i=0,len=versions.length; i &lt; len; i++){</b>
+                        <b class="calibre3">try {</b>
+                          new ActiveXObject(versions[i]);
+                          arguments.callee.activeXString = versions[i];
+                             <b class="calibre3">break;</b>
+                        <b class="calibre3">} catch (ex){</b>
+                            <b class="calibre3">//skip</b>
+                        <b class="calibre3">}</b>
+                    <b class="calibre3">}</b>
+                <b class="calibre3">}</b>
+
+                <b class="calibre3">return new ActiveXObject(arguments.callee.activeXString);</b>
+            <b class="calibre3">};</b>
+        } else {
+            <b class="calibre3">createXHR = function(){</b>
+                <b class="calibre3">throw new Error("No XHR object available.");</b>
+            <b class="calibre3">};</b>
+        }
+
+    <b class="calibre3">return createXHR();</b>
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">LazyLoadingExample01.htm</i></p>
+
+  <p class="calibre2">在这个惰性载入的<code class="calibre15">createXHR()</code>中，<code class="calibre15">if</code>语句的每一个分支都会为<code class="calibre15">createXHR</code>变量赋值，有效覆盖了原有的函数。最后一步便是调用新赋的函数。下一次调用<code class="calibre15">createXHR()</code>的时候，就会直接调用被分配的函数，这样就不用再次执行<code class="calibre15">if</code>语句了。</p>
+
+  <p class="calibre2">第二种实现惰性载入的方式是在声明函数时就指定适当的函数。这样，第一次调用函数时就不会损失性能了，而在代码首次加载时会损失一点性能。以下就是按照这一思路重写前面例子的结果。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><b class="calibre3">var createXHR = (function(){</b>
+    if (typeof XMLHttpRequest != "undefined"){
+        <b class="calibre3">return function(){</b>
+            return new XMLHttpRequest();
+        };
+    } else if (typeof ActiveXObject != "undefined"){
+        <b class="calibre3">return function(){</b>
+            if (typeof arguments.callee.activeXString != "string"){
+                var versions = ["MSXML2.XMLHttp.6.0", "MSXML2.XMLHttp.3.0",
+                                "MSXML2.XMLHttp"],
+                i, len;
+            for (i=0,len=versions.length; i &lt; len; i++){
+                try {
+                    new ActiveXObject(versions[i]);
+                    arguments.callee.activeXString = versions[i];
+                    break;
+                } catch (ex){
+                    //skip
+                }
+            }
+            }
+            return new ActiveXObject(arguments.callee.activeXString);
+        };
+    } else {
+        <b class="calibre3">return function(){</b>
+            throw new Error("No XHR object available.");
+        };
+    }
+})();
+</pre>
+
+  <p class="calibre8"><i class="calibre7">LazyLoadingExample02.htm</i></p>
+
+  <p class="calibre2">这个例子中使用的技巧是创建一个匿名、自执行的函数，用以确定应该使用哪一个函数实现。实际的逻辑都一样。不一样的地方就是第一行代码（使用<code class="calibre15">var</code>定义函数）、新增了自执行的匿名函数，另外每个分支都返回正确的函数定义，以便立即将其赋值给<code class="calibre15">createXHR()</code>。</p>
+
+  <p class="calibre2">惰性载入函数的优点是只在执行分支代码时牺牲一点儿性能。至于哪种方式更合适，就要看你的具体需求而定了。不过这两种方式都能避免执行不必要的代码。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_267"><strong class="calibre10">22.1.4　函数绑定</strong></h3>
+
+  <p class="calibre2">另一个日益流行的高级技巧叫做函数绑定。函数绑定要创建一个函数，可以在特定的<code class="calibre15">this</code>环境中以指定参数调用另一个函数。该技巧常常和回调函数与事件处理程序一起使用，以便在将函数作为变量传递的同时保留代码执行环境。请看以下例子：</p>
+  <pre class="calibre18"><code class="calibre15">var handler = { 
+    message: "Event handled",
+
+    handleClick: function(event){
+        alert(this.message);
+    }
+};
+
+var btn = document.getElementById("my-btn");
+EventUtil.addHandler(btn, "click", handler.handleClick);
+</code></pre>
+
+  <p class="calibre2">在上面这个例子中，创建了一个叫做<code class="calibre15">handler</code>的对象。<code class="calibre15">handler.handleClick()</code>方法被分配为一个DOM按钮的事件处理程序。当按下该按钮时，就调用该函数，显示一个警告框。虽然貌似警告框应该显示<code class="calibre15">Event handled</code>，然而实际上显示的是<code class="calibre15">undefiend</code>。这个问题在于没有保存<code class="calibre15">handler.handleClick()</code>的环境，所以<code class="calibre15">this</code>对象最后是指向了DOM按钮而非<code class="calibre15">handler</code>（在IE8中，<code class="calibre15">this</code>指向<code class="calibre15">window</code>。）可以如下面例子所示，使用一个闭包来修正这个问题。</p>
+  <pre class="calibre18">var handler = {
+    message: "Event handled",
+
+    handleClick: function(event){
+        alert(this.message);
+    }
+};
+
+var btn = document.getElementById("my-btn");
+<b class="calibre3">EventUtil.addHandler(btn, "click", function(event){</b>
+    <b class="calibre3">handler.handleClick(event);</b>
+});
+</pre>
+
+  <p class="calibre2">这个解决方案在<code class="calibre15">onclick</code>事件处理程序内使用了一个闭包直接调用<code class="calibre15">handler.handleClick()</code>。当然，这是特定于这段代码的解决方案。创建多个闭包可能会令代码变得难于理解和调试。因此，很多JavaScript库实现了一个可以将函数绑定到指定环境的函数。这个函数一般都叫<code class="calibre15">bind()</code>。</p>
+
+  <p class="calibre2">一个简单的<code class="calibre15">bind()</code>函数接受一个函数和一个环境，并返回一个在给定环境中调用给定函数的函数，并且将所有参数原封不动传递过去。语法如下：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function bind(fn, context){
+    return function(){
+        return fn.apply(context, arguments);
+    };
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionBindingExample01.htm</i></p>
+
+  <p class="calibre2">这个函数似乎简单，但其功能是非常强大的。在<code class="calibre15">bind()</code>中创建了一个闭包，闭包使用<code class="calibre15">apply()</code>调用传入的函数，并给<code class="calibre15">apply()</code>传递<code class="calibre15">context</code>对象和参数。注意这里使用的<code class="calibre15">arguments</code>对象是内部函数的，而非<code class="calibre15">bind()</code>的。当调用返回的函数时，它会在给定环境中执行被传入的函数并给出所有参数。<code class="calibre15">bind()</code>函数按如下方式使用：</p>
+  <pre class="calibre18">var handler = {
+    message: "Event handled",
+
+    handleClick: function(event){
+        alert(this.message);
+    }
+};
+
+var btn = document.getElementById("my-btn");
+<b class="calibre3">EventUtil.addHandler(btn, "click", bind(handler.handleClick, handler));</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionBindingExample01.htm</i></p>
+
+  <p class="calibre2">在这个例子中，我们用<code class="calibre15">bind()</code>函数创建了一个保持了执行环境的函数，并将其传给<code class="calibre15">EventUtil.addHandler()</code>。<code class="calibre15">event</code>对象也被传给了该函数，如下所示：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var handler = {
+    message: "Event handled",
+
+    handleClick: function(event){
+        <b class="calibre3">alert(this.message + ":" + event.type);</b>
+    }
+};
+
+var btn = document.getElementById("my-btn");
+EventUtil.addHandler(btn, "click", bind(handler.handleClick, handler));
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionBindingExample01.htm</i></p>
+
+  <p class="calibre2"><code class="calibre15">handler.handleClick()</code>方法和平时一样获得了<code class="calibre15">event</code>对象，因为所有的参数都通过被绑定的函数直接传给了它。</p>
+
+  <p class="calibre2">ECMAScript 5为所有函数定义了一个原生的<code class="calibre15">bind()</code>方法，进一步简单了操作。换句话说，你不用再自己定义<code class="calibre15">bind()</code>函数了，而是可以直接在函数上调用这个方法。例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var handler = {
+    message: "Event handled",
+
+    handleClick: function(event){
+         <b class="calibre3">alert(this.message + ":" + event.type);</b>
+    }
+};
+
+var btn = document.getElementById("my-btn");
+EventUtil.addHandler(btn, "click", <b class="calibre3">handler.handleClick.bind(handler)</b>);
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionBindingExample02.htm</i></p>
+
+  <p class="calibre2">原生的<code class="calibre15">bind()</code>方法与前面介绍的自定义<code class="calibre15">bind()</code>方法类似，都是要传入作为<code class="calibre15">this</code>值的对象。支持原生<code class="calibre15">bind()</code>方法的浏览器有IE9+、Firefox 4+和Chrome。</p>
+
+  <p class="calibre2">只要是将某个函数指针以值的形式进行传递，同时该函数必须在特定环境中执行，被绑定函数的效用就突显出来了。它们主要用于事件处理程序以及<code class="calibre15">setTimeout()</code>和<code class="calibre15">setInterval()</code>。然而，被绑定函数与普通函数相比有更多的开销，它们需要更多内存，同时也因为多重函数调用稍微慢一点，所以最好只在必要时使用。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_268"><strong class="calibre10">22.1.5　函数柯里化</strong></h3>
+
+  <p class="calibre2">与函数绑定紧密相关的主题是<strong class="calibre3">函数柯里化</strong>（function currying），它用于创建已经设置好了一个或多个参数的函数。函数柯里化的基本方法和函数绑定是一样的：使用一个闭包返回一个函数。两者的区别在于，当函数被调用时，返回的函数还需要设置一些传入的参数。请看以下例子。</p>
+  <pre class="calibre18"><code class="calibre15">function add(num1, num2){
+    return num1 + num2;
+}
+
+function curriedAdd(num2){
+    return add(5, num2);
+}
+
+alert(add(2, 3));     //5
+alert(curriedAdd(3)); //8
+</code></pre>
+
+  <p class="calibre2">这段代码定义了两个函数：<code class="calibre15">add()</code>和<code class="calibre15">curriedAdd()</code>。后者本质上是在任何情况下第一个参数为5的<code class="calibre15">add()</code>版本。尽管从技术上来说<code class="calibre15">curriedAdd()</code>并非柯里化的函数，但它很好地展示了其概念。</p>
+
+  <p class="calibre2">柯里化函数通常由以下步骤动态创建：调用另一个函数并为它传入要柯里化的函数和必要参数。下面是创建柯里化函数的通用方式。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function curry(fn){
+    var args = Array.prototype.slice.call(arguments, 1);
+    return function(){
+        var innerArgs = Array.prototype.slice.call(arguments);
+        var finalArgs = args.concat(innerArgs);
+        return fn.apply(null, finalArgs);
+    };
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionCurryingExample01.htm</i></p>
+
+  <p class="calibre2"><code class="calibre15">curry()</code>函数的主要工作就是将被返回函数的参数进行排序。<code class="calibre15">curry()</code>的第一个参数是要进行柯里化的函数，其他参数是要传入的值。为了获取第一个参数之后的所有参数，在<code class="calibre15">arguments</code>对象上调用了<code class="calibre15">slice()</code>方法，并传入参数1表示被返回的数组包含从第二个参数开始的所有参数。然后<code class="calibre15">args</code>数组包含了来自外部函数的参数。在内部函数中，创建了<code class="calibre15">innerArgs</code>数组用来存放所有传入的参数（又一次用到了<code class="calibre15">slice()</code>）。有了存放来自外部函数和内部函数的参数数组后，就可以使用<code class="calibre15">concat()</code>方法将它们组合为<code class="calibre15">finalArgs</code>，然后使用<code class="calibre15">apply()</code>将结果传递给该函数。注意这个函数并没有考虑到执行环境，所以调用<code class="calibre15">apply()</code>时第一个参数是<code class="calibre15">null</code>。<code class="calibre15">curry()</code>函数可以按以下方式应用。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">function add(num1, num2){
+    return num1 + num2;
+}
+
+<b class="calibre3">var curriedAdd = curry(add, 5);</b>
+<b class="calibre3">alert(curriedAdd(3));   //8</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionCurryingExample01.htm</i></p>
+
+  <p class="calibre2">在这个例子中，创建了第一个参数绑定为<code class="calibre15">5</code>的<code class="calibre15">add()</code>的柯里化版本。当调用<code class="calibre15">curriedAdd()</code>并传入<code class="calibre15">3</code>时，<code class="calibre15">3</code>会成为<code class="calibre15">add()</code>的第二个参数，同时第一个参数依然是<code class="calibre15">5</code>，最后结果便是和<code class="calibre15">8</code>。你也可以像下面例子这样给出所有的函数参数：</p>
+  <pre class="calibre18">function add(num1, num2){
+    return num1 + num2;
+}
+
+<b class="calibre3">var curriedAdd = curry(add, 5, 12);</b>
+<b class="calibre3">alert(curriedAdd());   //17</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionCurryingExample01.htm</i></p>
+
+  <p class="calibre2">在这里，柯里化的<code class="calibre15">add()</code>函数两个参数都提供了，所以以后就无需再传递它们了。</p>
+
+  <p class="calibre2">函数柯里化还常常作为函数绑定的一部分包含在其中，构造出更为复杂的<code class="calibre15">bind()</code>函数。例如：</p>
+  <pre class="calibre18"><b class="calibre3">function bind(fn, context){</b>
+    <b class="calibre3">var args = Array.prototype.slice.call(arguments, 2);</b>
+    return function(){
+        var innerArgs = Array.prototype.slice.call(arguments);
+        var finalArgs = args.concat(innerArgs);
+        <b class="calibre3">return fn.apply(context, finalArgs);</b>
+    };
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionCurryingExample02.htm</i></p>
+
+  <p class="calibre2">对<code class="calibre15">curry()</code>函数的主要更改在于传入的参数个数，以及它如何影响代码的结果。<code class="calibre15">curry()</code>仅仅接受一个要包裹的函数作为参数，而<code class="calibre15">bind()</code>同时接受函数和一个<code class="calibre15">object</code>对象。这表示给被绑定的函数的参数是从第三个开始而不是第二个，这就要更改<code class="calibre15">slice()</code>的第一处调用。另一处更改是在倒数第3行将<code class="calibre15">object</code>对象传给<code class="calibre15">apply()</code>。当使用<code class="calibre15">bind()</code>时，它会返回绑定到给定环境的函数，并且可能它其中某些函数参数已经被设好。当你想除了<code class="calibre15">event</code>对象再额外给事件处理程序传递参数时，这非常有用，例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var handler = {
+    message: "Event handled",
+
+    <b class="calibre3">handleClick: function(name, event){</b>
+        <b class="calibre3">alert(this.message + ":"+ name + ":"+ event.type);</b>
+    <b class="calibre3">}</b>
+};
+
+var btn = document.getElementById("my-btn");
+<b class="calibre3">EventUtil.addHandler(btn, "click", bind(handler.handleClick, handler, "my-btn"));</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionCurryingExample02.htm</i></p>
+
+  <p class="calibre2">在这个更新过的例子中，<code class="calibre15">handler.handleClick()</code>方法接受了两个参数：要处理的元素的名字和<code class="calibre15">event</code>对象。作为第三个参数传递给<code class="calibre15">bind()</code>函数的名字，又被传递给了<code class="calibre15">handler.handleClick()</code>，而<code class="calibre15">handler.handleClick()</code>也会同时接收到<code class="calibre15">event</code>对象。</p>
+
+  <p class="calibre2">ECMAScript 5的<code class="calibre15">bind()</code>方法也实现函数柯里化，只要在<code class="calibre15">this</code>的值之后再传入另一个参数即可。</p>
+  <pre class="calibre18">var handler = {
+    message: "Event handled",
+
+    <b class="calibre3">handleClick: function(name, event){</b>
+        <b class="calibre3">alert(this.message + ":" + name + ":" + event.type);</b>
+    <b class="calibre3">}</b>
+};
+
+var btn = document.getElementById("my-btn");
+<b class="calibre3">EventUtil.addHandler(btn, "click", handler.handleClick.bind(handler, "my-btn"));</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionCurryingExample03.htm</i></p>
+
+  <p class="calibre2">JavaScript中的柯里化函数和绑定函数提供了强大的动态函数创建功能。使用<code class="calibre15">bind()</code>还是<code class="calibre15">curry()</code>要根据是否需要<code class="calibre15">object</code>对象响应来决定。它们都能用于创建复杂的算法和功能，当然两者都不应滥用，因为每个函数都会带来额外的开销。</p>
+</body>
+</html>

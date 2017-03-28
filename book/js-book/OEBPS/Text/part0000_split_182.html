@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_244"><strong class="calibre10">B.5　eval()</strong></h2>
+
+  <p class="calibre2">饱受诟病的<code class="calibre15">eval()</code>函数在严格模式下也得到了提升。最大的变化就是它在包含上下文中不再创建变量或函数。例如：</p>
+  <pre class="calibre18"><code class="calibre15">//使用eval()创建变量
+//非严格模式：弹出对话框显示10
+//严格模式：调用alert(x)时会抛出ReferenceError
+
+function doSomething(){
+    eval("var x=10");
+    alert(x);
+}
+</code></pre>
+
+  <p class="calibre2">如果是在非严格模式下，以上代码会在函数<code class="calibre15">doSomething()</code>中创建一个局部变量<code class="calibre15">x</code>，然后<code class="calibre15">alert()</code>还会显示该变量的值。但在严格模式下，在<code class="calibre15">doSomething()</code>函数中调用<code class="calibre15">eval()</code>不会创建变量<code class="calibre15">x</code>，因此调用<code class="calibre15">alert()</code>会导致抛出<code class="calibre15">ReferenceError</code>，因为<code class="calibre15">x</code>没有定义。</p>
+
+  <p class="calibre2">可以在<code class="calibre15">eval()</code>中声明变量和函数，但这些变量或函数只能在被求值的特殊作用域中有效，随后就将被销毁。因此，以下代码可以运行，没有问题：</p>
+  <pre class="calibre18"><code class="calibre15">"use strict";
+var result = eval("var x=10, y=11; x+y");
+alert(result); //21
+</code></pre>
+
+  <p class="calibre2">这里在<code class="calibre15">eval()</code>中声明了变量<code class="calibre15">x</code>和<code class="calibre15">y</code>，然后将它们加在一起，返回了它们的和。于是，<code class="calibre15">result</code>变量的值是21，即<code class="calibre15">x</code>和<code class="calibre15">y</code>相加的结果。而在调用<code class="calibre15">alert()</code>时，尽管x和y已经不存在了，<code class="calibre15">result</code>变量的值仍然是有效的。</p>
+</body>
+</html>

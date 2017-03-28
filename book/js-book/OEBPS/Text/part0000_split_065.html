@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_55">8.5　history对象</h2>
+
+  <p class="calibre2"><code class="calibre15">history</code>对象保存着用户上网的历史记录，从窗口被打开的那一刻算起。因为<code class="calibre15">history</code>是<code class="calibre15">window</code>对象的属性，因此每个浏览器窗口、每个标签页乃至每个框架，都有自己的<code class="calibre15">history</code>对象与特定的<code class="calibre15">window</code>对象关联。出于安全方面的考虑，开发人员无法得知用户浏览过的URL。不过，借由用户访问过的页面列表，同样可以在不知道实际URL的情况下实现后退和前进。</p>
+
+  <p class="calibre2">使用<code class="calibre15">go()</code>方法可以在用户的历史记录中任意跳转，可以向后也可以向前。这个方法接受一个参数，表示向后或向前跳转的页面数的一个整数值。负数表示向后跳转（类似于单击浏览器的“后退”按钮），正数表示向前跳转（类似于单击浏览器的“前进”按钮）。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">//后退一页
+history.go(-1);
+
+//前进一页
+history.go(1);
+
+//前进两页
+history.go(2);
+</code></pre>
+
+  <p class="calibre2">也可以给<code class="calibre15">go()</code>方法传递一个字符串参数，此时浏览器会跳转到历史记录中包含该字符串的第一个位置——可能后退，也可能前进，具体要看哪个位置最近。如果历史记录中不包含该字符串，那么这个方法什么也不做，例如：</p>
+  <pre class="calibre18"><code class="calibre15">//跳转到最近的wrox.com页面
+history.go("wrox.com");
+
+//跳转到最近的nczonline.net页面
+history.go("nczonline.net");
+</code></pre>
+
+  <p class="calibre2">另外，还可以使用两个简写方法<code class="calibre15">back()</code>和<code class="calibre15">forward()</code>来代替<code class="calibre15">go()</code>。顾名思义，这两个方法可以模仿浏览器的“后退”和“前进”按钮。</p>
+  <pre class="calibre18"><code class="calibre15">//后退一页
+history.back();
+
+//前进一页
+history.forward();
+</code></pre>
+
+  <p class="calibre2">除了上述几个方法外，<code class="calibre15">history</code>对象还有一个<code class="calibre15">length</code>属性，保存着历史记录的数量。这个数量包括所有历史记录，即所有向后和向前的记录。对于加载到窗口、标签页或框架中的第一个页面而言，<code class="calibre15">history.length</code>等于0。通过像下面这样测试该属性的值，可以确定用户是否一开始就打开了你的页面。</p>
+  <pre class="calibre18"><code class="calibre15">if (history.length == 0){
+    //这应该是用户打开窗口后的第一个页面
+}
+</code></pre>
+
+  <p class="calibre2">虽然<code class="calibre15">history</code>并不常用，但在创建自定义的“后退”和“前进”按钮，以及检测当前页面是不是用户历史记录中的第一个页面时，还是必须使用它。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 当页面的URL改变时，就会生成一条历史记录。在IE8及更高版本、Opera、Firefox、Safari 3及更高版本以及Chrome中，这里所说的改变包括URL中<code class="calibre15">hash</code>的变化（因此，设置<code class="calibre15">location.hash</code>会在这些浏览器中生成一条新的历史记录）。</p>
+  </blockquote>
+</body>
+</html>

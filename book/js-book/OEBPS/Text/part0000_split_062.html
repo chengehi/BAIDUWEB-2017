@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_52">8.2　location对象</h2>
+
+  <p class="calibre2"><code class="calibre15">location</code>是最有用的BOM对象之一，它提供了与当前窗口中加载的文档有关的信息，还提供了一些导航功能。事实上，<code class="calibre15">location</code>对象是很特别的一个对象，因为它既是<code class="calibre15">window</code>对象的属性，也是<code class="calibre15">document</code>对象的属性；换句话说，<code class="calibre15">window.location</code>和<code class="calibre15">document.location</code>引用的是同一个对象。<code class="calibre15">location</code>对象的用处不只表现在它保存着当前文档的信息，还表现在它将URL解析为独立的片段，让开发人员可以通过不同的属性访问这些片段。下表列出了<code class="calibre15">location</code>对象的所有属性（注：省略了每个属性前面的<code class="calibre15">location</code>前缀）。</p>
+
+  <table class="table">
+    <tbody class="calibre23">
+      <tr class="calibre24">
+        <th class="calibre25" width="15%">属　性　名</th>
+
+        <th class="calibre25" width="25%">例　　子</th>
+
+        <th class="calibre25" width="60%">说　　明</th>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">hash</code></td>
+
+        <td class="calibre27"><code class="calibre31">"#contents"</code></td>
+
+        <td class="calibre27">返回URL中的<code class="calibre31">hash</code>（#号后跟零或多个字符），如果URL中不包含散列，则返回空字符串</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">host</code></td>
+
+        <td class="calibre27"><code class="calibre31">"www.wrox.com:80"</code></td>
+
+        <td class="calibre27">返回服务器名称和端口号（如果有）</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">hostname</code></td>
+
+        <td class="calibre27"><code class="calibre31">"www.wrox.com"</code></td>
+
+        <td class="calibre27">返回不带端口号的服务器名称</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">href</code></td>
+
+        <td class="calibre27"><code class="calibre31">"http:/www.wrox.com"</code></td>
+
+        <td class="calibre27">返回当前加载页面的完整URL。而<code class="calibre31">location</code>对象的<code class="calibre31">toString()</code>方法也返回这个值</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">pathname</code></td>
+
+        <td class="calibre27"><code class="calibre31">"/WileyCDA/"</code></td>
+
+        <td class="calibre27">返回URL中的目录和（或）文件名</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">port</code></td>
+
+        <td class="calibre27"><code class="calibre31">"8080"</code></td>
+
+        <td class="calibre27">返回URL中指定的端口号。如果URL中不包含端口号，则这个属性返回空字符串</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">protocol</code></td>
+
+        <td class="calibre27"><code class="calibre31">"http:"</code></td>
+
+        <td class="calibre27">返回页面使用的协议。通常是<code class="calibre31">http:</code>或<code class="calibre31">https:</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">search</code></td>
+
+        <td class="calibre27"><code class="calibre31">"?q=javascript"</code></td>
+
+        <td class="calibre27">返回URL的查询字符串。这个字符串以问号开头</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="calibre22" id="sigil_toc_id_107"><strong class="calibre10">8.2.1　查询字符串参数</strong></h3>
+
+  <p class="calibre2">虽然通过上面的属性可以访问到<code class="calibre15">location</code>对象的大多数信息，但其中访问URL包含的查询字符串的属性并不方便。尽管<code class="calibre15">location.search</code>返回从问号到URL末尾的所有内容，但却没有办法逐个访问其中的每个查询字符串参数。为此，可以像下面这样创建一个函数，用以解析查询字符串，然后返回包含所有参数的一个对象：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function getQueryStringArgs(){
+
+    //取得查询字符串并去掉开头的问号
+    var qs = (location.search.length &gt; 0 ? location.search.substring(1) : ""),
+
+    //保存数据的对象
+    args = {},
+
+    //取得每一项
+    items = qs.length ? qs.split("&amp;") : [],
+    item = null,
+        name = null,
+        value = null,
+
+        //在for循环中使用
+        i = 0,
+        len = items.length;
+
+    //逐个将每一项添加到args对象中
+    for (i=0; i &lt; len; i++){
+        item = items[i].split("=");
+        name = decodeURIComponent(item[0]);
+        value = decodeURIComponent(item[1]);
+
+        if (name.length) {
+            args[name] = value;
+        }
+    }
+
+    return args;
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">LocationExample01.htm</i></p>
+
+  <p class="calibre2">这个函数的第一步是先去掉查询字符串开头的问号。当然，前提是<code class="calibre15">location.search</code>中必须要包含一或多个字符。然后，所有参数将被保存在<code class="calibre15">args</code>对象中，该对象以字面量形式创建。接下来，根据和号（&amp;）来分割查询字符串，并返回<code class="calibre15">name=value</code>格式的字符串数组。下面的<code class="calibre15">for</code>循环会迭代这个数组，然后再根据等于号分割每一项，从而返回第一项为参数名，第二项为参数值的数组。再使用<code class="calibre15">decodeURIComponent()</code>分别解码<code class="calibre15">name</code>和<code class="calibre15">value</code>（因为查询字符串应该是被编码过的）。最后，将<code class="calibre15">name</code>作为<code class="calibre15">args</code>对象的属性，将<code class="calibre15">value</code>作为相应属性的值。下面给出了使用这个函数的示例。</p>
+  <pre class="calibre18"><code class="calibre15">//假设查询字符串是?q=javascript&amp;num=10
+
+var args = getQueryStringArgs();
+
+alert(args["q"]);   //"javascript"
+alert(args["num"]); //"10"
+</code></pre>
+
+  <p class="calibre2">可见，每个查询字符串参数都成了返回对象的属性。这样就极大地方便了对每个参数的访问。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_108"><strong class="calibre10">8.2.2　位置操作</strong></h3>
+
+  <p class="calibre2">使用<code class="calibre15">location</code>对象可以通过很多方式来改变浏览器的位置。首先，也是最常用的方式，就是使用<code class="calibre15">assign()</code>方法并为其传递一个URL，如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">location.assign("http://www.wrox.com");
+</code></pre>
+
+  <p class="calibre2">这样，就可以立即打开新URL并在浏览器的历史记录中生成一条记录。如果是将<code class="calibre15">location.href</code>或<code class="calibre15">window.location</code>设置为一个URL值，也会以该值调用<code class="calibre15">assign()</code>方法。例如，下列两行代码与显式调用<code class="calibre15">assign()</code>方法的效果完全一样。</p>
+  <pre class="calibre18"><code class="calibre15">window.location = "http://www.wrox.com";
+location.href = "http://www.wrox.com";
+</code></pre>
+
+  <p class="calibre2">在这些改变浏览器位置的方法中，最常用的是设置<code class="calibre15">location.href</code>属性。</p>
+
+  <p class="calibre2">另外，修改<code class="calibre15">location</code>对象的其他属性也可以改变当前加载的页面。下面的例子展示了通过将<code class="calibre15">hash</code>、<code class="calibre15">search</code>、<code class="calibre15">hostname</code>、<code class="calibre15">pathname</code>和<code class="calibre15">port</code>属性设置为新值来改变URL。</p>
+  <pre class="calibre18"><code class="calibre15">//假设初始URL为http://www.wrox.com/WileyCDA/
+
+//将URL修改为"http://www.wrox.com/WileyCDA/#section1"
+location.hash = "#section1";
+
+//将URL修改为"http://www.wrox.com/WileyCDA/?q=javascript"
+location.search = "?q=javascript";
+
+//将URL修改为"http://www.yahoo.com/WileyCDA/"
+location.hostname = "www.yahoo.com";
+
+//将URL修改为"http://www.yahoo.com/mydir/"
+location.pathname = "mydir";
+
+//将URL修改为"http://www.yahoo.com:8080/WileyCDA/"
+location.port = 8080;
+</code></pre>
+
+  <p class="calibre2">每次修改<code class="calibre15">location</code>的属性（<code class="calibre15">hash</code>除外），页面都会以新URL重新加载。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 在IE8、Firefox 1、Safari 2+、Opera 9+和Chrome中，修改<code class="calibre15">hash</code>的值会在浏览器的历史记录中生成一条新记录。在IE的早期版本中，<code class="calibre15">hash</code>属性不会在用户单击“后退”和“前进”按钮时被更新，而只会在用户单击包含<code class="calibre15">hash</code>的URL时才会被更新。</p>
+  </blockquote>
+
+  <p class="calibre2">当通过上述任何一种方式修改URL之后，浏览器的历史记录中就会生成一条新记录，因此用户通过单击“后退”按钮都会导航到前一个页面。要禁用这种行为，可以使用<code class="calibre15">replace()</code>方法。这个方法只接受一个参数，即要导航到的URL；结果虽然会导致浏览器位置改变，但不会在历史记录中生成新记录。在调用<code class="calibre15">replace()</code>方法之后，用户不能回到前一个页面，来看下面的例子：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;You won't be able to get back here&lt;/title&gt;
+&lt;/head&gt;
+    &lt;body&gt;
+    &lt;p&gt;Enjoy this page for a second, because you won't be coming back here.&lt;/p&gt;
+    &lt;script type="text/javascript"&gt;
+        setTimeout(function () {
+            location.replace("http://www.wrox.com/");
+        }, 1000);
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">LocationReplaceExample01.htm</i></p>
+
+  <p class="calibre2">如果将这个页面加载到浏览器中，浏览器就会在1秒钟后重新定向到<a class="calibre6" href="http://www.wrox.com">www.wrox.com</a>。然后，“后退”按钮将处于禁用状态，如果不重新输入完整的URL，则无法返回示例页面。</p>
+
+  <p class="calibre2">与位置有关的最后一个方法是<code class="calibre15">reload()</code>，作用是重新加载当前显示的页面。如果调用<code class="calibre15">reload()</code>时不传递任何参数，页面就会以最有效的方式重新加载。也就是说，如果页面自上次请求以来并没有改变过，页面就会从浏览器缓存中重新加载。如果要强制从服务器重新加载，则需要像下面这样为该方法传递参数<code class="calibre15">true</code>。</p>
+  <pre class="calibre18"><code class="calibre15">location.reload();        //重新加载（有可能从缓存中加载）
+location.reload(true);    //重新加载（从服务器重新加载）
+</code></pre>
+
+  <p class="calibre2">位于<code class="calibre15">reload()</code>调用之后的代码可能会也可能不会执行，这要取决于网络延迟或系统资源等因素。为此，最好将<code class="calibre15">reload()</code>放在代码的最后一行。</p>
+</body>
+</html>

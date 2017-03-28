@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_233"><strong class="calibre10">A.4.2　代理函数</strong></h2>
+
+  <p class="calibre2">除了创建代理对象之外，Harmony还支持创建<strong class="calibre3">代理函数</strong>（proxy function）。代理函数与代理对象的区别是它可以执行。要创建代理函数，可以调用<code class="calibre15">Proxy.createFunction()</code>方法，传入一个<code class="calibre15">handler</code>（处理程序）对象、一个调用捕捉器函数和一个可选的构造函数捕捉器函数。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var proxy = Proxy.createFunction(handler, function(){}, function(){});
+</code></pre>
+
+  <p class="calibre2">与代理对象一样，<code class="calibre15">handler</code>对象也有同样多的捕捉器。调用捕捉器函数是在代理函数执行（如<code class="calibre15">proxy()</code>）时运行的代码。构造函数捕捉器是在用<code class="calibre15">new</code>操作符调用代理函数（如<code class="calibre15">new proxy()</code>）时运行的代码。如果没有指定构造函数捕捉器，则使用调用捕捉器作为构造函数。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_310"><strong class="calibre10">A.4.3　映射与集合</strong></h3>
+
+  <p class="calibre2"><code class="calibre15">Map</code>类型，也称为<strong class="calibre3">简单映射</strong>，只有一个目的：保存一组键值对儿。开发人员通常都使用普通对象来保存键值对儿，但问题是那样做会导致键容易与原生属性混淆。简单映射能做到键和值与对象属性分离，从而保证对象属性的安全存储。以下是使用简单映射的几个例子。</p>
+  <pre class="calibre18"><code class="calibre15">var map = new Map();
+
+map.set("name", "Nicholas");
+map.set("book", "Professional JavaScript");
+
+console.log(map.has("name")); //true
+console.log(map.get("name")); //"Nicholas"
+
+map.delete("name");
+</code></pre>
+
+  <p class="calibre2">简单映射的基本API包括<code class="calibre15">get()</code>、<code class="calibre15">set()</code>和<code class="calibre15">delete()</code>，每个方法的作用看名字就知道了。键可以是原始值，也可是引用值。</p>
+
+  <p class="calibre2">与简单映射相关的是<code class="calibre15">Set</code>类型。集合就是一组不重复的元素。与简单映射不同的是，集合中只有键，没有与键关联的值。在集合中，添加元素要使用<code class="calibre15">add()</code>方法，检查元素是否存在要使用<code class="calibre15">has()</code>方法，而删除元素要使用<code class="calibre15">delete()</code>方法。以下是基本的使用示例。</p>
+  <pre class="calibre18"><code class="calibre15">var set = new Set();
+set.add("name");
+
+console.log(set.has("name")); //true
+set.delete("name");
+
+console.log(set.has("name")); //false
+</code></pre>
+
+  <p class="calibre2">截止到2011年10月，规范中关于<code class="calibre15">Map</code>和<code class="calibre15">Set</code>的内容还没有最后定稿。因此，在JavaScript引擎实现该规范时，有些细节可能会发生变化。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_311"><strong class="calibre10">A.4.4　<code class="calibre30">WeakMap</code></strong></h3>
+
+  <p class="calibre2"><code class="calibre15">WeakMap</code>是ECMAScript中唯一一个能让你知道什么时候对象已经完全解除引用的类型。<code class="calibre15">WeakMap</code>与简单映射很相似，也是用来保存键值对儿的。它们的主要区别在于，<code class="calibre15">WeakMap</code>的键必须是对象，而在对象已经不存在时，相关的键值对儿就会从<code class="calibre15">WeakMap</code>中被删除。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var key = {},
+    map = new WeakMap();
+
+map.set(key, "Hello!");
+
+//解除对键的引用，从而删除该值
+key = null;
+</code></pre>
+
+  <p class="calibre2">至于什么情况下适合使用<code class="calibre15">WeakMap</code>，目前还不清楚。不过，Java中倒是有一个相同的数据结构叫<code class="calibre15">WeakHashMap</code>；于是，JavaScript又多了一种数据类型。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_312"><strong class="calibre10">A.4.5　<code class="calibre30">StructType</code></strong></h3>
+
+  <p class="calibre2">JavaScript一个最大的不足是使用一种数据类型表示所有数值。WebGL为解决这个问题引入了类型化数组，而ECMAScript 6则引入了类型化结构，为这门语言带来了更多的数值数据类型。结构类型（<code class="calibre15">StructType</code>）与C语言中的结构类似；在C语言中，可以把多个属性组合成一条记录。对于JavaScript的结构类型，通过指定属性及其保存的数据类型，也可以创建类似的数据结构。早期的实现定义了以下几种块类型。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">uint8</code>：无符号8位整数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">int8</code>：有符号8位整数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">uint16</code>：无符号16位整数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">int16</code>：有符号16位整数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">uint32</code>：无符号32位整数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">int32</code>：有符号32位整数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">float32</code>：32位浮点数。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">float64</code>：64位浮点数。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">这些块类型都只能包含一个值。将来还有望在这8种类型基础上进一步扩展。</p>
+
+  <p class="calibre2">要创建结构类型的对象，可以使用<code class="calibre15">new</code>操作符调用<code class="calibre15">StructType</code>，传入对象字面量形式的属性定义。</p>
+  <pre class="calibre18"><code class="calibre15">var Size = new StructType({ width: uint32, height: uint32 });
+</code></pre>
+
+  <p class="calibre2">以上代码创建了一个名为<code class="calibre15">Size</code>的新结构类型，该类型带有两个属性：<code class="calibre15">width</code>和<code class="calibre15">height</code>。这两个属性都应该保存无符号32位整数。而变量<code class="calibre15">Size</code>实际上是一个构造函数，可以像使用对象的构造函数一样使用它。要实例化这个结构类型，需要向构造函数中传入一个带属性值的对象字面量。</p>
+  <pre class="calibre18"><code class="calibre15">var boxSize = new Size({ width: 80, height: 60 });
+console.log(boxSize.width);  //80
+console.log(boxSize.height); //60
+</code></pre>
+
+  <p class="calibre2">这样，就创建了<code class="calibre15">Size</code>的一个宽为80、高为60的实例。实例的属性可以被读写，但始终都必须包含32位无符号整数。</p>
+
+  <p class="calibre2">将属性定义为另一个结构类型，可以得到更复杂的结构类型。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var Location = new StructType({ x: int32, y: int32 });
+var Box = new StructType({ size: Size, location: Location });
+
+var boxInfo = new Box({ size: { width:80, height:60 }, location: { x: 0, y: 0 }});
+console.log(boxInfo.size.width); //80
+</code></pre>
+
+  <p class="calibre2">这个例子创建了一个简单的结构类型<code class="calibre15">Location</code>，又创建了一个复杂的结构类型<code class="calibre15">Box</code>。<code class="calibre15">Box</code>的属性本身也是结构类型。<code class="calibre15">Box</code>构造函数仍然接收对象字面量参数，以便为每个属性定义值，但它会检查传入值的数据类型，以确保作为属性值的数据类型正确。</p>
+</body>
+</html>

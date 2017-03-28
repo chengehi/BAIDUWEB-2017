@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_157">22.2　防篡改对象</h2>
+
+  <p class="calibre2">JavaScript共享的本质一直是开发人员心头的痛。因为任何对象都可以被在同一环境中运行的代码修改。开发人员很可能会意外地修改别人的代码，甚至更糟糕地，用不兼容的功能重写原生对象。ECMAScript 5致力于解决这个问题，可以让开发人员定义<strong class="calibre3">防篡改对象</strong>（tamper-proof object）。</p>
+
+  <p class="calibre2">第6章讨论了对象属性的问题，也讨论了如何手工设置每个属性的<code class="calibre15">[[Configurable]]</code>、<code class="calibre15">[[Writable]]</code>、<code class="calibre15">[[Enumerable]]</code>、<code class="calibre15">[[Value]]</code>、<code class="calibre15">[[Get]]</code>以及<code class="calibre15">[[Set]]</code>特性，以改变属性的行为。类似地，ECMAScript 5也增加了几个方法，通过它们可以指定对象的行为。</p>
+
+  <p class="calibre2">不过请注意：一旦把对象定义为防篡改，就无法撤销了。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_269"><strong class="calibre10">22.2.1　不可扩展对象</strong></h3>
+
+  <p class="calibre2">默认情况下，所有对象都是可以扩展的。也就是说，任何时候都可以向对象中添加属性和方法。例如，可以像下面这样先定义一个对象，后来再给它添加一个属性。</p>
+  <pre class="calibre18"><code class="calibre15">var person = { name: "Nicholas" };
+person.age = 29;
+</code></pre>
+
+  <p class="calibre2">即使第一行代码已经完整定义<code class="calibre15">person</code>对象，但第二行代码仍然能给它添加属性。现在，使用<code class="calibre15">Object.preventExtensions()</code>方法可以改变这个行为，让你不能再给对象添加属性和方法。 例如：</p>
+  <pre class="calibre18">var person = { name: "Nicholas" };
+<b class="calibre3">Object.preventExtensions(person);</b>
+
+person.age = 29;
+alert(person.age); //undefined
+</pre>
+
+  <p class="calibre8"><i class="calibre7">NonExtensibleObjectsExample01.htm</i></p>
+
+  <p class="calibre2">在调用了<code class="calibre15">Object.preventExtensions()</code>方法后，就不能给<code class="calibre15">person</code>对象添加新属性和方法了。在非严格模式下，给对象添加新成员会导致静默失败，因此<code class="calibre15">person.age</code>将是<code class="calibre15">undefined</code>。而在严格模式下，尝试给不可扩展的对象添加新成员会导致抛出错误。</p>
+
+  <p class="calibre2">虽然不能给对象添加新成员，但已有的成员则丝毫不受影响。你仍然还可以修改和删除已有的成员。另外，使用<code class="calibre15">Object.istExtensible()</code>方法还可以确定对象是否可以扩展。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var person = { name: "Nicholas" };
+<b class="calibre3">alert(Object.isExtensible(person));     //true</b>
+
+Object.preventExtensions(person);
+<b class="calibre3">alert(Object.isExtensible(person));     //false</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">NonExtensibleObjectsExample02.htm</i></p>
+
+  <h3 class="calibre22" id="sigil_toc_id_270"><strong class="calibre10">22.2.2　密封的对象</strong></h3>
+
+  <p class="calibre2">ECMAScript 5为对象定义的第二个保护级别是<strong class="calibre3">密封对象</strong>（sealed object）。密封对象不可扩展，而且已有成员的<code class="calibre15">[[Configurable]]</code>特性将被设置为<code class="calibre15">false</code>。这就意味着不能删除属性和方法，因为不能使用<code class="calibre15">Object.defineProperty()</code>把数据属性修改为访问器属性，或者相反。属性值是可以修改的。</p>
+
+  <p class="calibre2">要密封对象，可以使用<code class="calibre15">Object.seal()</code>方法。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var person = { name: "Nicholas" };
+<b class="calibre3">Object.seal(person);</b>
+
+person.age = 29;
+alert(person.age);    //undefined
+
+delete person.name;
+alert(person.name);   //"Nicholas"
+</pre>
+
+  <p class="calibre8"><i class="calibre7">SealedObjectsExample01.htm</i></p>
+
+  <p class="calibre2">在这个例子中，添加<code class="calibre15">age</code>属性的行为被忽略了。而尝试删除<code class="calibre15">name</code>属性的操作也被忽略了，因此这个属性没有受任何影响。这是在非严格模式下的行为。在严格模式下，尝试添加或删除对象成员都会导致抛出错误。</p>
+
+  <p class="calibre2">使用<code class="calibre15">Object.isSealed()</code>方法可以确定对象是否被密封了。因为被密封的对象不可扩展，所以用<code class="calibre15">Object.isExtensible()</code>检测密封的对象也会返回<code class="calibre15">false</code>。</p>
+  <pre class="calibre18">var person = { name: "Nicholas" };
+<b class="calibre3">alert(Object.isExtensible(person)); //true</b>
+<b class="calibre3">alert(Object.isSealed(person));     //false</b>
+
+Object.seal(person);
+<b class="calibre3">alert(Object.isExtensible(person)); //false</b>
+<b class="calibre3">alert(Object.isSealed(person));     //true</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">SealedObjectsExample02.htm</i></p>
+
+  <h3 class="calibre22" id="sigil_toc_id_271"><strong class="calibre10">22.2.3　冻结的对象</strong></h3>
+
+  <p class="calibre2">最严格的防篡改级别是<strong class="calibre3">冻结对象</strong>（frozen object）。冻结的对象既不可扩展，又是密封的，而且对象数据属性的<code class="calibre15">[[Writable]]</code>特性会被设置为<code class="calibre15">false</code>。如果定义<code class="calibre15">[[Set]]</code>函数，访问器属性仍然是可写的。ECMAScript 5定义的<code class="calibre15">Object.freeze()</code>方法可以用来冻结对象。</p>
+  <pre class="calibre18">var person = { name: "Nicholas" };
+<b class="calibre3">Object.freeze(person);</b>
+
+person.age = 29;
+alert(person.age);    //undefined
+
+delete person.name;
+alert(person.name);   //"Nicholas"
+
+person.name = "Greg";
+alert(person.name);   //"Nicholas"
+</pre>
+
+  <p class="calibre8"><i class="calibre7">FrozenObjectsExample01.htm</i></p>
+
+  <p class="calibre2">与密封和不允许扩展一样，对冻结的对象执行非法操作在非严格模式下会被忽略，而在严格模式下会抛出错误。</p>
+
+  <p class="calibre2">当然，也有一个<code class="calibre15">Object.isFrozen()</code>方法用于检测冻结对象。因为冻结对象既是密封的又是不可扩展的，所以用<code class="calibre15">Object.isExtensible()</code>和<code class="calibre15">Object.isSealed()</code>检测冻结对象将分别返回<code class="calibre15">false</code>和<code class="calibre15">true</code>。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var person = { name: "Nicholas" };
+alert(Object.isExtensible(person));     //true
+alert(Object.isSealed(person));         //false
+alert(Object.isFrozen(person));         //false
+
+Object.freeze(person);
+alert(Object.isExtensible(person));     //false
+alert(Object.isSealed(person));         //true
+alert(Object.isFrozen(person));         //true
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FrozenObjectsExample02.htm</i></p>
+
+  <p class="calibre2">对JavaScript库的作者而言，冻结对象是很有用的。因为JavaScript库最怕有人意外（或有意）地修改了库中的核心对象。冻结（或密封）主要的库对象能够防止这些问题的发生。</p>
+</body>
+</html>

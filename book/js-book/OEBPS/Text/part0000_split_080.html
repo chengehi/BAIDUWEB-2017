@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_83">11.4　专有扩展</h2>
+
+  <p class="calibre2">虽然所有浏览器开发商都知晓坚持标准的重要性，但在发现某项功能缺失时，这些开发商都会一如既往地向DOM中添加专有扩展，以弥补功能上的不足。表面上看，这种各行其事的做法似乎不太好，但实际上专有扩展为Web开发领域提供了很多重要的功能，这些功能最终都在HTML5规范中得到了标准化。</p>
+
+  <p class="calibre2">即便如此，仍然还有大量专有的DOM扩展没有成为标准。但这并不是说它们将来不会被写进标准，而只是说在编写本书的时候，它们还是专有功能，而且只得到了少数浏览器的支持。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_127"><strong class="calibre10">11.4.1　文档模式</strong></h3>
+
+  <p class="calibre2">IE8引入了一个新的概念叫“文档模式”（document mode）。页面的文档模式决定了可以使用什么功能。换句话说，文档模式决定了你可以使用哪个级别的CSS，可以在JavaScript中使用哪些API，以及如何对待文档类型（doctype）。到了IE9，总共有以下4种文档模式。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">IE5：以混杂模式渲染页面（IE5的默认模式就是混杂模式）。IE8及更高版本中的新功能都无法使用。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">IE7：以IE7标准模式渲染页面。IE8及更高版本中的新功能都无法使用。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">IE8：以IE8标准模式渲染页面。IE8中的新功能都可以使用，因此可以使用Selectors API、更多CSS2级选择符和某些CSS3功能，还有一些HTML5的功能。不过IE9中的新功能无法使用。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">IE9：以IE9标准模式渲染页面。IE9中的新功能都可以使用，比如ECMAScript 5、完整的CSS3以及更多HTML5功能。这个文档模式是最高级的模式。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">要理解IE8及更高版本的工作原理，必须理解文档模式。</p>
+
+  <p class="calibre2">要强制浏览器以某种模式渲染页面，可以使用HTTP头部信息<code class="calibre15">X-UA-Compatible</code>，或通过等价的<code class="calibre15">&lt;meta&gt;</code>标签来设置：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;meta http-equiv="X-UA-Compatible" content="IE=IEVersion"&gt;
+</code></pre>
+
+  <p class="calibre2">注意，这里IE的版本（<code class="calibre15">IEVersion</code>）有以下一些不同的值，而且这些值并不一定与上述4种文档模式对应。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">Edge</code>：始终以最新的文档模式来渲染页面。忽略文档类型声明。对于IE8，始终保持以IE8标准模式渲染页面。对于IE9，则以IE9标准模式渲染页面。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">EmulateIE9</code>：如果有文档类型声明，则以IE9标准模式渲染页面，否则将文档模式设置为IE5。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">EmulateIE8</code>：如果有文档类型声明，则以IE8标准模式渲染页面，否则将文档模式设置为IE5。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">EmulateIE7</code>：如果有文档类型声明，则以IE7标准模式渲染页面，否则将文档模式设置为IE5。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">9</code>：强制以IE9标准模式渲染页面，忽略文档类型声明。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">8</code>：强制以IE8标准模式渲染页面，忽略文档类型声明。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">7</code>：强制以IE7标准模式渲染页面，忽略文档类型声明。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">5</code>：强制将文档模式设置为IE5，忽略文档类型声明。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">比如，要想让文档模式像在IE7中一样，可以使用下面这行代码：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"&gt;
+</code></pre>
+
+  <p class="calibre2">如果不打算考虑文档类型声明，而直接使用IE7标准模式，那么可以使用下面这行代码：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;meta http-equiv="X-UA-Compatible" content="IE=7"&gt;
+</code></pre>
+
+  <p class="calibre2">没有规定说必须在页面中设置<code class="calibre15">X-UA-Compatible</code>。默认情况下，浏览器会通过文档类型声明来确定是使用最佳的可用文档模式，还是使用混杂模式。</p>
+
+  <p class="calibre2">通过<code class="calibre15">document.documentMode</code>属性可以知道给定页面使用的是什么文档模式。这个属性是IE8中新增的，它会返回使用的文档模式的版本号（在IE9中，可能返回的版本号为<code class="calibre15">5</code>、<code class="calibre15">7</code>、<code class="calibre15">8</code>、<code class="calibre15">9</code>）：</p>
+  <pre class="calibre18"><code class="calibre15">var mode = document.documentMode;
+</code></pre>
+
+  <p class="calibre2">知道页面采用的是什么文档模式，有助于理解页面的行为方式。无论在什么文档模式下，都可以访问这个属性。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_128"><strong class="calibre10">11.4.2　<code class="calibre30">children</code>属性</strong></h3>
+
+  <p class="calibre2">由于IE9之前的版本与其他浏览器在处理文本节点中的空白符时有差异，因此就出现了<code class="calibre15">children</code>属性。这个属性是<code class="calibre15">HTMLCollection</code>的实例，只包含元素中同样还是元素的子节点。除此之外，<code class="calibre15">children</code>属性与<code class="calibre15">childNodes</code>没有什么区别，即在元素只包含元素子节点时，这两个属性的值相同。下面是访问<code class="calibre15">children</code>属性的示例代码：</p>
+  <pre class="calibre18"><code class="calibre15">var childCount = element.children.length;
+var firstChild = element.children[0];
+</code></pre>
+
+  <p class="calibre2">支持<code class="calibre15">children</code>属性的浏览器有IE5、Firefox 3.5、Safari 2（但有bug）、Safari 3（完全支持）、Opera8和Chrome（所有版本）。IE8及更早版本的<code class="calibre15">children</code>属性中也会包含注释节点，但IE9之后的版本则只返回元素节点。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_129"><strong class="calibre10">11.4.3　contains()方法</strong></h3>
+
+  <p class="calibre2">在实际开发中，经常需要知道某个节点是不是另一个节点的后代。IE为此率先引入了<code class="calibre15">contains()</code>方法，以便不通过在DOM文档树中查找即可获得这个信息。调用<code class="calibre15">contains()</code>方法的应该是祖先节点，也就是搜索开始的节点，这个方法接收一个参数，即要检测的后代节点。如果被检测的节点是后代节点，该方法返回<code class="calibre15">true</code>；否则，返回<code class="calibre15">false</code>。以下是一个例子：</p>
+  <pre class="calibre18"><code class="calibre15">alert(document.documentElement.contains(document.body));    //true
+</code></pre>
+
+  <p class="calibre2">这个例子测试了<code class="calibre15">&lt;body&gt;</code>元素是不是<code class="calibre15">&lt;html&gt;</code>元素的后代，在格式正确的HTML页面中，以上代码返回<code class="calibre15">true</code>。支持<code class="calibre15">contains()</code>方法的浏览器有IE、Firefox 9+、Safari、Opera和Chrome。</p>
+
+  <p class="calibre2">使用DOM Level 3 <code class="calibre15">compareDocumentPosition()</code>也能够确定节点间的关系。支持这个方法的浏览器有IE9+、Firefox、Safari、Opera 9.5+和Chrome。如前所述，这个方法用于确定两个节点间的关系，返回一个表示该关系的位掩码（ bitmask）。下表列出了这个位掩码的值。</p>
+
+  <table class="table">
+    <tbody class="calibre23">
+      <tr class="calibre24">
+        <th class="calibre25" width="40%">掩码</th>
+
+        <th class="calibre25" width="60%">节点关系</th>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre28">1</td>
+
+        <td class="calibre27">无关（给定的节点不在当前文档中）</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre28">2</td>
+
+        <td class="calibre27">居前（给定的节点在DOM树中位于参考节点之前）</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre28">4</td>
+
+        <td class="calibre27">居后（给定的节点在DOM树中位于参考节点之后）</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre28">8</td>
+
+        <td class="calibre27">包含（给定的节点是参考节点的祖先）</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre28">16</td>
+
+        <td class="calibre27">被包含（给定的节点是参考节点的后代）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="calibre2">为模仿<code class="calibre15">contains()</code>方法，应该关注的是掩码16。可以对<code class="calibre15">compareDocumentPosition()</code>的结果执行按位与，以确定参考节点（调用<code class="calibre15">compareDocumentPosition()</code>方法的当前节点）是否包含给定的节点（传入的节点）。来看下面的例子：</p>
+  <pre class="calibre18"><code class="calibre15">var result = document.documentElement.compareDocumentPosition(document.body);
+alert(!!(result &amp; 16));
+</code></pre>
+
+  <p class="calibre2">执行上面的代码后，结果会变成20（表示“居后”的4加上表示“被包含”的16）。对掩码16执行按位操作会返回一个非零数值，而两个逻辑非操作符会将该数值转换成布尔值。</p>
+
+  <p class="calibre2">使用一些浏览器及能力检测，就可以写出如下所示的一个通用的<code class="calibre15">contains</code>函数：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function contains(refNode, otherNode){ 
+    if (typeof refNode.contains == "function" &amp;&amp;
+            (!client.engine.webkit || client.engine.webkit &gt;= 522)){
+        return refNode.contains(otherNode);
+    } else if (typeof refNode.compareDocumentPosition == "function"){
+        return !!(refNode.compareDocumentPosition(otherNode) &amp; 16);
+    } else {
+        var node = otherNode.parentNode;
+        do {
+            if (node === refNode){
+                return true;
+            } else {
+                node = node.parentNode;
+            }
+        } while (node !== null);
+        return false;
+    }
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ContainsExample02.htm</i></p>
+
+  <p class="calibre2">这个函数组合使用了三种方式来确定一个节点是不是另一个节点的后代。函数的第一个参数是参考节点，第二个参数是要检查的节点。在函数体内，首先检测<code class="calibre15">refNode</code>中是否存在<code class="calibre15">contains()</code>方法（能力检测）。这一部分代码还检查了当前浏览器所用的WebKit版本号。如果方法存在而且不是WebKit（<code class="calibre15">!client.engine.webkit</code>），则继续执行代码。否则，如果浏览器是WebKit且至少是Safari 3（WebKit版本号为522或更高），那么也可以继续执行代码。在WebKit版本号小于522的Safari浏览器中，<code class="calibre15">contains()</code>方法不能正常使用。</p>
+
+  <p class="calibre2">接下来检查是否存在<code class="calibre15">compareDocumentPosition()</code>方法，而函数的最后一步则是自<code class="calibre15">otherNode</code>开始向上遍历DOM结构，以递归方式取得<code class="calibre15">parentNode</code>，并检查其是否与<code class="calibre15">refNode</code>相等。在文档树的顶端，<code class="calibre15">parentNode</code>的值等于<code class="calibre15">null</code>，于是循环结束。这是针对旧版本Safari设计的一个后备策略。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_130"><strong class="calibre10">11.4.4　插入文本</strong></h3>
+
+  <p class="calibre2">前面介绍过，IE原来专有的插入标记的属性<code class="calibre15">innerHTML</code>和<code class="calibre15">outerHTML</code>已经被HTML5纳入规范。但另外两个插入文本的专有属性则没有这么好的运气。这两个没有被HTML5看中的属性是<code class="calibre15">innerText</code>和<code class="calibre15">outerText</code>。</p>
+
+  <p class="calibre2">1. <strong class="calibre3"><code class="calibre15">innerText</code>属性</strong></p>
+
+  <p class="calibre2">通过<code class="calibre15">innertText</code>属性可以操作元素中包含的所有文本内容，包括子文档树中的文本。在通过<code class="calibre15">innerText</code>读取值时，它会按照由浅入深的顺序，将子文档树中的所有文本拼接起来。在通过<code class="calibre15">innerText</code>写入值时，结果会删除元素的所有子节点，插入包含相应文本值的文本节点。来看下面这个HTML代码示例。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">&lt;div id="content"&gt;
+    &lt;p&gt;This is a &lt;strong&gt;paragraph&lt;/strong&gt; with a list following it.&lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Item 1&lt;/li&gt;
+        &lt;li&gt;Item 2&lt;/li&gt;
+        &lt;li&gt;Item 3&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">InnerTextExample01.htm</i></p>
+
+  <p class="calibre2">对于这个例子中的<code class="calibre15">&lt;div&gt;</code>元素而言，其<code class="calibre15">innerText</code>属性会返回下列字符串：</p>
+  <pre class="calibre18"><code class="calibre15">This is a paragraph with a list following it.
+Item 1
+Item 2
+Item 3
+</code></pre>
+
+  <p class="calibre2">由于不同浏览器处理空白符的方式不同，因此输出的文本可能会也可能不会包含原始HTML代码中的缩进。</p>
+
+  <p class="calibre2">使用<code class="calibre15">innerText</code>属性设置这个<code class="calibre15">&lt;div&gt;</code>元素的内容，则只需一行代码：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">div.innerText = "Hello world!";
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">InnerTextExample02.htm</i></p>
+
+  <p class="calibre2">执行这行代码后，页面的HTML代码就会变成如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;div id="content"&gt;Hello world!&lt;/div&gt;
+</code></pre>
+
+  <p class="calibre2">设置<code class="calibre15">innerText</code>属性移除了先前存在的所有子节点，完全改变了DOM子树。此外，设置<code class="calibre15">innerText</code>属性的同时，也对文本中存在的HTML语法字符（小于号、大于号、引号及和号）进行了编码。再看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">div.innerText = "Hello &amp; welcome, &lt;b&gt;\"reader\"!&lt;/b&gt;";
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">InnerTextExample03.htm</i></p>
+
+  <p class="calibre2">运行以上代码之后，会得到如下所示的结果。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;div id="content"&gt;Hello &amp;amp; welcome, &amp;lt;b&amp;gt;&amp;quot;reader&amp;quot;!&amp;lt;/b&amp;gt;&lt;/div&gt;
+</code></pre>
+
+  <p class="calibre2">设置<code class="calibre15">innerText</code>永远只会生成当前节点的一个子文本节点，而为了确保只生成一个子文本节点，就必须要对文本进行HTML编码。利用这一点，可以通过<code class="calibre15">innerText</code>属性过滤掉HTML标签。方法是将<code class="calibre15">innerText</code>设置为等于<code class="calibre15">innerText</code>，这样就可以去掉所有HTML标签，比如：</p>
+  <pre class="calibre18"><code class="calibre15">div.innerText = div.innerText;
+</code></pre>
+
+  <p class="calibre2">执行这行代码后，就用原来的文本内容替换了容器元素中的所有内容（包括子节点，因而也就去掉了HTML标签）。</p>
+
+  <p class="calibre2">支持<code class="calibre15">innerText</code>属性的浏览器包括IE4+、Safari 3+、Opera 8+和Chrome。Firefox虽然不支持innerText，但支持作用类似的<code class="calibre15">textContent</code>属性。<code class="calibre15">textContent</code>是DOM Level 3规定的一个属性，其他支持<code class="calibre15">textContent</code>属性的浏览器还有IE9+、Safari 3+、Opera 10+和Chrome。为了确保跨浏览器兼容，有必要编写一个类似于下面的函数来检测可以使用哪个属性。</p>
+  <pre class="calibre18"><code class="calibre15">function getInnerText(element){
+    return (typeof element.textContent == "string") ?
+        element.textContent : element.innerText;
+}
+
+function setInnerText(element, text){
+    if (typeof element.textContent == "string"){
+        element.textContent = text;
+    } else {
+        element.innerText = text;
+    }
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">InnerTextExample05.htm</i></p>
+
+  <p class="calibre2">这两个函数都接收一个元素作为参数，然后检查这个元素是不是有<code class="calibre15">textContent</code>属性。如果有，那么<code class="calibre15">typeof element.textContent</code>应该是<code class="calibre15">"string"</code>；如果没有，那么这两个函数就会改为使用<code class="calibre15">innerText</code>。可以像下面这样调用这两个函数。</p>
+  <pre class="calibre18"><code class="calibre15">setInnerText(div, "Hello world!");
+alert(getInnerText(div));    //"Hello world!"
+</code></pre>
+
+  <p class="calibre2">使用这两个函数可以确保在不同的浏览器中使用正确的属性。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 实际上，<code class="calibre15">innerText</code>与<code class="calibre15">textContent</code>返回的内容并不完全一样。比如，<code class="calibre15">innerText</code>会忽略行内的样式和脚本，而<code class="calibre15">textContent</code>则会像返回其他文本一样返回行内的样式和脚本代码。避免跨浏览器兼容问题的最佳途径，就是从不包含行内样式或行内脚本的DOM子树副本或DOM片段中读取文本。</p>
+  </blockquote>
+
+  <p class="calibre2">2. <strong class="calibre3"><code class="calibre15">outerText</code>属性</strong></p>
+
+  <p class="calibre2">除了作用范围扩大到了包含调用它的节点之外，<code class="calibre15">outerText</code>与<code class="calibre15">innerText</code>基本上没有多大区别。在读取文本值时，<code class="calibre15">outerText</code>与<code class="calibre15">innerText</code>的结果完全一样。但在写模式下，<code class="calibre15">outerText</code>就完全不同了：<code class="calibre15">outerText</code>不只是替换调用它的元素的子节点，而是会替换整个元素（包括子节点）。比如：</p>
+  <pre class="calibre18"><code class="calibre15">div.outerText = "Hello world!";
+</code></pre>
+
+  <p class="calibre2">这行代码实际上相当于如下两行代码：</p>
+  <pre class="calibre18"><code class="calibre15">var text = document.createTextNode("Hello world!");
+div.parentNode.replaceChild(text, div);
+</code></pre>
+
+  <p class="calibre2">本质上，新的文本节点会完全取代调用<code class="calibre15">outerText</code>的元素。此后，该元素就从文档中被删除，无法访问。</p>
+
+  <p class="calibre2">支持<code class="calibre15">outerText</code>属性的浏览器有IE4+、Safari 3+、Opera 8+和Chrome。由于这个属性会导致调用它的元素不存在，因此并不常用。我们也建议读者尽可能不要使用这个属性。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_131"><strong class="calibre10">11.4.5　滚动</strong></h3>
+
+  <p class="calibre2">如前所述，HTML5之前的规范并没有就与页面滚动相关的API做出任何规定。但HTML5在将<code class="calibre15">scrollIntoView()</code>纳入规范之后，仍然还有其他几个专有方法可以在不同的浏览器中使用。下面列出的几个方法都是对<code class="calibre15">HTMLElement</code>类型的扩展，因此在所有元素中都可以调用。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">scrollIntoViewIfNeeded(<em class="calibre7">alignCenter</em>)</code>：只在当前元素在视口中不可见的情况下，才滚动浏览器窗口或容器元素，最终让它可见。如果当前元素在视口中可见，这个方法什么也不做。如果将可选的<code class="calibre15"><em class="calibre7">alignCenter</em></code>参数设置为<code class="calibre15">true</code>，则表示尽量将元素显示在视口中部（垂直方向）。Safari和Chrome实现了这个方法。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">scrollByLines(<em class="calibre7">lineCount</em>)</code>：将元素的内容滚动指定的行高，<code class="calibre15"><em class="calibre7">lineCount</em></code>值可以是正值，也可以是负值。Safari和Chrome实现了这个方法。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">scrollByPages(<em class="calibre7">pageCount</em>)</code>：将元素的内容滚动指定的页面高度，具体高度由元素的高度决定。Safari和Chrome实现了这个方法。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">希望大家要注意的是，<code class="calibre15">scrollIntoView()</code>和<code class="calibre15">scrollIntoViewIfNeeded()</code>的作用对象是元素的容器，而<code class="calibre15">scrollByLines()</code>和<code class="calibre15">scrollByPages()</code>影响的则是元素自身。下面还是来看几个示例吧。</p>
+  <pre class="calibre18"><code class="calibre15">//将页面主体滚动5行
+document.body.scrollByLines(5);
+
+//在当前元素不可见的时候，让它进入浏览器的视口
+document.images[0].scrollIntoViewIfNeeded();
+
+//将页面主体往回滚动1页
+document.body.scrollByPages(-1);
+</code></pre>
+
+  <p class="calibre2">由于<code class="calibre15">scrollIntoView()</code>是唯一一个所有浏览器都支持的方法，因此还是这个方法最常用。</p>
+</body>
+</html>

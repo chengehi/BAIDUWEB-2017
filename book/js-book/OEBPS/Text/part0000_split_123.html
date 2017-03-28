@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_135">18.3　浏览器对XSLT的支持</h2>
+
+  <p class="calibre2">XSLT是与XML相关的一种技术，它利用XPath将文档从一种表现形式转换成另一种表现形式。与XML和XPath不同，XSLT没有正式的API，在正式的DOM规范中也没有它的位置。结果，只能依靠浏览器开发商以自己的方式来实现它。IE是第一个支持通过JavaScript处理XSLT的浏览器。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_225"><strong class="calibre10">18.3.1　IE中的XSLT</strong></h3>
+
+  <p class="calibre2">与IE对其他XML功能的支持一样，它对XSLT的支持也是通过ActiveX对象实现的。从MSXML 3.0（即IE6.0）时代起，IE就支持通过JavaScript实现完整的XSLT 1.0操作。IE9中通过<code class="calibre15">DOMParser</code>创建的DOM文档不能使用XSLT。</p>
+
+  <p class="calibre2">1. <strong class="calibre3">简单的XSLT转换</strong></p>
+
+  <p class="calibre2">使用XSLT样式表转换XML文档的最简单方式，就是将它们分别加到一个DOM文档中，然后再使用<code class="calibre15">transformNode()</code>方法。这个方法存在于文档的所有节点中，它接受一个参数，即包含XSLT样式表的文档。调用<code class="calibre15">transformNode()</code>方法会返回一个包含转换信息的字符串。来看一个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">//加载XML和XSLT（仅限于IE）
+xmldom.load("employees.xml");
+xsltdom.load("employees.xslt");
+
+//转换
+var result = xmldom.transformNode(xsltdom);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEXsltExample01.htm</i></p>
+
+  <p class="calibre2">这个例子加载了一个XML的DOM文档和一个XSLT样式表的DOM文档。然后，在XML文档节点上调用了<code class="calibre15">transformNode()</code>方法，并传入XSLT。变量<code class="calibre15">result</code>中最后就会保存一个转换之后得到的字符串。需要注意的是，由于是在文档节点级别上调用的<code class="calibre15">transformNode()</code>，因此转换是从文档节点开始的。实际上，XSLT转换可以在文档的任何级别上进行，只要在想要开始转换的节点上调用<code class="calibre15">transformNode()</code>方法即可。下面我们来看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">result = xmldom.documentElement.transformNode(xsltdom);
+result = xmldom.documentElement.childNodes[1].transformNode(xsltdom);
+result = xmldom.getElementsByTagName("name")[0].transformNode(xsltdom);
+result = xmldom.documentElement.firstChild.lastChild.transformNode(xsltdom);
+</code></pre>
+
+  <p class="calibre2">如果不是在文档元素上调用<code class="calibre15">transformNode()</code>，那么转换就会从调用节点上面开始。不过，XSLT样式表则始终都可以针对调用节点所在的整个XML文档，而无需更换。</p>
+
+  <p class="calibre2">2. <strong class="calibre3">复杂的XSLT转换</strong></p>
+
+  <p class="calibre2">虽然<code class="calibre15">transformNode()</code>方法提供了基本的XSLT转换能力，但还有使用这种语言的更复杂的方式。为此，必须要使用XSL模板和XSL处理器。第一步是要把XSLT样式表加载到一个线程安全的XML文档中。而这可以通过使用ActiveX对象<code class="calibre15">MSXML2.FreeThreadedDOMDocument</code>来做到。这个ActiveX对象与IE中常规的DOM支持相同的接口。此外，创建这个对象时应该尽可能使用最新的版本。例如：</p>
+  <pre class="calibre18"><code class="calibre15">function createThreadSafeDocument(){
+    if (typeof arguments.callee.activeXString != "string"){
+        var versions = ["MSXML2.FreeThreadedDOMDocument.6.0", 
+                        "MSXML2.FreeThreadedDOMDocument.3.0",
+                        "MSXML2.FreeThreadedDOMDocument"],
+        i, len;
+
+        for (i=0,len=versions.length; i &lt; len; i++){
+            try {
+                new ActiveXObject(versions[i]);
+                arguments.callee.activeXString = versions[i];
+                break;
+            } catch (ex){
+                //跳过
+            }
+        }
+    }
+
+    return new ActiveXObject(arguments.callee.activeXString);
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEXsltExample02.htm</i></p>
+
+  <p class="calibre2">除了签名不同之外，线程安全的XML DOM文档与常规XML DOM文档的使用仍然是一样的，如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">var xsltdom = createThreadSafeDocument();
+xsltdom.async = false;
+xsltdom.load("employees.xslt");
+</code></pre>
+
+  <p class="calibre2">在创建并加载了自由线程的DOM文档之后，必须将它指定给一个XSL模板，这也是一个ActiveX对象。而这个模板是用来创建XSL处理器对象的，后者则是用来转换XML文档的。同样，也需要使用最新版本来创建这个对象，如下所示：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function createXSLTemplate(){
+    if (typeof arguments.callee.activeXString != "string"){
+        var versions = ["MSXML2.XSLTemplate.6.0", 
+                        "MSXML2.XSLTemplate.3.0",
+                        "MSXML2.XSLTemplate"],
+            i, len;
+
+        for (i=0,len=versions.length; i &lt; len; i++){
+            try {
+                new ActiveXObject(versions[i]);
+                arguments.callee.activeXString = versions[i];
+                break;
+            } catch (ex){
+                //跳过
+            }
+        }
+    }
+
+    return new ActiveXObject(arguments.callee.activeXString);
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEXsltExample02.htm</i></p>
+
+  <p class="calibre2">使用这个<code class="calibre15">createXSLTemplate()</code>函数可以创建这个对象最新版本的实例，用法如下：</p>
+  <pre class="calibre18"><code class="calibre15">var template = createXSLTemplate();
+template.stylesheet = xsltdom;
+
+var processor = template.createProcessor();
+processor.input = xmldom;
+processor.transform();
+
+var result = processor.output;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEXsltExample02.htm</i></p>
+
+  <p class="calibre2">在创建了XSL处理器之后，必须将要转换的节点指定给<code class="calibre15">input</code>属性。这个值可以是一个文档，也可以是文档中的任何节点。然后，调用<code class="calibre15">transform()</code>方法即可执行转换并将结果作为字符串保存在<code class="calibre15">output</code>属性中。这些代码实现了与<code class="calibre15">transformNode()</code>相同的功能。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> XSL模板对象的3.0和6.0版本存在显著的差别。在3.0版本中，必须给<strong class="calibre3"><code class="calibre15">input</code></strong>属性指定一个完整的文档；如果指定的是节点，就会导致错误。而在6.0版本中，则可以为<code class="calibre15">input</code>属性指定文档中的任何节点。</p>
+  </blockquote>
+
+  <p class="calibre2">使用XSL处理器可以对转换进行更多的控制，同时也支持更高级的XSLT特性。例如，XSLT样式表可以接受传入的参数，并将其用作局部变量。以下面的样式表为例：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">&lt;?xml version="1.0"?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+
+    &lt;xsl:output method="html"/&gt;
+
+    &lt;xsl:param name="message"/&gt;
+
+    &lt;xsl:template match="/"&gt;
+        &lt;ul&gt;
+            &lt;xsl:apply-templates select="*"/&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;Message: &lt;xsl:value-of select="$message"/&gt;&lt;/p&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="employee"&gt;
+        &lt;li&gt;&lt;xsl:value-of select="name"/&gt;,
+            &lt;em&gt;&lt;xsl:value-of select="@title"/&gt;&lt;/em&gt;&lt;/li&gt;
+    &lt;/xsl:template&gt;
+
+&lt;/xsl:stylesheet&gt;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">employees.xslt</i></p>
+
+  <p class="calibre2">这个样式表定义了一个名为<code class="calibre15">message</code>的参数，然后将该参数输出到转换结果中。要设置<code class="calibre15">message</code>的值，可以在调用<code class="calibre15">transform()</code>之前使用<code class="calibre15">addParameter()</code>方法。<code class="calibre15">addParameter()</code>方法接收两个参数：要设置的参数名称（与在<code class="calibre15">&lt;xsl:param&gt;</code>的<code class="calibre15">name</code>特性中指定的一样）和要指定的值（多数情况下是字符串，但也可以是数值或布尔值）。下面就是这样一个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">processor.input = xmldom.documentElement;
+processor.addParameter("message", "Hello World!");
+processor.transform();
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEXsltExample03.htm</i></p>
+
+  <p class="calibre2">通过设置参数的值，这个值就可以在输出中反映出来。</p>
+
+  <p class="calibre2">XSL处理器的另一个高级特性，就是能够设置一种操作模式。在XSLT中，可以使用<code class="calibre15">mode</code>特性为模板定义一种模式。在定义了模式后，如果没有将<code class="calibre15">&lt;xsl:apply-templates&gt;</code>与匹配的<code class="calibre15">mode</code>特性一起使用，就不会运行该模板。下面来看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+
+    &lt;xsl:output method="html"/&gt;
+
+    &lt;xsl:param name="message"/&gt;
+
+    &lt;xsl:template match="/"&gt;
+        &lt;ul&gt;
+            &lt;xsl:apply-templates select="*"/&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;Message: &lt;xsl:value-of select="$message"/&gt;&lt;/p&gt;
+    &lt;/xsl:template&gt;
+    &lt;xsl:template match="employee"&gt;
+        &lt;li&gt;&lt;xsl:value-of select="name"/&gt;,
+            &lt;em&gt;&lt;xsl:value-of select="@title"/&gt;&lt;/em&gt;&lt;/li&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="employee" mode="title-first"&gt;
+        &lt;li&gt;&lt;em&gt;&lt;xsl:value-of select="@title"/&gt;&lt;/em&gt;,
+            &lt;xsl:value-of select="name"/&gt;&lt;/li&gt;
+    &lt;/xsl:template&gt;
+
+&lt;/xsl:stylesheet&gt;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">employees3.xslt</i></p>
+
+  <p class="calibre2">这个样式表定义了一个模板，并将其<code class="calibre15">mode</code>特性设置为<code class="calibre15">"title-first"</code>（即“先显示职位”）。在这个模板中，首先会输出员工的职位，其次才输出员工的名字。为了使用这个模板，必须也要将<code class="calibre15">&lt;xsl:apply-templates&gt;</code>元素的模式设置为<code class="calibre15">"title-first"</code>。在使用这个样式表时，默认情况下其输出结果与前面一样，先显示员工的名字，再显示员工的职位。但是，如果在使用这个样式表时，使用JavaScript将模式设置为<code class="calibre15">"title-first"</code>，那么结果就会先输出员工的职位。在JavaScript中使用<code class="calibre15">setStartMode()</code>方法设置模式的例子如下。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">processor.input = xmldom;
+processor.addParameter("message", "Hello World!");
+processor.setStartMode("title-first");
+processor.transform();
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEXsltExample05.htm</i></p>
+
+  <p class="calibre2"><code class="calibre15">setStartMode()</code>方法只接受一个参数，即要为处理器设置的模式。与<code class="calibre15">addParameter()</code>一样，设置模式也必须在调用<code class="calibre15">transform()</code>之前进行。</p>
+
+  <p class="calibre2">如果你打算使用同一个样式表进行多次转换，可以在每次转换之后重置处理器。调用<code class="calibre15">reset()</code>方法后，就会清除原先的输入和输出属性、启动模式及其他指定的参数。调用<code class="calibre15">reset()</code>方法的例子如下：</p>
+  <pre class="calibre18"><code class="calibre15">processor.reset();     //准备下一次转换
+</code></pre>
+
+  <p class="calibre2">因为处理器已经编译了XSLT样式表，所以与使用<code class="calibre15">transformNode()</code>相比，这样进行重复转换的速度会更快一些。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> MSXML只支持XSLT 1.0。由于微软的战略重点转移到了.NET Framework，因而MSXML的开发被停止了。我们希望在不久的将来，能够通过JavaScript访问XML和XSLT .NET对象。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_226"><strong class="calibre10">18.3.2　<code class="calibre30">XSLTProcessor</code>类型</strong></h3>
+
+  <p class="calibre2">Mozilla通过在Firefox中创建新的类型，实现了JavaScript对XSLT的支持。开发人员可以通过<code class="calibre15">XSLTProcessor</code>类型使用XSLT转换XML文档，其方式与在IE中使用XSL处理器类似。因为这个类型是率先出现的，所以Chrome、Safari和Opera都借鉴了相同的实现，最终使<code class="calibre15">XSLTProcessor</code>成为了通过JavaScript进行XSLT转换的事实标准。</p>
+
+  <p class="calibre2">与IE的实现类似，第一步也是加载两个DOM文档，一个基于XML，另一个基于XSLT。然后，创建一个新<code class="calibre15">XSLTProcessor</code>对象，并使用<code class="calibre15">importStylesheet()</code>方法为其指定一个XSLT，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">var processor = new XSLTProcessor()
+processor.importStylesheet(xsltdom);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">XsltProcessorExample01.htm</i></p>
+
+  <p class="calibre2">最后一步就是执行转换。这一步有两种不同的方式，如果想返回一个完整的DOM文档，可以调用<code class="calibre15">transformToDocument()</code>。而通过调用<code class="calibre15">transformToFragment()</code>则可以得到一个文档片段对象。一般来说，使用<code class="calibre15">transformToFragment()</code>的唯一理由，就是你还想把返回的结果添加到另一个DOM文档中。</p>
+
+  <p class="calibre2">在使用<code class="calibre15">transformToDocument()</code>时，只要传入XML DOM，就可以将结果作为一个完全不同的DOM文档来使用。来看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var result = processor.transformToDocument(xmldom);
+alert(serializeXml(result));
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">XsltProcessorExample01.htm</i></p>
+
+  <p class="calibre2">而<code class="calibre15">transformToFragment()</code>方法接收两个参数：要转换的XML DOM和应该拥有结果片段的文档。换句话说，如果你想将返回的片段插入到页面中，只要将<code class="calibre15">document</code>作为第二个参数即可。下面来看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">var fragment = processor.transformToDocument(xmldom, document);
+var div = document.getElementById("divResult");
+div.appendChild(fragment);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">XsltProcessorExample02.htm</i></p>
+
+  <p class="calibre2">这里，处理器创建了一个由<code class="calibre15">document</code>对象拥有的片段。这样，就可以将返回的片段添加到页面中已有的<code class="calibre15">&lt;div&gt;</code>元素中了。</p>
+
+  <p class="calibre2">在XSLT样式表的输出格式为<code class="calibre15">"xml"</code>或<code class="calibre15">"html"</code>的情况下，创建文档或文档片段会非常有用。不过，在输出格式为<code class="calibre15">"text"</code>时，我们通常只希望得到转换的文本结果。可惜的是，没有方法能够直接返回文本。当输出格式为<code class="calibre15">"text"</code>时调用<code class="calibre15">transformToDocument()</code>，仍然会返回一个完整的XML文档，但这个文档的内容在不同浏览器中却不一样。例如，Safari会返回一个完整的HTML文档，而Opera和Firefox则会返回一个只包含一个元素的文档，这个元素中包含着输出的文本。</p>
+
+  <p class="calibre2">使用<code class="calibre15">transformToFragment()</code>方法可以解决这个问题，这个方法返回的是只包含一个子节点的文档片段，而子节点中包含着结果文本。然后，使用下列代码就可以取得其中的文本。</p>
+  <pre class="calibre18"><code class="calibre15">var fragment = processor.transformToFragment(xmldom, document);
+var text = fragment.firstChild.nodeValue;
+alert(text);
+</code></pre>
+
+  <p class="calibre2">以上代码能够在支持的浏览器中一致地运行，而且能够恰好返回转换得到的输出文本。</p>
+
+  <p class="calibre2">1. <strong class="calibre3">使用参数</strong></p>
+
+  <p class="calibre2"><code class="calibre15">XSLTProcessor</code>也支持使用<code class="calibre15">setParameter()</code>来设置XSLT的参数，这个方法接收三个参数：命名空间URI、参数的内部名称和要设置的值。通常，命名空间URI都是<code class="calibre15">null</code>，而内部名称就是参数的名称。另外，必须在调用<code class="calibre15">transformToDocument()</code>或<code class="calibre15">transformToFragment()</code>之前调用这个方法。下面来看例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var processor = new XSLTProcessor()
+processor.importStylesheet(xsltdom);
+processor.setParameter(null, "message", "Hello World! ");
+var result = processor.transformToDocument(xmldom);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">XsltProcessorExample03.htm</i></p>
+
+  <p class="calibre2">还有两个与参数有关的方法，<code class="calibre15">getParameter()</code>和<code class="calibre15">removeParameter()</code>，分别用于取得和移除当前参数的值。这两个方法都要接受命名空间参数（同样，通常是<code class="calibre15">null</code>）和参数的内部名称。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var processor = new XSLTProcessor()
+processor.importStylesheet(xsltdom);
+processor.setParameter(null, "message", "Hello World! ");
+
+alert(processor.getParameter(null, "message"));     //输出"Hello World!"
+processor.removeParameter(null, "message");
+
+var result = processor.transformToDocument(xmldom);
+</code></pre>
+
+  <p class="calibre2">这两个方法并不常用，提供它们只是为了方便起见。</p>
+
+  <p class="calibre2">2. <strong class="calibre3">重置处理器</strong></p>
+
+  <p class="calibre2">每个<code class="calibre15">XSLTProcessor</code>的实例都可以重用，以便使用不同的XSLT样式表执行不同的转换。重置处理器时要调用<code class="calibre15">reset()</code>方法，这个方法会从处理器中移除所有参数和样式表。然后，你就可以再次调用<code class="calibre15">importStylesheet()</code>，以加载不同的XSLT样式表，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">var processor = new XSLTProcessor()
+processor.importStylesheet(xsltdom);
+
+//执行转换
+
+processor.reset();
+processor.importStylesheet(xsltdom2);
+
+//再执行转换
+</code></pre>
+
+  <p class="calibre2">在需要基于多个样式表进行转换时，重用一个XSLTProcessor可以节省内存。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_227"><strong class="calibre10">18.3.3　跨浏览器使用XSLT</strong></h3>
+
+  <p class="calibre2">IE对XSLT转换的支持与<code class="calibre15">XSLTProcessor</code>的区别实在太大，因此要想重新实现二者所有这方面的功能并不现实。因此，跨浏览器兼容性最好的XSLT转换技术，只能是返回结果字符串。为此在 IE中只需在上下文节点上调用<code class="calibre15">transformNode()</code>即可，而在其他浏览器中则需要序列化<code class="calibre15">transformToDocument()</code>操作的结果。下面这个函数可以在IE、Firefox、Chrome、Safari和Opera中使用。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function transform(context, xslt){
+    if (typeof XSLTProcessor != "undefined"){
+        var processor = new XSLTProcessor();
+        processor.importStylesheet(xslt);
+        var result = processor.transformToDocument(context);
+        return (new XMLSerializer()).serializeToString(result);
+
+    } else if (typeof context.transformNode != "undefined") {
+        return context.transformNode(xslt);
+    } else {
+        throw new Error("No XSLT processor available.");
+    }
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserXsltExample01.htm</i></p>
+
+  <p class="calibre2">这个<code class="calibre15">transform()</code>函数接收两个参数：要执行转换的上下文节点和XSLT文档对象。首先，它检测是否有<code class="calibre15">XSLTProcessor</code>类型的定义，如果有则使用该类型来进行转换。在调用<code class="calibre15">transformToDocument()</code>方法之后，将返回的结果序列化为字符串。如果上下文节点中有<code class="calibre15">transformNode()</code>方法，则调用该方法并返回结果。与本章中其他的跨浏览器函数一样，<code class="calibre15">transform()</code>也会在XSLT处理器无效的情况下抛出错误。下面是使用这个函数的示例。</p>
+  <pre class="calibre18"><code class="calibre15">var result = transform(xmldom, xsltdom);
+</code></pre>
+
+  <p class="calibre2">使用IE的<code class="calibre15">transformNode()</code>方法，可以确保不必使用线程安全的DOM文档进行转换。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 注意，由于不同浏览器的XSLT引擎不一样，因此转换得到的结果在不同浏览器间可能会稍有不同，也可能会差别很大。因此，不能绝对依赖在JavaScript中使用XSLT进行转换的结果。</p>
+  </blockquote>
+</body>
+</html>

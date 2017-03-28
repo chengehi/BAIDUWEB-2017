@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_121">16.1　跨文档消息传递</h2>
+
+  <p class="calibre2"><strong class="calibre3">跨文档消息传送</strong>（cross-document messaging），有时候简称为XDM，指的是在来自不同域的页面间传递消息。例如，<a class="calibre6" href="http://www.wrox.com">www.wrox.com</a>域中的页面与位于一个内嵌框架中的p2p.wrox.com域中的页面通信。在XDM机制出现之前，要稳妥地实现这种通信需要花很多工夫。XDM把这种机制规范化，让我们能既稳妥又简单地实现跨文档通信。</p>
+
+  <p class="calibre2">XDM的核心是<code class="calibre15">postMessage()</code>方法。在HTML5规范中，除了XDM部分之外的其他部分也会提到这个方法名，但都是为了同一个目的：向另一个地方传递数据。对于XDM而言，“另一个地方”指的是包含在当前页面中的<code class="calibre15">&lt;iframe&gt;</code>元素，或者由当前页面弹出的窗口。</p>
+
+  <p class="calibre2"><code class="calibre15">postMessage()</code>方法接收两个参数：一条消息和一个表示消息接收方来自哪个域的字符串。第二个参数对保障安全通信非常重要，可以防止浏览器把消息发送到不安全的地方。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">//注意：所有支持XDM的浏览器也支持iframe的contentWindow属性
+var iframeWindow = document.getElementById("myframe").contentWindow;
+iframeWindow.postMessage("A secret", "http://www.wrox.com");
+</code></pre>
+
+  <p class="calibre2">最后一行代码尝试向内嵌框架中发送一条消息，并指定框架中的文档必须来源于<code class="calibre15">"http://www.wrox.com"</code>域。如果来源匹配，消息会传递到内嵌框架中；否则，<code class="calibre15">postMessage()</code>什么也不做。这一限制可以避免窗口中的位置在你不知情的情况下发生改变。如果传给<code class="calibre15">postMessage()</code>的第二个参数是<code class="calibre15">"*"</code>，则表示可以把消息发送给来自任何域的文档，但我们不推荐这样做。</p>
+
+  <p class="calibre2">接收到XDM消息时，会触发<code class="calibre15">window</code>对象的<code class="calibre15">message</code>事件。这个事件是以异步形式触发的，因此从发送消息到接收消息（触发接收窗口的<code class="calibre15">message</code>事件）可能要经过一段时间的延迟。触发<code class="calibre15">message</code>事件后，传递给<code class="calibre15">onmessage</code>处理程序的事件对象包含以下三方面的重要信息。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">data</code>：作为<code class="calibre15">postMessage()</code>第一个参数传入的字符串数据。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">origin</code>：发送消息的文档所在的域，例如<code class="calibre15">"http://www.wrox.com"</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">source</code>：发送消息的文档的<code class="calibre15">window</code>对象的代理。这个代理对象主要用于在发送上一条消息的窗口中调用<code class="calibre15">postMessage()</code>方法。如果发送消息的窗口来自同一个域，那这个对象就是<code class="calibre15">window</code>。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">接收到消息后验证发送窗口的来源是至关重要的。就像给<code class="calibre15">postMessage()</code>方法指定第二个参数，以确保浏览器不会把消息发送给未知页面一样，在<code class="calibre15">onmessage</code>处理程序中检测消息来源可以确保传入的消息来自已知的页面。基本的检测模式如下。</p>
+  <pre class="calibre18"><code class="calibre15">EventUtil.addHandler(window, "message", function(event){
+
+    //确保发送消息的域是已知的域
+    if (event.origin == "http://www.wrox.com"){
+
+        //处理接收到的数据
+        processMessage(event.data);
+
+        //可选：向来源窗口发送回执
+        event.source.postMessage("Received!", "http://p2p.wrox.com");
+    }
+});
+</code></pre>
+
+  <p class="calibre2">还是要提醒大家，<code class="calibre15">event.source</code>大多数情况下只是<code class="calibre15">window</code>对象的代理，并非实际的<code class="calibre15">window</code>对象。换句话说，不能通过这个代理对象访问<code class="calibre15">window</code>对象的其他任何信息。记住，只通过这个代理调用<code class="calibre15">postMessage()</code>就好，这个方法永远存在，永远可以调用。</p>
+
+  <p class="calibre2">XDM还有一些怪异之处。首先，<code class="calibre15">postMessage()</code>的第一个参数最早是作为“永远都是字符串”来实现的。但后来这个参数的定义改了，改成允许传入任何数据结构。可是，并非所有浏览器都实现了这一变化。为保险起见，使用<code class="calibre15">postMessage()</code>时，最好还是只传字符串。如果你想传入结构化的数据，最佳选择是先在要传入的数据上调用<code class="calibre15">JSON.stringify()</code>，通过<code class="calibre15">postMessage()</code>传入得到的字符串，然后再在<code class="calibre15">onmessage</code>事件处理程序中调用<code class="calibre15">JSON.parse()</code>。</p>
+
+  <p class="calibre2">在通过内嵌框架加载其他域的内容时，使用XDM是非常方便的。因此，在混搭（mashup）和社交网络应用中，这种传递消息的方法极为常用。有了XDM，包含<code class="calibre15">&lt;iframe&gt;</code>的页面可以确保自身不受恶意内容的侵扰，因为它只通过XDM与嵌入的框架通信。而XDM也可以在来自相同域的页面间使用。</p>
+
+  <p class="calibre2">支持XDM的浏览器有IE8+、Firefox 3.5+、Safari 4+、Opera、Chrome、iOS版Safari及Android版WebKit。XDM已经作为一个规范独立出来，现在它的名字叫Web Messaging，官方页面是<a class="calibre6" href="http://dev.w3.org/html5/postmsg/">http://dev.w3.org/html5/postmsg/</a>。</p>
+</body>
+</html>

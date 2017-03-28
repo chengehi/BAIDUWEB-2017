@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_94">13.3　事件对象</h2>
+
+  <p class="calibre2">在触发DOM上的某个事件时，会产生一个事件对象<code class="calibre15">event</code>，这个对象中包含着所有与事件有关的信息。包括导致事件的元素、事件的类型以及其他与特定事件相关的信息。例如，鼠标操作导致的事件对象中，会包含鼠标位置的信息，而键盘操作导致的事件对象中，会包含与按下的键有关的信息。所有浏览器都支持<code class="calibre15">event</code>对象，但支持方式不同。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_149"><strong class="calibre10">13.3.1　DOM中的事件对象</strong></h3>
+
+  <p class="calibre2">兼容DOM的浏览器会将一个<code class="calibre15">event</code>对象传入到事件处理程序中。无论指定事件处理程序时使用什么方法（DOM0级或DOM2级），都会传入<code class="calibre15">event</code>对象。来看下面的例子。</p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+<b class="calibre3">btn.onclick = function(event){</b>
+    <b class="calibre3">alert(event.type);     //"click"</b>
+<b class="calibre3">};</b>
+<b class="calibre3">btn.addEventListener("click", function(event){</b>
+    <b class="calibre3">alert(event.type);     //"click"</b>
+<b class="calibre3">}, false);</b>
+</pre>
+
+  <p class="calibre2">这个例子中的两个事件处理程序都会弹出一个警告框，显示由<code class="calibre15">event.type</code>属性表示的事件类型。这个属性始终都会包含被触发的事件类型，例如<code class="calibre15">"click"</code>（与传入<code class="calibre15">addEventListener()</code>和<code class="calibre15">removeEventListener()</code>中的事件类型一致）。</p>
+
+  <p class="calibre2">在通过HTML特性指定事件处理程序时，变量<code class="calibre15">event</code>中保存着<code class="calibre15">event</code>对象。请看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;input type="button" value="Click Me" onclick="alert(event.type)"/&gt;
+</code></pre>
+
+  <p class="calibre2">以这种方式提供<code class="calibre15">event</code>对象，可以让HTML特性事件处理程序与JavaScript函数执行相同的操作。</p>
+
+  <p class="calibre2"><code class="calibre15">event</code>对象包含与创建它的特定事件有关的属性和方法。触发的事件类型不一样，可用的属性和方法也不一样。不过，所有事件都会有下表列出的成员。</p>
+
+  <table class="table">
+    <tbody class="calibre23">
+      <tr class="calibre24">
+        <th class="calibre25" width="30%">属性/方法</th>
+
+        <th class="calibre25" width="20%">类　　型</th>
+
+        <th class="calibre25" width="15%">读/写</th>
+
+        <th class="calibre25" width="35%">说　　明</th>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">bubbles</code></td>
+
+        <td class="calibre27"><code class="calibre31">Boolean</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">表明事件是否冒泡</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">cancelable</code></td>
+
+        <td class="calibre27"><code class="calibre31">Boolean</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">表明是否可以取消事件的默认行为</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">currentTarget</code></td>
+
+        <td class="calibre27"><code class="calibre31">Element</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">其事件处理程序当前正在处理事件的那个元素</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">defaultPrevented</code></td>
+
+        <td class="calibre27"><code class="calibre31">Boolean</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">为<code class="calibre31">true</code>表示已经调用了<code class="calibre31">preventDefault()</code>（DOM3级事件中新增）</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">detail</code></td>
+
+        <td class="calibre27"><code class="calibre31">Integer</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">与事件相关的细节信息</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">eventPhase</code></td>
+
+        <td class="calibre27"><code class="calibre31">Integer</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">调用事件处理程序的阶段：1表示捕获阶段，2表示“处于目标”，3表示冒泡阶段</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">preventDefault()</code></td>
+
+        <td class="calibre27"><code class="calibre31">Function</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">取消事件的默认行为。如果<code class="calibre31">cancelable</code>是<code class="calibre31">true</code>，则可以使用这个方法</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">stopImmediatePropagation()</code></td>
+
+        <td class="calibre27"><code class="calibre31">Function</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">取消事件的进一步捕获或冒泡，同时阻止任何事件处理程序被调用（DOM3级事件中新增）</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">stopPropagation()</code></td>
+
+        <td class="calibre27"><code class="calibre31">Function</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">取消事件的进一步捕获或冒泡。如果<code class="calibre31">bubbles</code>为<code class="calibre31">true</code>，则可以使用这个方法</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">target</code></td>
+
+        <td class="calibre27"><code class="calibre31">Element</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">事件的目标</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">trusted</code></td>
+
+        <td class="calibre27"><code class="calibre31">Boolean</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">为<code class="calibre31">true</code>表示事件是浏览器生成的。为<code class="calibre31">false</code>表示事件是由开发人员通过JavaScript创建的（DOM3级事件中新增）</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">type</code></td>
+
+        <td class="calibre27"><code class="calibre31">String</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">被触发的事件的类型</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">view</code></td>
+
+        <td class="calibre27"><code class="calibre31">AbstractView</code></td>
+
+        <td class="calibre28">只读</td>
+
+        <td class="calibre27">与事件关联的抽象视图。等同于发生事件的<code class="calibre31">window</code>对象</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="calibre2">在事件处理程序内部，对象<code class="calibre15">this</code>始终等于<code class="calibre15">currentTarget</code>的值，而<code class="calibre15">target</code>则只包含事件的实际目标。如果直接将事件处理程序指定给了目标元素，则<code class="calibre15">this</code>、<code class="calibre15">currentTarget</code>和<code class="calibre15">target</code>包含相同的值。来看下面的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+<b class="calibre3">btn.onclick = function(event){</b>
+    <b class="calibre3">alert(event.currentTarget === this);    //true</b>
+    <b class="calibre3">alert(event.target === this);           //true</b>
+<b class="calibre3">};</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">DOMEventObjectExample01.htm</i></p>
+
+  <p class="calibre2">这个例子检测了<code class="calibre15">currentTarget</code>和<code class="calibre15">target</code>与<code class="calibre15">this</code>的值。由于<code class="calibre15">click</code>事件的目标是按钮，因此这三个值是相等的。如果事件处理程序存在于按钮的父节点中（例如<code class="calibre15">document.body</code>），那么这些值是不相同的。再看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">document.body.onclick = function(event){
+    alert(event.currentTarget === document.body);    //true
+    alert(this === document.body);                   //true
+    alert(event.target === document.getElementById("myBtn"));    //true
+};
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">DOMEventObjectExample02.htm</i></p>
+
+  <p class="calibre2">当单击这个例子中的按钮时，<code class="calibre15">this</code>和<code class="calibre15">currentTarget</code>都等于<code class="calibre15">document.body</code>，因为事件处理程序是注册到这个元素上的。然而，<code class="calibre15">target</code>元素却等于按钮元素，因为它是<code class="calibre15">click</code>事件真正的目标。由于按钮上并没有注册事件处理程序，结果<code class="calibre15">click</code>事件就冒泡到了<code class="calibre15">document.body</code>，在那里事件才得到了处理。</p>
+
+  <p class="calibre2">在需要通过一个函数处理多个事件时，可以使用<code class="calibre15">type</code>属性。例如：</p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+<b class="calibre3">var handler = function(event){</b>
+    <b class="calibre3">switch(event.type){</b>
+        <b class="calibre3">case "click":</b>
+            <b class="calibre3">alert("Clicked");</b>
+            <b class="calibre3">break;</b>
+
+        <b class="calibre3">case "mouseover":</b>
+            <b class="calibre3">event.target.style.backgroundColor = "red";</b>
+            <b class="calibre3">break;</b>
+
+        <b class="calibre3">case "mouseout":</b>
+            <b class="calibre3">event.target.style.backgroundColor = "";</b>
+            <b class="calibre3">break;</b>
+    <b class="calibre3">}</b>
+<b class="calibre3">};</b>
+
+<b class="calibre3">btn.onclick = handler;</b>
+<b class="calibre3">btn.onmouseover = handler;</b>
+<b class="calibre3">btn.onmouseout = handler;</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">DOMEventObjectExample03.htm</i></p>
+
+  <p class="calibre2">这个例子定义了一个名为<code class="calibre15">handler</code>的函数，用于处理3种事件：<code class="calibre15">click</code>、<code class="calibre15">mouseover</code>和<code class="calibre15">mouseout</code>。当单击按钮时，会出现一个与前面例子中一样的警告框。当按钮移动到按钮上面时，背景颜色应该会变成红色，而当鼠标移动出按钮的范围时，背景颜色应该会恢复为默认值。这里通过检测<code class="calibre15">event.type</code>属性，让函数能够确定发生了什么事件，并执行相应的操作。</p>
+
+  <p class="calibre2">要阻止特定事件的默认行为，可以使用<code class="calibre15">preventDefault()</code>方法。例如，链接的默认行为就是在被单击时会导航到其<code class="calibre15">href</code>特性指定的URL。如果你想阻止链接导航这一默认行为，那么通过链接的<code class="calibre15">onclick</code>事件处理程序可以取消它，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">var link = document.getElementById("myLink");
+link.onclick = function(event){
+    event.preventDefault();
+};
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">DOMEventObjectExample04.htm</i></p>
+
+  <p class="calibre2">只有<code class="calibre15">cancelable</code>属性设置为<code class="calibre15">true</code>的事件，才可以使用<code class="calibre15">preventDefault()</code>来取消其默认行为。</p>
+
+  <p class="calibre2">另外，<code class="calibre15">stopPropagation()</code>方法用于立即停止事件在DOM层次中的传播，即取消进一步的事件捕获或冒泡。例如，直接添加到一个按钮的事件处理程序可以调用<code class="calibre15">stopPropagation()</code>，从而避免触发注册在<code class="calibre15">document.body</code>上面的事件处理程序，如下面的例子所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+btn.onclick = function(event){
+    alert("Clicked");
+    <b class="calibre3">event.stopPropagation();</b>
+};
+
+<b class="calibre3">document.body.onclick = function(event){</b>
+    <b class="calibre3">alert("Body clicked");</b>
+<b class="calibre3">};</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">DOMEventObjectExample05.htm</i></p>
+
+  <p class="calibre2">对于这个例子而言，如果不调用<code class="calibre15">stopPropagation()</code>，就会在单击按钮时出现两个警告框。可是，由于<code class="calibre15">click</code>事件根本不会传播到<code class="calibre15">document.body</code>，因此就不会触发注册在这个元素上的<code class="calibre15">onclick</code>事件处理程序。</p>
+
+  <p class="calibre2">事件对象的<code class="calibre15">eventPhase</code>属性，可以用来确定事件当前正位于事件流的哪个阶段。如果是在捕获阶段调用的事件处理程序，那么<code class="calibre15">eventPhase</code>等于<code class="calibre15">1</code>；如果事件处理程序处于目标对象上，则<code class="calibre15">eventPhase</code>等于<code class="calibre15">2</code>；如果是在冒泡阶段调用的事件处理程序，<code class="calibre15">eventPhase</code>等于<code class="calibre15">3</code>。这里要注意的是，尽管“处于目标”发生在冒泡阶段，但<code class="calibre15">eventPhase</code>仍然一直等于<code class="calibre15">2</code>。来看下面的例子。</p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+btn.onclick = function(event){
+    <b class="calibre3">alert(event.eventPhase); //2</b>
+<b class="calibre3">};</b>
+
+<b class="calibre3">document.body.addEventListener("click", function(event){</b>
+    <b class="calibre3">alert(event.eventPhase); //1</b>
+<b class="calibre3">}, true);</b>
+
+<b class="calibre3">document.body.onclick = function(event){</b>
+    <b class="calibre3">alert(event.eventPhase); //3</b>
+<b class="calibre3">};</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">DOMEventObjectExample06.htm</i></p>
+
+  <p class="calibre2">当单击这个例子中的按钮时，首先执行的事件处理程序是在捕获阶段触发的添加到<code class="calibre15">document.body</code>中的那一个，结果会弹出一个警告框显示表示<code class="calibre15">eventPhase</code>的<code class="calibre15">1</code>。接着，会触发在按钮上注册的事件处理程序，此时的<code class="calibre15">eventPhase</code>值为<code class="calibre15">2</code>。最后一个被触发的事件处理程序，是在冒泡阶段执行的添加到<code class="calibre15">document.body</code>上的那一个，显示<code class="calibre15">eventPhase</code>的值为<code class="calibre15">3</code>。而当<code class="calibre15">eventPhase</code>等于<code class="calibre15">2</code>时，<code class="calibre15">this</code>、<code class="calibre15">target</code>和<code class="calibre15">currentTarget</code>始终都是相等的。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 只有在事件处理程序执行期间，<strong class="calibre3"><code class="calibre15">event</code></strong>对象才会存在；一旦事件处理程序执行完成，<strong class="calibre3"><code class="calibre15">event</code></strong>对象就会被销毁。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_150"><strong class="calibre10">13.3.2　IE中的事件对象</strong></h3>
+
+  <p class="calibre2">与访问DOM中的<code class="calibre15">event</code>对象不同，要访问IE中的<code class="calibre15">event</code>对象有几种不同的方式，取决于指定事件处理程序的方法。在使用DOM0级方法添加事件处理程序时，<code class="calibre15">event</code>对象作为<code class="calibre15">window</code>对象的一个属性存在。来看下面的例子。</p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+<b class="calibre3">btn.onclick = function(){</b>
+    <b class="calibre3">var event = window.event;</b>
+    <b class="calibre3">alert(event.type);     //"click"</b>
+<b class="calibre3">};</b>
+</pre>
+
+  <p class="calibre2">在此，我们通过<code class="calibre15">window.event</code>取得了<code class="calibre15">event</code>对象，并检测了被触发事件的类型（IE中的<code class="calibre15">type</code>属性与DOM中的<code class="calibre15">type</code>属性是相同的）。可是，如果事件处理程序是使用<code class="calibre15">attachEvent()</code>添加的，那么就会有一个<code class="calibre15">event</code>对象作为参数被传入事件处理程序函数中，如下所示。</p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+<b class="calibre3">btn.attachEvent("onclick", function(event){</b>
+    <b class="calibre3">alert(event.type);     //"click"</b>
+<b class="calibre3">});</b>
+</pre>
+
+  <p class="calibre2">在像这样使用<code class="calibre15">attachEvent()</code>的情况下，也可以通过<code class="calibre15">window</code>对象来访问<code class="calibre15">event</code>对象，就像使用DOM0级方法时一样。不过为方便起见，同一个对象也会作为参数传递。</p>
+
+  <p class="calibre2">如果是通过HTML特性指定的事件处理程序，那么还可以通过一个名叫<code class="calibre15">event</code>的变量来访问<code class="calibre15">event</code>对象（与DOM中的事件模型相同）。再看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;input type="button" value="Click Me" onclick="alert(event.type)"&gt;
+</code></pre>
+
+  <p class="calibre2">IE的<code class="calibre15">event</code>对象同样也包含与创建它的事件相关的属性和方法。其中很多属性和方法都有对应的或者相关的DOM属性和方法。与DOM的<code class="calibre15">event</code>对象一样，这些属性和方法也会因为事件类型的不同而不同，但所有事件对象都会包含下表所列的属性和方法。</p>
+
+  <table class="table">
+    <tbody class="calibre23">
+      <tr class="calibre24">
+        <th class="calibre25" width="30%">属性/方法</th>
+
+        <th class="calibre25" width="20%">类　　型</th>
+
+        <th class="calibre25" width="15%">读/写</th>
+
+        <th class="calibre25" width="35%">说　　明</th>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">cancelBubble</code></td>
+
+        <td class="calibre27"><code class="calibre31">Boolean</code></td>
+
+        <td class="calibre27">读/写</td>
+
+        <td class="calibre27">默认值为<code class="calibre31">false</code>，但将其设置为<code class="calibre31">true</code>就可以取消事件冒泡（与DOM中的<code class="calibre31">stopPropagation()</code>方法的作用相同）</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">returnValue</code></td>
+
+        <td class="calibre27"><code class="calibre31">Boolean</code></td>
+
+        <td class="calibre27">读/写</td>
+
+        <td class="calibre27">默认值为<code class="calibre31">true</code>，但将其设置为<code class="calibre31">false</code>就可以取消事件的默认行为（与DOM中的<code class="calibre31">preventDefault()</code>方法的作用相同）</td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">srcElement</code></td>
+
+        <td class="calibre27"><code class="calibre31">Element</code></td>
+
+        <td class="calibre27">只读</td>
+
+        <td class="calibre27">事件的目标（与DOM中的<code class="calibre31">target</code>属性相同）</td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">type</code></td>
+
+        <td class="calibre27"><code class="calibre31">String</code></td>
+
+        <td class="calibre27">只读</td>
+
+        <td class="calibre27">被触发的事件的类型</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="calibre2">因为事件处理程序的作用域是根据指定它的方式来确定的，所以不能认为<code class="calibre15">this</code>会始终等于事件目标。故而，最好还是使用<code class="calibre15">event.srcElement</code>比较保险。例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+<b class="calibre3">btn.onclick = function(){</b>
+    <b class="calibre3">alert(window.event.srcElement === this);     //true</b>
+<b class="calibre3">};</b>
+
+<b class="calibre3">btn.attachEvent("onclick", function(event){</b>
+    <b class="calibre3">alert(event.srcElement === this);            //false</b>
+<b class="calibre3">});</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">IEEventObjectExample01.htm</i></p>
+
+  <p class="calibre2">在第一个事件处理程序中（使用DOM0级方法指定的），<code class="calibre15">srcElement</code>属性等于<code class="calibre15">this</code>，但在第二个事件处理程序中，这两者的值不相同。</p>
+
+  <p class="calibre2">如前所述，<code class="calibre15">returnValue</code>属性相当于DOM中的<code class="calibre15">preventDefault()</code>方法，它们的作用都是取消给定事件的默认行为。只要将<code class="calibre15">returnValue</code>设置为<code class="calibre15">false</code>，就可以阻止默认行为。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var link = document.getElementById("myLink");
+link.onclick = function(){
+    window.event.returnValue = false;
+};
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEEventObjectExample02.htm</i></p>
+
+  <p class="calibre2">这个例子在<code class="calibre15">onclick</code>事件处理程序中使用<code class="calibre15">returnValue</code>达到了阻止链接默认行为的目的。与DOM不同的是，在此没有办法确定事件是否能被取消。</p>
+
+  <p class="calibre2">相应地，<code class="calibre15">cancelBubble</code>属性与DOM中的<code class="calibre15">stopPropagation()</code>方法作用相同，都是用来停止事件冒泡的。由于IE不支持事件捕获，因而只能取消事件冒泡；但<code class="calibre15">stopPropagatioin()</code>可以同时取消事件捕获和冒泡。例如：</p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+btn.onclick = function(){
+    alert("Clicked");
+    <b class="calibre3">window.event.cancelBubble = true;</b>
+};
+
+<b class="calibre3">document.body.onclick = function(){</b>
+    <b class="calibre3">alert("Body clicked");</b>
+<b class="calibre3">};</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">IEEventObjectExample03.htm</i></p>
+
+  <p class="calibre2">通过在<code class="calibre15">onclick</code>事件处理程序中将<code class="calibre15">cancelBubble</code>设置为<code class="calibre15">true</code>，就可阻止事件通过冒泡而触发<code class="calibre15">document.body</code>中注册的事件处理程序。结果，在单击按钮之后，只会显示一个警告框。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_151"><strong class="calibre10">13.3.3　跨浏览器的事件对象</strong></h3>
+
+  <p class="calibre2">虽然DOM和IE中的<code class="calibre15">event</code>对象不同，但基于它们之间的相似性依旧可以拿出跨浏览器的方案来。IE中<code class="calibre15">event</code>对象的全部信息和方法DOM对象中都有，只不过实现方式不一样。不过，这种对应关系让实现两种事件模型之间的映射非常容易。可以对前面介绍的<code class="calibre15">EventUtil</code>对象加以增强，添加如下方法以求同存异。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var EventUtil = {
+
+    addHandler: function(element, type, handler){
+        //省略的代码
+    },
+
+    <b class="calibre3">getEvent: function(event){</b>
+        <b class="calibre3">return event ? event : window.event;</b>
+    <b class="calibre3">},</b>
+
+    <b class="calibre3">getTarget: function(event){</b>
+        <b class="calibre3">return event.target || event.srcElement;</b>
+    <b class="calibre3">},</b>
+
+    <b class="calibre3">preventDefault: function(event){</b>
+        <b class="calibre3">if (event.preventDefault){</b>
+            <b class="calibre3">event.preventDefault();</b>
+        <b class="calibre3">} else {</b>
+            <b class="calibre3">event.returnValue = false;</b>
+        <b class="calibre3">}</b>
+    <b class="calibre3">},</b>
+
+    removeHandler: function(element, type, handler){
+        //省略的代码
+    },
+
+    <b class="calibre3">stopPropagation: function(event){</b>
+        <b class="calibre3">if (event.stopPropagation){</b>
+            <b class="calibre3">event.stopPropagation();</b>
+        <b class="calibre3">} else {</b>
+            <b class="calibre3">event.cancelBubble = true;</b>
+        <b class="calibre3">}</b>
+    <b class="calibre3">}</b>
+
+};
+</pre>
+
+  <p class="calibre8"><i class="calibre7">EventUtil.js</i></p>
+
+  <p class="calibre2">以上代码显示，我们为<code class="calibre15">EventUtil</code>添加了4个新方法。第一个是<code class="calibre15">getEvent()</code>，它返回对<code class="calibre15">event</code>对象的引用。考虑到IE中事件对象的位置不同，可以使用这个方法来取得<code class="calibre15">event</code>对象，而不必担心指定事件处理程序的方式。在使用这个方法时，必须假设有一个事件对象传入到事件处理程序中，而且要把该变量传给这个方法，如下所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">btn.onclick = function(event){
+    event = EventUtil.getEvent(event);
+};
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserEventObjectExample01.htm</i></p>
+
+  <p class="calibre2">在兼容DOM的浏览器中，<code class="calibre15">event</code>变量只是简单地传入和返回。而在IE中，<code class="calibre15">event</code>参数是未定义的（undefined），因此就会返回<code class="calibre15">window.event</code>。将这一行代码添加到事件处理程序的开头，就可以确保随时都能使用<code class="calibre15">event</code>对象，而不必担心用户使用的是什么浏览器。</p>
+
+  <p class="calibre2">第二个方法是<code class="calibre15">getTarget()</code>，它返回事件的目标。在这个方法内部，会检测<code class="calibre15">event</code>对象的<code class="calibre15">target</code>属性，如果存在则返回该属性的值；否则，返回<code class="calibre15">srcElement</code>属性的值。可以像下面这样使用这个方法。</p>
+  <pre class="calibre18">btn.onclick = function(event){
+    event = EventUtil.getEvent(event);
+    <b class="calibre3">var target = EventUtil.getTarget(event);</b>
+};
+</pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserEventObjectExample01.htm</i></p>
+
+  <p class="calibre2">第三个方法是<code class="calibre15">preventDefault()</code>，用于取消事件的默认行为。在传入<code class="calibre15">event</code>对象后，这个方法会检查是否存在<code class="calibre15">preventDefault()</code>方法，如果存在则调用该方法。如果<code class="calibre15">preventDefault()</code>方法不存在，则将<code class="calibre15">returnValue</code>设置为<code class="calibre15">false</code>。下面是使用这个方法的例子。</p>
+  <pre class="calibre18">var link = document.getElementById("myLink");
+<b class="calibre3">link.onclick = function(event){</b>
+    <b class="calibre3">event = EventUtil.getEvent(event);</b>
+    <b class="calibre3">EventUtil.preventDefault(event);</b>
+<b class="calibre3">};</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserEventObjectExample02.htm</i></p>
+
+  <p class="calibre2">以上代码可以确保在所有浏览器中单击该链接都不会打开另一个页面。首先，使用<code class="calibre15">EventUtil.getEvent()</code>取得<code class="calibre15">event</code>对象，然后将其传入到<code class="calibre15">EventUtil.preventDefault()</code>以取消默认行为。</p>
+
+  <p class="calibre2">第四个方法是<code class="calibre15">stopPropagation()</code>，其实现方式类似。首先尝试使用DOM方法阻止事件流，否则就使用<code class="calibre15">cancelBubble</code>属性。下面看一个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var btn = document.getElementById("myBtn");
+btn.onclick = function(event){
+    alert("Clicked");
+    <b class="calibre3">event = EventUtil.getEvent(event);</b>
+    <b class="calibre3">EventUtil.stopPropagation(event);</b>
+};
+
+document.body.onclick = function(event){
+    alert("Body clicked");
+};
+</pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserEventObjectExample03.htm</i></p>
+
+  <p class="calibre2">在此，首先使用<code class="calibre15">EventUtil.getEvent()</code>取得了<code class="calibre15">event</code>对象，然后又将其传入到<code class="calibre15">EventUtil.stopPropagation()</code>。别忘了由于IE不支持事件捕获，因此这个方法在跨浏览器的情况下，也只能用来阻止事件冒泡。</p>
+</body>
+</html>

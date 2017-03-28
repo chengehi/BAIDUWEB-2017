@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_112">14.4　表单序列化</h2>
+
+  <p class="calibre2">随着Ajax的出现，表单序列化已经成为一种常见需求（第21章将讨论Ajax）。在JavaScript中，可以利用表单字段的<code class="calibre15">type</code>属性，连同<code class="calibre15">name</code>和<code class="calibre15">value</code>属性一起实现对表单的序列化。在编写代码之前，有必须先搞清楚在表单提交期间，浏览器是怎样将数据发送给服务器的。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">对表单字段的名称和值进行URL编码，使用和号（&amp;）分隔。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">不发送禁用的表单字段。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">只发送勾选的复选框和单选按钮。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">不发送<code class="calibre15">type</code>为<code class="calibre15">"reset"</code>和<code class="calibre15">"button"</code>的按钮。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">多选选择框中的每个选中的值单独一个条目。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">在单击提交按钮提交表单的情况下，也会发送提交按钮；否则，不发送提交按钮。也包括<code class="calibre15">type</code>为<code class="calibre15">"image"</code>的<code class="calibre15">&lt;input&gt;</code>元素。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">&lt;select&gt;</code>元素的值，就是选中的<code class="calibre15">&lt;option&gt;</code>元素的<code class="calibre15">value</code>特性的值。如果<code class="calibre15">&lt;option&gt;</code>元素没有<code class="calibre15">value</code>特性，则是<code class="calibre15">&lt;option&gt;</code>元素的文本值。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">在表单序列化过程中，一般不包含任何按钮字段，因为结果字符串很可能是通过其他方式提交的。除此之外的其他上述规则都应该遵循。以下就是实现表单序列化的代码。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function serialize(form){
+    var parts = [],
+    field = null,
+      i,
+      len,
+      j,
+      optLen,
+      option,
+      optValue;
+
+    for (i=0, len=form.elements.length; i &lt; len; i++){
+        field = form.elements[i];
+
+        switch(field.type){
+            case "select-one":
+            case "select-multiple":
+
+            if (field.name.length){
+                for (j=0, optLen = field.options.length; j &lt; optLen; j++){
+                    option = field.options[j];
+                    if (option.selected){
+                        optValue = "";
+                        if (option.hasAttribute){
+                            optValue = (option.hasAttribute("value") ? 
+                                        option.value : option.text);
+                        } else {
+                            optValue = (option.attributes["value"].specified ? 
+                                        option.value : option.text);
+                        }
+                        parts.push(encodeURIComponent(field.name) + "=" +
+                                   encodeURIComponent(optValue));
+                       }
+                    }
+                }
+                break;
+
+            case undefined:        //字段集
+            case "file":           //文件输入
+            case "submit":         //提交按钮
+            case "reset":          //重置按钮
+            case "button":         //自定义按钮
+                break;
+
+            case "radio":          //单选按钮
+            case "checkbox":       //复选框
+                if (!field.checked){
+                    break;
+                }
+                /* 执行默认操作 */
+
+            default:
+                //不包含没有名字的表单字段
+                if (field.name.length){
+                    parts.push(encodeURIComponent(field.name) + "=" + 
+                               encodeURIComponent(field.value));
+                }
+        }
+    }
+    return parts.join("&amp;");
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FormSerializationExample01.htm</i></p>
+
+  <p class="calibre2">上面这个<code class="calibre15">serialize()</code>函数首先定义了一个名为<code class="calibre15">parts</code>的数组，用于保存将要创建的字符串的各个部分。然后，通过<code class="calibre15">for</code>循环迭代每个表单字段，并将其保存在<code class="calibre15">field</code>变量中。在获得了一个字段的引用之后，使用<code class="calibre15">switch</code>语句检测其<code class="calibre15">type</code>属性。序列化过程中最麻烦的就是<code class="calibre15">&lt;select&gt;</code>元素，它可能是单选框也可能是多选框。为此，需要遍历控件中的每一个选项，并在相应选项被选中的情况下向数组中添加一个值。对于单选框，只可能有一个选中项，而多选框则可能有零或多个选中项。这里的代码适用于这两种选择框，至于可选项的数量则是由浏览器控制的。在找到一个选中项之后，需要确定使用什么值。如果不存在<code class="calibre15">value</code>特性，或者虽然存在该特性，但值为空字符串，都要使用选项的文本来代替。为检查这个特性，在DOM兼容的浏览器中需要使用<code class="calibre15">hasAttribute()</code>方法，而在IE中需要使用特性的<code class="calibre15">specified</code>属性。</p>
+
+  <p class="calibre2">如果表单中包含<code class="calibre15">&lt;fieldset&gt;</code>元素，则该元素会出现在元素集合中，但没有<code class="calibre15">type</code>属性。因此，如果<code class="calibre15">type</code>属性未定义，则不需要对其进行序列化。同样，对于各种按钮以及文件输入字段也是如此（文件输入字段在表单提交过程中包含文件的内容；但是，这个字段是无法模仿的，序列化时一般都要忽略）。对于单选按钮和复选框，要检查其<code class="calibre15">checked</code>属性是否被设置为<code class="calibre15">false</code>，如果是则退出<code class="calibre15">switch</code>语句。如果<code class="calibre15">checked</code>属性为<code class="calibre15">true</code>，则继续执行<code class="calibre15">default</code>语句，即将当前字段的名称和值进行编码，然后添加到<code class="calibre15">parts</code>数组中。函数的最后一步，就是使用<code class="calibre15">join()</code>格式化整个字符串，也就是用和号来分隔每一个表单字段。</p>
+
+  <p class="calibre2">最后，<code class="calibre15">serialize()</code>函数会以查询字符串的格式输出序列化之后的字符串。当然，要序列化成其他格式，也不是什么困难的事。</p>
+</body>
+</html>

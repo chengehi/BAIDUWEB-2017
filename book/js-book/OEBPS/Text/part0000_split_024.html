@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_14">2.4　&lt;noscript&gt;元素</h2>
+
+  <p class="calibre2">早期浏览器都面临一个特殊的问题，即当浏览器不支持JavaScript时如何让页面平稳地退化。对这个问题的最终解决方案就是创造一个<code class="calibre15">&lt;noscript&gt;</code>元素，用以在不支持JavaScript的浏览器中显示替代的内容。这个元素可以包含能够出现在文档<code class="calibre15">&lt;body&gt;</code>中的任何HTML元素——<code class="calibre15">&lt;script&gt;</code>元素除外。包含在<code class="calibre15">&lt;noscript&gt;</code>元素中的内容只有在下列情况下才会显示出来：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">浏览器不支持脚本；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">浏览器支持脚本，但脚本被禁用。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">符合上述任何一个条件，浏览器都会显示<code class="calibre15">&lt;noscript&gt;</code>中的内容。而在除此之外的其他情况下，浏览器不会呈现<code class="calibre15">&lt;noscript&gt;</code>中的内容。</p>
+
+  <p class="calibre2">请看下面这个简单的例子：</p>
+  <pre class="calibre18">&lt;html&gt; 
+  &lt;head&gt;
+    &lt;title&gt;Example HTML Page&lt;/title&gt;
+    &lt;script type="text/javascript" defer="defer" src="example1.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" defer="defer" src="example2.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    <b class="calibre3">&lt;noscript&gt;</b>
+      <b class="calibre3">&lt;p&gt;本页面需要浏览器支持（启用）JavaScript。</b>
+    <b class="calibre3">&lt;/noscript&gt;</b>
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+  <p class="calibre2">这个页面会在脚本无效的情况下向用户显示一条消息。而在启用了脚本的浏览器中，用户永远也不会看到它——尽管它是页面的一部分。</p>
+</body>
+</html>

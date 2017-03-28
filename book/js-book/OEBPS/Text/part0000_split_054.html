@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h1 class="calibre1" id="nav_point_44">第7章　函数表达式</h1>
+
+  <p class="calibre2"><strong class="calibre3">本章内容</strong></p>
+
+  <ul class="calibre16">
+    <li class="calibre12">函数表达式的特征</li>
+
+    <li class="calibre12">使用函数实现递归</li>
+
+    <li class="calibre12">使用闭包定义私有变量 　</li>
+  </ul>
+
+  <p class="calibre2">函数表达式是JavaScript中的一个既强大又容易令人困惑的特性。第5章曾介绍过，定义函数的方式有两种：一种是函数声明，另一种就是函数表达式。函数声明的语法是这样的。</p>
+  <pre class="calibre18"><code class="calibre15">function functionName(arg0, arg1, arg2) {
+    //函数体
+}
+</code></pre>
+
+  <p class="calibre2">首先是<code class="calibre15">function</code>关键字，然后是函数的名字，这就是指定函数名的方式。Firefox、Safari、Chrome和Opera都给函数定义了一个非标准的<code class="calibre15">name</code>属性，通过这个属性可以访问到给函数指定的名字。这个属性的值永远等于跟在<code class="calibre15">function</code>关键字后面的标识符。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">//只在Firefox、Safari、Chrome和Opera有效
+alert(functionName.name);  //"functionName"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionNameExample01.htm</i></p>
+
+  <p class="calibre2">关于函数声明，它的一个重要特征就是<strong class="calibre3">函数声明提升</strong>（function declaration hoisting），意思是在执行代码之前会先读取函数声明。这就意味着可以把函数声明放在调用它的语句后面。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">sayHi();
+function sayHi(){
+    alert("Hi!"); 
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionDeclarationHoisting01.htm</i></p>
+
+  <p class="calibre2">这个例子不会抛出错误，因为在代码执行之前会先读取函数声明。</p>
+
+  <p class="calibre2">第二种创建函数的方式是使用函数表达式。函数表达式有几种不同的语法形式。下面是最常见的一种形式。</p>
+  <pre class="calibre18"><code class="calibre15">var functionName = function(arg0, arg1, arg2){
+    //函数体 
+};
+</code></pre>
+
+  <p class="calibre2">这种形式看起来好像是常规的变量赋值语句，即创建一个函数并将它赋值给变量<code class="calibre15">functionName</code>。这种情况下创建的函数叫做<strong class="calibre3">匿名函数</strong>（anonymous function），因为<code class="calibre15">function</code>关键字后面没有标识符。（匿名函数有时候也叫<strong class="calibre3">拉姆达函数</strong>。）匿名函数的<code class="calibre15">name</code>属性是空字符串。</p>
+
+  <p class="calibre2">函数表达式与其他表达式一样，在使用前必须先赋值。以下代码会导致错误。</p>
+  <pre class="calibre18"><code class="calibre15">sayHi();    //错误：函数还不存在
+var sayHi = function(){
+    alert("Hi!");
+};
+</code></pre>
+
+  <p class="calibre2">理解函数提升的关键，就是理解函数声明与函数表达式之间的区别。例如，执行以下代码的结果可能会让人意想不到。</p>
+  <pre class="calibre18"><code class="calibre15">//不要这样做！ 
+if(condition){
+    function sayHi(){
+        alert("Hi!");
+    }
+} else {
+    function sayHi(){
+        alert("Yo!");
+    }
+} 
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">FunctionDeclarationsErrorExample01.htm</i></p>
+
+  <p class="calibre2">表面上看，以上代码表示在<code class="calibre15">condition</code>为<code class="calibre15">true</code>时，使用一个<code class="calibre15">sayHi()</code>的定义；否则，就使用另一个定义。实际上，这在ECMAScript中属于无效语法，JavaScript引擎会尝试修正错误，将其转换为合理的状态。但问题是浏览器尝试修正错误的做法并不一致。大多数浏览器会返回第二个声明，忽略<code class="calibre15">condition</code>；Firefox会在<code class="calibre15">condition</code>为<code class="calibre15">true</code>时返回第一个声明。因此这种使用方式很危险，不应该出现在你的代码中。不过，如果是使用函数表达式，那就没有什么问题了。</p>
+  <pre class="calibre18"><code class="calibre15">//可以这样做
+var sayHi;
+
+if(condition){ 
+    sayHi = function(){
+        alert("Hi!");
+    };
+} else {
+    sayHi = function(){
+        alert("Yo!");
+    };
+}
+</code></pre>
+
+  <p class="calibre2">这个例子不会有什么意外，不同的函数会根据<code class="calibre15">condition</code>被赋值给<code class="calibre15">sayHi</code>。</p>
+
+  <p class="calibre2">能够创建函数再赋值给变量，也就能够把函数作为其他函数的值返回。还记得第5章中的那个<code class="calibre15">createComparisonFunction()</code>函数吗：</p>
+  <pre class="calibre18"><code class="calibre15">function createComparisonFunction(propertyName) {
+
+    return function(object1, object2){
+        var value1 = object1[propertyName];
+        var value2 = object2[propertyName];
+
+        if (value1 &lt; value2){
+            return -1;
+        } else if (value1 &gt; value2){
+            return 1;
+        } else {
+            return 0;
+        }
+    };
+}
+</code></pre>
+
+  <p class="calibre2"><code class="calibre15">createComparisonFunction()</code>就返回了一个匿名函数。返回的函数可能会被赋值给一个变量，或者以其他方式被调用；不过，在<code class="calibre15">createComparisonFunction()</code>函数内部，它是匿名的。在把函数当成值来使用的情况下，都可以使用匿名函数。不过，这并不是匿名函数唯一的用途。</p>
+</body>
+</html>

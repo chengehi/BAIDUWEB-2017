@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_139">19.2　一般用法</h2>
+
+  <p class="calibre2">在将<code class="calibre15">XML</code>对象、元素、特性和文本集合到一个层次化对象之后，就可以使用点号加特性或标签名的方式来访问其中不同的层次和结构。每个子元素都是父元素的一个属性，而属性名与元素的内部名称相同。如果子元素只包含文本，则相应的属性只返回文本，如下面的例子所示。</p>
+  <pre class="calibre18">var employee = &lt;employee position="Software Engineer"&gt;
+                     &lt;name&gt;Nicholas C. Zakas&lt;/name&gt;
+               &lt;/employee&gt;;
+<b class="calibre3">alert(employee.name); //"Nicholas C. Zakas"</b>
+</pre>
+
+  <p class="calibre2">以上代码中的<code class="calibre15">&lt;name/&gt;</code>元素只包含文本。访问<code class="calibre15">employee.name</code>即可取得该文本，而在内部需要定位到<code class="calibre15">&lt;name/&gt;</code>元素，然后返回相应文本。由于传入到<code class="calibre15">alert()</code>时，会隐式调用<code class="calibre15">toString()</code>方法，因此显示的是<code class="calibre15">&lt;name/&gt;</code>中包含的文本。这就使得访问<code class="calibre15">XML</code>文档中包含的文本数据非常方便。如果有多个元素具有相同的标签名，则会返回<code class="calibre15">XMLList</code>。下面再看一个例子。</p>
+  <pre class="calibre18">var employees = &lt;employees&gt;
+    &lt;employee position="Software Engineer"&gt;
+        &lt;name&gt;Nicholas C. Zakas&lt;/name&gt;
+    &lt;/employee&gt;
+    &lt;employee position="Salesperson"&gt;
+        &lt;name&gt;Jim Smith&lt;/name&gt;
+    &lt;/employee&gt;
+&lt;/employees&gt;;
+
+<b class="calibre3">alert(employees.employee[0].name);    //"Nicholas C. Zakas"</b>
+<b class="calibre3">alert(employees.employee[1].name);    //"Jim Smith"</b>
+</pre>
+
+  <p class="calibre2">这个例子访问了每个<code class="calibre15">&lt;employee/&gt;</code>元素并返回了它们<code class="calibre15">&lt;name/&gt;</code>元素的值。如果你不确定子元素的内部名称，或者你想访问所有子元素，不管其名称是什么，也可以像下面这样使用星号（<code class="calibre15">*</code>）。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var allChildren = employees.*;     //返回所有子元素，不管其名称是什么
+alert(employees.*[0].name);        //"Nicholas C. Zakas"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">UsageExample01.htm/I&gt;</i></p>
+
+  <p class="calibre2">与其他属性一样，星号也可能返回<code class="calibre15">XML</code>对象，或返回<code class="calibre15">XMLList</code>对象，这要取决于<code class="calibre15">XML</code>结构。</p>
+
+  <p class="calibre2">要达到同样的目的，除了属性之外，还可以使用<code class="calibre15">child()</code>方法。将属性名或索引值传递给<code class="calibre15">child()</code>方法，也会得到相同的值。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var firstChild = employees.child(0);                   //与employees.*[0]相同
+var employeeList = employees.child("employee");        //与employees.employee相同
+var allChildren = employees.child("*");                //与employees.*相同
+</code></pre>
+
+  <p class="calibre2">为了再方便一些，还有一个<code class="calibre15">children()</code>方法始终返回所有子元素。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var allChildren = employees.children();                //与employees.*相同
+</code></pre>
+
+  <p class="calibre2">而另一个方法<code class="calibre15">elements()</code>的行为与<code class="calibre15">child()</code>类似，区别仅在于它只返回表示元素的<code class="calibre15">XML</code>对象。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var employeeList = employees.elements("employee");     //与employees.employee相同
+var allChildren = employees.elements("*");             //与employees.*相同
+</code></pre>
+
+  <p class="calibre2">这些方法为JavaScript开发人员提供了访问<code class="calibre15">XML</code>数据的较为熟悉的语法。</p>
+
+  <p class="calibre2">要删除子元素，可以使用<code class="calibre15">delete</code>操作符，如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">delete employees.employee[0];
+alert(employees.employee.length());     //1
+</code></pre>
+
+  <p class="calibre2">显然，这也正是将子节点看成属性的一个主要的优点。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_232"><strong class="calibre10">19.2.1　访问特性</strong></h3>
+
+  <p class="calibre2">访问特性也可以使用点语法，不过其语法稍有扩充。为了区分特性名与子元素的标签名，必须在名称前面加上一个<code class="calibre15">@</code>字符。这是从XPath中借鉴的语法；XPath也是使用<code class="calibre15">@</code>来区分特性和标签的名称。不过，结果可能就是这种语法看起来比较奇怪，例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var employees = &lt;employees&gt;
+    &lt;employee position="Software Engineer"&gt;
+        &lt;name&gt;Nicholas C. Zakas&lt;/name&gt;
+    &lt;/employee&gt;
+    &lt;employee position="Salesperson"&gt;
+        &lt;name&gt;Jim Smith&lt;/name&gt;
+    &lt;/employee&gt;
+&lt;/employees&gt;;
+
+<b class="calibre3">alert(employees.employee[0].@position); //"Software Engineer"</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">AttributesExample01.htm</i></p>
+
+  <p class="calibre2">与元素一样，每个特性都由一个属性来表示，而且可以通过这种简写语法来访问。以这种语法访问特性会得到一个表示特性的<code class="calibre15">XML</code>对象，对象的<code class="calibre15">toString()</code>方法始终会返回特性的值。要取得特性的名称，可以使用对象的<code class="calibre15">name()</code>方法。</p>
+
+  <p class="calibre2">另外，也可以使用<code class="calibre15">child()</code>方法来访问特性，只要传入带有<code class="calibre15">@</code>前缀的特性的名称即可。</p>
+  <pre class="calibre18"><code class="calibre15">alert(employees.employee[0].child("@position"));     //"Software Engineer"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">AttributesExample01.htm</i></p>
+
+  <p class="calibre2">由于访问<code class="calibre15">XML</code>对象的属性时也可以使用<code class="calibre15">child()</code>，因此必须使用<code class="calibre15">@</code>字符来区分标签名和特性名。</p>
+
+  <p class="calibre2">使用<code class="calibre15">attribute()</code>方法并传入特性名，可以只访问XML对象的特性。与<code class="calibre15">child()</code>方法不同，使用<code class="calibre15">attribute()</code>方法时，不需要传入带<code class="calibre15">@</code>字符的特性名。下面是一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">alert(employees.employee[0].attribute("position")); //"Software Engineer"
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">AttributesExample01.htm</i></p>
+
+  <p class="calibre2">这三种访问特性的方式同时适用于<code class="calibre15">XML</code>和<code class="calibre15">XMLList</code>类型。对于<code class="calibre15">XML</code>对象来说，会返回一个表示相应特性的<code class="calibre15">XML</code>对象；对<code class="calibre15">XMLList</code>对象来说，会返回一个<code class="calibre15">XMLList</code>对象，其中包含列表中所有元素的特性<code class="calibre15">XML</code>对象。对于前面的例子而言，<code class="calibre15">employees.employee.@position</code>返回的<code class="calibre15">XMLList</code>将包含两个对象：一个对象表示第一个<code class="calibre15">&lt;employee/&gt;</code>元素中的<code class="calibre15">position</code>特性，另一个对象表示第二个元素中的同一特性。</p>
+
+  <p class="calibre2">要取得<code class="calibre15">XML</code>或<code class="calibre15">XMLList</code>对象中的所有特性，可以使用<code class="calibre15">attributes()</code>方法。这个方法会返回一个表示所有特性的<code class="calibre15">XMLList</code>对象。使用这个方法与使用<code class="calibre15">@*</code>的结果相同，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">//下面两种方式都会取得所有特性
+var atts1 = employees.employee[0].@*;
+var atts2 = employees.employee[0].attributes();
+</code></pre>
+
+  <p class="calibre2">在E4X中修改特性的值与修改属性的值一样非常简单，只要像下面这样为特性指定一个新值即可。</p>
+  <pre class="calibre18"><code class="calibre15">employees.employee[0].@position = "Author";        //修改position特性
+</code></pre>
+
+  <p class="calibre2">修改的特性会在内部反映出来，换句话说，此后再序列化<code class="calibre15">XML</code>对象，就会使用新的特性值。同样，为特性赋值的语法也可以用来添加新特性，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">employees.employee[0].@experience = "8 years";     //添加experience特性
+employees.employee[0].@manager = "Jim Smith";      //添加manager特性
+</code></pre>
+
+  <p class="calibre2">由于特性与其他ECMAScript属性类似，因此也可以使用<code class="calibre15">delete</code>操作符来删除特性，如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">delete employees.employee[0].@position;            //删除 position特性
+</code></pre>
+
+  <p class="calibre2">通过属性来访问特性极大地简化了与底层XML结构交互的操作。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_233"><strong class="calibre10">19.2.2　其他节点类型</strong></h3>
+
+  <p class="calibre2">E4X定义了表现XML文档中所有部分的类型，包括注释和处理指令。在默认情况上，E4X不会解析注释或处理指令，因此这些部分不会出现在最终的对象层次中。如果想让解析器解析这些部分，可以像下面这样设置XML构造函数的下列两个属性。</p>
+  <pre class="calibre18"><code class="calibre15">XML.ignoreComments = false;
+XML.ignoreProcessingInstructions = false;
+</code></pre>
+
+  <p class="calibre2">在设置了这两个属性之后，E4X就会将注释和处理指令解析到XML结构中。</p>
+
+  <p class="calibre2">由于<code class="calibre15">XML</code>类型可以表示所有节点，因此必须有一种方式来确定节点类型。使用<code class="calibre15">nodeKind()</code>方法可以得到<code class="calibre15">XML</code>对象表示的类型，该访问可能会返回<code class="calibre15">"text"</code>、<code class="calibre15">"element"</code>、<code class="calibre15">"comment"</code>、<code class="calibre15">"processinginstruction"</code>或<code class="calibre15">"attribute"</code>。以下面的<code class="calibre15">XML</code>对象为例。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var employees = &lt;employees&gt;
+    <b class="calibre3">&lt;?Dont forget the donuts?&gt;</b>
+    &lt;employee position="Software Engineer"&gt;
+        &lt;name&gt;Nicholas C. Zakas&lt;/name&gt;
+    &lt;/employee&gt;
+    <b class="calibre3">&lt;!--just added--&gt;</b>
+    &lt;employee position="Salesperson"&gt;
+        &lt;name&gt;Jim Smith&lt;/name&gt;
+    &lt;/employee&gt;
+&lt;/employees&gt; ;
+</pre>
+
+  <p class="calibre2">我们可以通过下面的表格来说明<code class="calibre15">nodeKind()</code>返回的节点类型。</p>
+
+  <table class="table">
+    <tbody class="calibre23">
+      <tr class="calibre24">
+        <th class="calibre25" width="60%">语　　句</th>
+
+        <th class="calibre25" width="40%">返　回　值</th>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">employees.nodeKind()</code></td>
+
+        <td class="calibre27"><code class="calibre31">"element"</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">employees.*[0].nodeKind()</code></td>
+
+        <td class="calibre27"><code class="calibre31">"processing-instruction"</code></td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">employees.employee[0].@position.nodeKind()</code></td>
+
+        <td class="calibre27"><code class="calibre31">"attribute"</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">employees.employee[0].nodeKind()</code></td>
+
+        <td class="calibre27"><code class="calibre31">"element"</code></td>
+      </tr>
+
+      <tr class="calibre26">
+        <td class="calibre27"><code class="calibre31">employees.*[2].nodeKind()</code></td>
+
+        <td class="calibre27"><code class="calibre31">"comment"</code></td>
+      </tr>
+
+      <tr class="calibre24">
+        <td class="calibre27"><code class="calibre31">employees.employee[0].name.*[0].nodeKind()</code></td>
+
+        <td class="calibre27"><code class="calibre31">"text"</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="calibre2">不能在包含多个<code class="calibre15">XML</code>对象的<code class="calibre15">XMLList</code>上调用<code class="calibre15">nodeKind()</code>方法；否则，会抛出一个错误。</p>
+
+  <p class="calibre2">可以只取得特定类型的节点，而这就要用到下列方法。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">attributes()</code>：返回<code class="calibre15">XML</code>对象的所有特性。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">comments()</code>：返回<code class="calibre15">XML</code>对象的所有子注释节点。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">elements(<em class="calibre7">tagName</em>)</code>：返回<code class="calibre15">XML</code>对象的所有子元素。可以通过提供元素的<code class="calibre15">tagName</code>（标签名）来过滤想要返回的结果。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">processingInstructions(<em class="calibre7">name</em>)</code>：返回<code class="calibre15">XML</code>对象的所有处理指令。可以通过提供处理指令的<code class="calibre15">name</code>（名称）来过滤想要返回的结果。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">text()</code>：返回<code class="calibre15">XML</code>对象的所有文本子节点。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">上述的每一个方法都返回一个包含适当<code class="calibre15">XML</code>对象的<code class="calibre15">XMLList</code>。</p>
+
+  <p class="calibre2">使用<code class="calibre15">hasSimpleContent()</code>和<code class="calibre15">hasComplexContent()</code>方法，可以确定<code class="calibre15">XML</code>对象中是只包含文本，还是包含更复杂的内容。如果<code class="calibre15">XML</code>对象中只包含子文本节点，则前一个方法会返回<code class="calibre15">true</code>；如果<code class="calibre15">XML</code>对象的子节点中有任何非文本节点，则后一个方法返回<code class="calibre15">true</code>。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">alert(employees.employee[0].hasComplexContent());           //true
+alert(employees.employee[0].hasSimpleContent());            //false
+alert(employees.employee[0].name.hasComplexContent());      //false
+alert(employees.employee[0].name.hasSimpleContent());       //true
+</code></pre>
+
+  <p class="calibre2">利用这些方法，以及前面提到的其他方法，可以极大地方便查找XML结构中的数据。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_234"><strong class="calibre10">19.2.3　查询</strong></h3>
+
+  <p class="calibre2">实际上，E4X提供的查询语法在很多方面都与XPath类似。取得元素或特性值的简单操作是最基本的查询。在查询之前，不会创建表现XML文档结构中不同部分的<code class="calibre15">XML</code>对象。从底层来看，<code class="calibre15">XML</code>和<code class="calibre15">XMLList</code>的所有属性事实上都是查询的结果。也就是说，引用不表现<code class="calibre15">XML</code>结构中某一部分的属性仍然会返回<code class="calibre15">XMLList</code>；只不过这个<code class="calibre15">XMLList</code>中什么也不会包含。例如，如果基于前面的<code class="calibre15">XML</code>示例执行下列代码，则返回的结果就是空的。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var cats = employees.cat;
+alert(cats.length());     //0
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">QueryingExample01.htm</i></p>
+
+  <p class="calibre2">这个查询想要查找<code class="calibre15">&lt;employees/&gt;</code>中的<code class="calibre15">&lt;cat/&gt;</code>元素，但这个元素并不存在。上面的第一行代码会返回一个空的<code class="calibre15">XMLList</code>对象。虽然返回的是空对象，但查询可以照常进行，而不会发生异常。</p>
+
+  <p class="calibre2">前面我们看到的大多数例子都使用点语法来访问直接的子节点。而像下面这样使用两个点，则可以进一步扩展查询的深度，查询到所有后代节点。</p>
+  <pre class="calibre18"><code class="calibre15">var allDescendants = employees..*;         //取得&lt;employees/&gt;的所有后代节点
+</code></pre>
+
+  <p class="calibre2">上面的代码会返回<code class="calibre15">&lt;employees/&gt;</code>元素的所有后代节点。结果中将会包含元素、文本、注释和处理指令，最后两种节点的有无取决于在<code class="calibre15">XML</code>构造函数上的设置（前面曾经讨论过）；但结果中不会包含特性。要想取得特定标签的元素，需要将星号替换成实际的标签名。</p>
+  <pre class="calibre18"><code class="calibre15">var allNames = employees..name;     //取得作为&lt;employees/&gt;后代的所有&lt;name/&gt;节点
+</code></pre>
+
+  <p class="calibre2">同样的查询可以使用<code class="calibre15">descendants()</code>方法来完成。在不给这个方法传递参数的情况下，它会返回所有后代节点（与使用<code class="calibre15">..*</code>相同），而传递一个名称作为参数则可以限制结果。下面就是这两种情况的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var allDescendants = employees.descendants();     //所有后代节点
+var allNames = employees.descendants("name");     //后代中的所有&lt;name/&gt;元素
+</code></pre>
+
+  <p class="calibre2">还可以取得所有后代元素中的所有特性，方法是使用下列任何一行代码。</p>
+  <pre class="calibre18"><code class="calibre15">var allAttributes = employees..@*;     //取得所有后代元素中的所有特性
+var allAttributes2 = employees.descendants("@*");     //同上
+</code></pre>
+
+  <p class="calibre2">与限制结果中的后代元素一样，也可以通过用完整的特性名来替换星号达到过滤特性的目的。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var allAttributes = employees..@position;         //取得所有position特性
+var allAttributes2 = employees.descendants("@position");     //同上
+</code></pre>
+
+  <p class="calibre2">除了访问后代元素之外，还可以指定查询的条件。例如，要想返回<code class="calibre15">position</code>特性值为<code class="calibre15">"Salesperson"</code>的所有<code class="calibre15">&lt;employee/&gt;</code>元素，可以使用下面的查询：</p>
+  <pre class="calibre18"><code class="calibre15">var salespeople = employees.employee.(@position == "Salesperson");
+</code></pre>
+
+  <p class="calibre2">同样的语法也可以用于修改XML结构中的某一部分。例如，可以将第一位销售员（salesperson）的<code class="calibre15">position</code>特性修改为<code class="calibre15">"Senior Salesperson"</code>，代码如下：</p>
+  <pre class="calibre18"><code class="calibre15">employees.employee.(@position == "Salesperson")[0].@position= "Senior Salesperson";
+</code></pre>
+
+  <p class="calibre2">注意，圆括号中的表达式会返回一个包含结果的<code class="calibre15">XMLList</code>，而方括号返回其中的第一项，然后我们重写了<code class="calibre15">@position</code>属性的值。</p>
+
+  <p class="calibre2">使用<code class="calibre15">parent()</code>方法能够在XML结构中上溯，这个方法会返回一个<code class="calibre15">XML</code>对象，表示当前<code class="calibre15">XML</code>对象的父元素。如果在<code class="calibre15">XMLList</code>上调用<code class="calibre15">parent()</code>方法，则会返回列表中所有对象的公共父元素。下面是一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">var employees2 = employees.employee.parent();
+</code></pre>
+
+  <p class="calibre2">这里，变量<code class="calibre15">employees2</code>中包含着与变量<code class="calibre15">employees</code>相同的值。在处理来源未知的<code class="calibre15">XML</code>对象时，经常会用到<code class="calibre15">parent()</code>方法。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_235"><strong class="calibre10">19.2.4　构建和操作XML</strong></h3>
+
+  <p class="calibre2">将XML数据转换成<code class="calibre15">XML</code>对象的方式有很多种。前面曾经讨论过，可以将XML字符串传递到<code class="calibre15">XML</code>构造函数中，也可以使用<code class="calibre15">XML</code>字面量。相对而言，<code class="calibre15">XML</code>字面量方式更方便一些，因为可以在字面量中嵌入JavaScript变量，语法是使用花括号（<code class="calibre15">{}</code>）。可以将JavaScript变量嵌入到字面量中的任意位置上，如下面的例子所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var tagName = "color";
+var color = "red";
+var xml = &lt;{tagName}&gt;{color}&lt;/{tagName}&gt;;
+
+alert(xml.toXMLString());     //"&lt;color&gt;red&lt;/color&gt;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">XMLConstructionExample01.htm</i></p>
+
+  <p class="calibre2">在这个例子中，<code class="calibre15">XML</code>字面量的标签名和文本值都是使用花括号语法插入的。有了这个语法，就可以省去在构建XML结构时拼接字符串的麻烦。</p>
+
+  <p class="calibre2">E4X也支持使用标准的JavaScript语法来构建完整的XML结构。如前所述，大多数必要的操作都是查询，而且即便元素或特性不存在也不会抛出错误。在此基础上更进一步，如果将一个值指定给一个不存在的元素或特性，E4X就会首先在底层创建相应的结构，然后完成赋值。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var employees = &lt;employees/&gt;;
+employees.employee.name = "Nicholas C. Zakas";
+employees.employee.@position = "Software Engineer";
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">XMLConstructionExample02.htm</i></p>
+
+  <p class="calibre2">这个例子一开始声明了<code class="calibre15">&lt;employees/&gt;</code>元素，然后在这个元素基础上开始构建XML结构。第二行代码在<code class="calibre15">&lt;employees/&gt;</code>中创建了一个<code class="calibre15">&lt;employee/&gt;</code>元素和一个<code class="calibre15">&lt;name/&gt;</code>元素，并指定了文本值。第三行代码添加了一个<code class="calibre15">position</code>特性并为该特性指定了值。此时构建的XML结构如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;employees&gt;
+    &lt;employee position="Software Engineer"&gt;
+        &lt;name&gt;Nicholas C. Zakas&lt;/name&gt;
+    &lt;/employee&gt;
+&lt;/employees&gt;
+</code></pre>
+
+  <p class="calibre2">当然，使用加号操作符也可以再添加一个<code class="calibre15">&lt;employee/&gt;</code>元素，如下所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">employees.employee += &lt;employee position="Salesperson"&gt;
+                          &lt;name&gt;Jim Smith&lt;/name&gt;
+                      &lt;/employee&gt;;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">XMLConstructionExample02.htm</i></p>
+
+  <p class="calibre2">最终构建的XML结构如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;employees&gt;
+    &lt;employee position="Software Engineer"&gt;
+        &lt;name&gt;Nicholas C. Zakas&lt;/name&gt;
+    &lt;/employee&gt;
+    &lt;employee position="Salesperson"&gt;
+        &lt;name&gt;Jim Smith&lt;/name&gt;
+    &lt;/employee&gt;
+&lt;/employees&gt;
+</code></pre>
+
+  <p class="calibre2">除了上面介绍的基本的XML构建语法之外，还有一些类似DOM的方法，简介如下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">appendChild(<em class="calibre7">child</em>)</code>：将给定的<code class="calibre15"><em class="calibre7">child</em></code>作为子节点添加到<code class="calibre15">XMLList</code>的末尾。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">copy()</code>：返回<code class="calibre15">XML</code>对象副本。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">insertChildAfter(<em class="calibre7">refNode, child</em>)</code>：将<code class="calibre15"><em class="calibre7">child</em></code>作为子节点插入到<code class="calibre15">XMLList</code>中<code class="calibre15"><em class="calibre7">refNode</em></code>的后面。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">insertChildBefore(<em class="calibre7">refNode, child</em>)</code>：将<code class="calibre15"><em class="calibre7">child</em></code>作为子节点插入到<code class="calibre15">XMLList</code>中<code class="calibre15"><em class="calibre7">refNode</em></code>的前面。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">prependChild(<em class="calibre7">child</em>)</code>：将给定的<code class="calibre15"><em class="calibre7">child</em></code>作为子节点添加到<code class="calibre15">XMLList</code>的开始位置。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">replace(<em class="calibre7">propertyName, value</em>)</code>：用<code class="calibre15"><em class="calibre7">value</em></code>值替换名为<code class="calibre15"><em class="calibre7">propertyName</em></code>的属性，这个属性可能是一个元素，也可能是一个特性。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">setChildren(<em class="calibre7">children</em>)</code>：用<code class="calibre15"><em class="calibre7">children</em></code>替换当前所有的子元素，<code class="calibre15"><em class="calibre7">children</em></code>可以是XML对象，也可是<code class="calibre15">XMLList</code>对象。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">这些方法既非常有用，也非常容易使用。下列代码展示了这些方法的用途。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var employees = &lt;employees&gt;
+    &lt;employee position="Software Engineer"&gt;
+        &lt;name&gt;Nicholas C. Zakas&lt;/name&gt;
+    &lt;/employee&gt;
+    &lt;employee position="Salesperson"&gt;
+        &lt;name&gt;Jim Smith&lt;/name&gt;
+    &lt;/employee&gt;
+&lt;/employees&gt;;
+
+<b class="calibre3">employees.appendChild(&lt;employee position="Vice President"&gt;</b>
+                      <b class="calibre3">&lt;name&gt;Benjamin Anderson&lt;/name&gt;</b>
+                  <b class="calibre3">&lt;/employee&gt;);</b>
+
+<b class="calibre3">employees.prependChild(&lt;employee position="User Interface Designer"&gt;</b>
+                       <b class="calibre3">&lt;name&gt;Michael Johnson&lt;/name&gt;</b>
+                   <b class="calibre3">&lt;/employee&gt;);</b>
+
+<b class="calibre3">employees.insertChildBefore(employees.child(2),</b>
+                           <b class="calibre3">&lt;employee position="Human Resources Manager"&gt;</b>
+                               <b class="calibre3">&lt;name&gt;Margaret Jones&lt;/name&gt;</b>
+                           <b class="calibre3">&lt;/employee&gt;);</b>
+
+<b class="calibre3">employees.setChildren(&lt;employee position="President"&gt;</b>
+                           <b class="calibre3">&lt;name&gt;Richard McMichael&lt;/name&gt;</b>
+                      <b class="calibre3">&lt;/employee&gt; +</b>
+                      <b class="calibre3">&lt;employee position="Vice President"&gt;</b>
+                          <b class="calibre3">&lt;name&gt;Rebecca Smith&lt;/name&gt;</b>
+                      <b class="calibre3">&lt;/employee&gt;);</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">XMLConstructionExample03.htm</i></p>
+
+  <p class="calibre2">以上代码首先在员工列表的底部添加了一个名为Benjamin Anderson的副总统（vice president）。然后，在员工列表顶部又添加了一个名为Michael Johnson的界面设计师。接着，在列表中位置为2的员 工——此时这个员工是Jim Smith，因为他前面还有Michael Johnson和Nicholas C. Zakas——之前又添加了一个名为Margaret Jones的人力资源部经理。最后，所有这些子元素都被总统Richard McMichael和副总统Rebecca Smith替代。结果XML如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;employees&gt;
+    &lt;employee position="President"&gt;
+    &lt;name&gt;Richard McMichael&lt;/name&gt;
+    &lt;/employee&gt;
+    &lt;employee position="Vice President"&gt;
+        &lt;name&gt;Rebecca Smith&lt;/name&gt;
+    &lt;/employee&gt;
+&lt;/employees&gt;
+</code></pre>
+
+  <p class="calibre2">熟练运用这些技术和方法，就能够使用E4X执行任何DOM风格的操作。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_236"><strong class="calibre10">19.2.5　解析和序列化</strong></h3>
+
+  <p class="calibre2">E4X将解析和序列化数据的控制放在了<code class="calibre15">XML</code>构造函数的一些设置当中。与XML解析相关的设置有如下三个。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">ignoreComments</code>：表示解析器应该忽略标记中的注释。默认设置为<code class="calibre15">true</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">ignoreProcessingInstructions</code>：表示解析器应该忽略标记中的处理指令。默认设置为<code class="calibre15">true</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">ignoreWhitespace</code>：表示解析器应该忽略元素间的空格，而不是创建表现这些空格的文本节点。默认设置为<code class="calibre15">true</code>。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">这三个设置会影响对传入到XML构造函数中的字符串以及XML字面量的解析。</p>
+
+  <p class="calibre2">另外，与XML数据序列化相关的设置有如下两个。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">prettyIndent</code>：表示在序列化XML时，每次缩进的空格数量。默认值为2。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">prettyPrinting</code>：表示应该以方便人类认读的方式输出XML，即每个元素重起一行，而且子元素都要缩进。默认设置为<code class="calibre15">true</code>。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">这两个设置将影响到<code class="calibre15">toString()</code>和<code class="calibre15">toXMLString()</code>的输出。</p>
+
+  <p class="calibre2">以上五个设置都保存在<code class="calibre15">settings</code>对象中，通过<code class="calibre15">XML</code>构造函数的<code class="calibre15">settings()</code>方法可以取得这个对象，如下所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var settings = XML.settings();
+alert(settings.ignoreWhitespace);     //true
+alert(settings.ignoreComments);       //true
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ParsingAndSerializationExample01.htm</i></p>
+
+  <p class="calibre2">通过向<code class="calibre15">setSettings()</code>方法中传入包含全部5项设置的对象，可以一次性指定所有设置。在需要临时改变设置的情况下，这种设置方式非常有用，如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">var settings = XML.settings();
+XML.prettyIndent = 8;
+XML.ignoreComments = false;
+
+//执行某些处理
+
+XML.setSettings(settings);     //重置前面的设置
+</code></pre>
+
+  <p class="calibre2">而使用<code class="calibre15">defaultSettings()</code>方法则可以取得一个包含默认设置的对象，因此任何时候都可以使用下面的代码重置设置。</p>
+  <pre class="calibre18"><code class="calibre15">XML.setSettings(XML.defaultSettings());
+</code></pre>
+
+  <h3 class="calibre22" id="sigil_toc_id_237"><strong class="calibre10">19.2.6　命名空间</strong></h3>
+
+  <p class="calibre2">E4X提供了方便使用命名空间的特性。前面曾经讨论过，使用<code class="calibre15">namspace()</code>方法可以取得与特定前缀对应的<code class="calibre15">Namespace</code>对象。而通过使用<code class="calibre15">setNamespace()</code>并传入<code class="calibre15">Namespace</code>对象，也可以为给定元素设置命名空间。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var messages = &lt;messages&gt;
+    &lt;message&gt;Hello world!&lt;/message&gt;
+&lt;/messages&gt;;
+messages.setNamespace(new Namespace("wrox", "http://www.wrox.com/"));
+</code></pre>
+
+  <p class="calibre2">调用<code class="calibre15">setNamespace()</code>方法后，相应的命名空间只会应用到调用这个方法的元素。此时，序列化<code class="calibre15">messages</code>变量会得到如下结果。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;wrox:messages xmlns:wrox="http://www.wrox.com/"&gt;
+    &lt;message&gt;Hello world!&lt;/message&gt;
+&lt;/wrox:messages&gt;
+</code></pre>
+
+  <p class="calibre2">可见，由于调用了<code class="calibre15">setNamespace()</code>方法，<code class="calibre15">&lt;messages/&gt;</code>元素有了<code class="calibre15">wrox</code>命名空间前缀，而<code class="calibre15">&lt;message/&gt;</code>元素则没有变化。</p>
+
+  <p class="calibre2">如果只想添加一个命名空间声明，而不想改变元素，可以使用<code class="calibre15">addNamespace()</code>方法并传入<code class="calibre15">Namespace</code>对象，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">messages.addNamespace(new Namespace("wrox", "http://www.wrox.com/"));
+</code></pre>
+
+  <p class="calibre2">在将这行代码应用于原先的<code class="calibre15">&lt;messages/&gt;</code>元素时，就会创建如下所示的XML结构。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;messages xmlns:wrox="http://www.wrox.com/"&gt;
+    &lt;message&gt;Hello world!&lt;/message&gt;
+&lt;/messages&gt;
+</code></pre>
+
+  <p class="calibre2">调用<code class="calibre15">removeNamespace()</code>方法并传入<code class="calibre15">Namespace</code>对象，可以移除表示特定命名空间前缀和URI的命名空间声明；注意，必须传入丝毫不差的表示命名空间的<code class="calibre15">Namespace</code>对象。例如：</p>
+  <pre class="calibre18"><code class="calibre15">messages.removeNamespace(new Namespace("wrox", "http://www.wrox.com/"));
+</code></pre>
+
+  <p class="calibre2">这行代码可以移除<code class="calibre15">wrox</code>命名空间。不过，引用前缀的限定名不会受影响。</p>
+
+  <p class="calibre2">有两个方法可以返回与节点相关的<code class="calibre15">Namespace</code>对象的数组：<code class="calibre15">namespaceDeclarations()</code>和<code class="calibre15">inScopeNamespaces()</code>。前者返回在给定节点上声明的所有命名空间的数组，后者返回位于给定节点作用域中（即包括在节点自身和祖先元素中声明的）所有命名空间的数组。如下面的例子所示：</p>
+  <pre class="calibre18"><code class="calibre15">var messages = &lt;messages xmlns:wrox="http://www.wrox.com/"&gt;
+    &lt;message&gt;Hello world!&lt;/message&gt;
+&lt;/messages&gt;;
+
+alert(messages.namespaceDeclarations());     //"http://www.wrox.com"
+alert(messages.inScopeNamespaces());         //",http://www.wrox.com"
+
+alert(messages.message.namespaceDeclarations());     //""
+alert(messages.message.inScopeNamespaces());         //",http://www.wrox.com"
+</code></pre>
+
+  <p class="calibre2">这里，<code class="calibre15">&lt;messages/&gt;</code>元素在调用<code class="calibre15">namespaceDeclarations()</code>时，会返回包含一个命名空间的数组，而在调用<code class="calibre15">inScopeNamespaces()</code>时，则会返回包含两个命名空间的数组。作用域中的这两个命名空间，分别是默认命名空间（由空字符串表示）和<code class="calibre15">wrox</code>命名空间。在<code class="calibre15">&lt;message/&gt;</code>元素上调用这些方法时，<code class="calibre15">namespaceDeclarations()</code>，会返回一个空数组，而<code class="calibre15">inScopeNamespaces()</code>方法返回的结果与在<code class="calibre15">&lt;messages/&gt;</code>元素上调用时的返回结果相同。</p>
+
+  <p class="calibre2">使用双冒号（<code class="calibre15">::</code>）也可以基于<code class="calibre15">Namespace</code>对象来查询XML结构中具有特定命名空间的元素。例如，要取得包含在<code class="calibre15">wrox</code>命名空间中的所有<code class="calibre15">&lt;message/&gt;</code>元素，可以参考下面的代码。</p>
+  <pre class="calibre18"><code class="calibre15">var messages = &lt;messages xmlns:wrox="http://www.wrox.com/"&gt;
+    &lt;wrox:message&gt;Hello world!&lt;/message&gt;
+&lt;/messages&gt;;
+var wroxNS = new Namespace("wrox", "http://www.wrox.com/");
+var wroxMessages = messages.wroxNS::message;
+</code></pre>
+
+  <p class="calibre2">这里的双冒号表示返回的元素应该位于其中的命名空间。注意，这里使用的是JavaScript变量，而不是命名空间前缀。</p>
+
+  <p class="calibre2">还可以为某个作用域中的所有<code class="calibre15">XML</code>对象设置默认命名空间。为此，要使用<code class="calibre15">default xml namespace</code>语句，并将一个<code class="calibre15">Namespace</code>对象或一个命名空间URI作为值赋给它。例如：</p>
+  <pre class="calibre18"><code class="calibre15">default xml namespace = "http://www.wrox.com/";
+
+function doSomething(){
+
+    //只为这个函数设置默认的命名空间
+    default xml namespace = new Namespace("your", "http://www.yourdomain.com");
+
+}
+</code></pre>
+
+  <p class="calibre2">在<code class="calibre15">doSomething()</code>函数体内设置默认命名空间并不会改变全局作用域中的默认XML命名空间。在给定作用域中，当所有XML数据都需要使用特定的命名空间时，就可以使用这个语句，从而避免多次引用命名空间的麻烦。</p>
+</body>
+</html>

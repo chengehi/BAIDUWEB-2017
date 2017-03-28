@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_234"><strong class="calibre10">A.4.6　<code class="calibre30">ArrayType</code></strong></h2>
+
+  <p class="calibre2">与结构类型密切相关的是数组类型。通过数组类型（<code class="calibre15">ArrayType</code>）可以创建一个数组，并限制数组的值必须是某种特定的类型（与WebGL中的类型化数组很相似）。要创建新的数组类型，可以调用<code class="calibre15">ArrayType</code>构造函数，并传入它应该保存的数据类型以及应该保存的元素数目。例如：</p>
+  <pre class="calibre18"><code class="calibre15">var SizeArray = new ArrayType(Size, 2);
+var boxes = new BoxArray([ { width: 80, height: 60 }, { width: 50, height: 50 } ]);
+</code></pre>
+
+  <p class="calibre2">以上代码创建了一个名为<code class="calibre15">SizeArray</code>的数组类型，这个数组类型只能保存<code class="calibre15">Size</code>的实例，同时也给数组分配了两个该实例的位置。要实例化数组类型，可以传入一个数组，其中包含应该转换的数据。数据可以是字面量，只要该字面量能提升为正确的数据类型即可（比如在这个例子中，传入的字面量可以提升为结构类型）。</p>
+</body>
+</html>

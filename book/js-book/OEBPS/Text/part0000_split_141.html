@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_153">21.6　安全</h2>
+
+  <p class="calibre2">讨论Ajax和Comet安全的文章可谓连篇累牍，而相关主题的书也已经出了很多本了。大型Ajax应用程序的安全问题涉及面非常之广，但我们可以从普遍意义上探讨一些基本的问题。</p>
+
+  <p class="calibre2">首先，可以通过XHR访问的任何URL也可以通过浏览器或服务器来访问。下面的URL就是一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">/getuserinfo.php?id=23
+</code></pre>
+
+  <p class="calibre2">如果是向这个URL发送请求，可以想象结果会返回ID为23的用户的某些数据。谁也无法保证别人不会将这个URL的用户ID修改为24、56或其他值。因此，<code class="calibre15">getuserinfo.php</code>文件必须知道请求者是否真的有权限访问要请求的数据；否则，你的服务器就会门户大开，任何人的数据都可能被泄漏出去。</p>
+
+  <p class="calibre2">对于未被授权系统有权访问某个资源的情况，我们称之为CSRF（Cross-Site Request Forgery，跨站点请求伪造）。未被授权系统会伪装自己，让处理请求的服务器认为它是合法的。受到CSRF攻击的Ajax程序有大有小，攻击行为既有旨在揭示系统漏洞的恶作剧，也有恶意的数据窃取或数据销毁。</p>
+
+  <p class="calibre2">为确保通过XHR访问的URL安全，通行的做法就是验证发送请求者是否有权限访问相应的资源。有下列几种方式可供选择。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">要求以SSL连接来访问可以通过XHR请求的资源。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">要求每一次请求都要附带经过相应算法计算得到的验证码。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">请注意，下列措施对防范CSRF攻击不起作用。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">要求发送<code class="calibre15">POST</code>而不是<code class="calibre15">GET</code>请求——很容易改变。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">检查来源URL以确定是否可信——来源记录很容易伪造。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">基于cookie信息进行验证——同样很容易伪造。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">XHR对象也提供了一些安全机制，虽然表面上看可以保证安全，但实际上却相当不可靠。实际上，前面介绍的<code class="calibre15">open()</code>方法还能再接收两个参数：要随请求一起发送的用户名和密码。带有这两个参数的请求可以通过SSL发送给服务器上的页面，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">xhr.open("get", "example.php", true, "username", "password"); //不要这样做！！
+</code></pre>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 即便可以考虑这种安全机制，但还是尽量不要这样做。把用户名和密码保存在JavaScript代码中本身就是极为不安全的。任何人，只要他会使用JavaScript调试器，就可以通过查看相应的变量发现纯文本形式的用户名和密码。</p>
+  </blockquote>
+</body>
+</html>

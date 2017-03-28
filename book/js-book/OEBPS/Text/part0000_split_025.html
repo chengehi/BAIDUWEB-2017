@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_15">2.5　小结</h2>
+
+  <p class="calibre2">把JavaScript插入到HTML页面中要使用<code class="calibre15">&lt;script&gt;</code>元素。使用这个元素可以把JavaScript嵌入到HTML页面中，让脚本与标记混合在一起；也可以包含外部的JavaScript文件。而我们需要注意的地方有：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">在包含外部JavaScript文件时，必须将<code class="calibre15">src</code>属性设置为指向相应文件的URL。而这个文件既可以是与包含它的页面位于同一个服务器上的文件，也可以是其他任何域中的文件。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">所有<code class="calibre15">&lt;script&gt;</code>元素都会按照它们在页面中出现的先后顺序依次被解析。在不使用<code class="calibre15">defer</code>和<code class="calibre15">async</code>属性的情况下，只有在解析完前面<code class="calibre15">&lt;script&gt;</code>元素中的代码之后，才会开始解析后面<code class="calibre15">&lt;script&gt;</code>元素中的代码。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">由于浏览器会先解析完不使用<code class="calibre15">defer</code>属性的<code class="calibre15">&lt;script&gt;</code>元素中的代码，然后再解析后面的内容，所以一般应该把<code class="calibre15">&lt;script&gt;</code>元素放在页面最后，即主要内容后面，<code class="calibre15">&lt;/body&gt;</code>标签前面。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">使用<code class="calibre15">defer</code>属性可以让脚本在文档完全呈现之后再执行。延迟脚本总是按照指定它们的顺序执行。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">使用<code class="calibre15">async</code>属性可以表示当前脚本不必等待其他脚本，也不必阻塞文档呈现。不能保证异步脚本按照它们在页面中出现的顺序执行。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">另外，使用<code class="calibre15">&lt;noscript&gt;</code>元素可以指定在不支持脚本的浏览器中显示的替代内容。但在启用了脚本的情况下，浏览器不会显示<code class="calibre15">&lt;noscript&gt;</code>元素中的任何内容。</p>
+
+  <p class="calibre5" id="calibre_pb_38" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

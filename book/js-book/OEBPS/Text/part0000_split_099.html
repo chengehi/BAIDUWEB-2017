@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_111">14.3　选择框脚本</h2>
+
+  <p class="calibre2">选择框是通过<code class="calibre15">&lt;select&gt;</code>和<code class="calibre15">&lt;option&gt;</code>元素创建的。为了方便与这个控件交互，除了所有表单字段共有的属性和方法外，<code class="calibre15">HTMLSelectElement</code>类型还提供了下列属性和方法。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">add(<em class="calibre7">newOption, relOption</em>)</code>：向控件中插入新<code class="calibre15">&lt;option&gt;</code>元素，其位置在相关项（<code class="calibre15"><em class="calibre7">relOption</em></code>）之前。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">multiple</code>：布尔值，表示是否允许多项选择；等价于HTML中的<code class="calibre15">multiple</code>特性。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">options</code>：控件中所有<code class="calibre15">&lt;option&gt;</code>元素的<code class="calibre15">HTMLCollection</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">remove(<em class="calibre7">index</em>)</code>：移除给定位置的选项。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">selectedIndex</code>：基于0的选中项的索引，如果没有选中项，则值为<code class="calibre15">-1</code>。对于支持多选的控件，只保存选中项中第一项的索引。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">size</code>：选择框中可见的行数；等价于HTML中的<code class="calibre15">size</code>特性。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">选择框的<code class="calibre15">type</code>属性不是<code class="calibre15">"select-one"</code>，就是<code class="calibre15">"select-multiple"</code>，这取决于HTML代码中有没有<code class="calibre15">multiple</code>特性。选择框的<code class="calibre15">value</code>属性由当前选中项决定，相应规则如下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">如果没有选中的项，则选择框的<code class="calibre15">value</code>属性保存空字符串。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">如果有一个选中项，而且该项的<code class="calibre15">value</code>特性已经在HTML中指定，则选择框的<code class="calibre15">value</code>属性等于选中项的<code class="calibre15">value</code>特性。即使<code class="calibre15">value</code>特性的值是空字符串，也同样遵循此条规则。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">如果有一个选中项，但该项的<code class="calibre15">value</code>特性在HTML中未指定，则选择框的<code class="calibre15">value</code>属性等于该项的文本。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">如果有多个选中项，则选择框的<code class="calibre15">value</code>属性将依据前两条规则取得第一个选中项的值。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">以下面的选择框为例：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;select name="location" id="selLocation"&gt;
+    &lt;option value="Sunnyvale, CA"&gt;Sunnyvale&lt;/option&gt;
+    &lt;option value="Los Angeles, CA"&gt;Los Angeles&lt;/option&gt;
+    &lt;option value="Mountain View, CA"&gt;Mountain View&lt;/option&gt;
+    &lt;option value=""&gt;China&lt;/option&gt;
+    &lt;option&gt;Australia&lt;/option&gt;
+&lt;/select&gt;
+</code></pre>
+
+  <p class="calibre2">如果用户选择了其中第一项，则选择框的值就是<code class="calibre15">"Sunnyvale, CA"</code>。如果文本为<code class="calibre15">"China"</code>的选项被选中，则选择框的值就是一个空字符串，因为其<code class="calibre15">value</code>特性是空的。如果选择了最后一项，那么由于<code class="calibre15">&lt;option&gt;</code>中没有指定<code class="calibre15">value</code>特性，则选择框的值就是<code class="calibre15">"Australia"</code>。</p>
+
+  <p class="calibre2">在DOM中，每个<code class="calibre15">&lt;option&gt;</code>元素都有一个<code class="calibre15">HTMLOptionElement</code>对象表示。为便于访问数据，<code class="calibre15">HTMLOptionElement</code>对象添加了下列属性：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">index</code>：当前选项在<code class="calibre15">options</code>集合中的索引。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">label</code>：当前选项的标签；等价于HTML中的<code class="calibre15">label</code>特性。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">selected</code>：布尔值，表示当前选项是否被选中。将这个属性设置为<code class="calibre15">true</code>可以选中当前选项。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">text</code>：选项的文本。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">value</code>：选项的值（等价于HTML中的<code class="calibre15">value</code>特性）。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">其中大部分属性的目的，都是为了方便对选项数据的访问。虽然也可以使用常规的DOM功能来访问这些信息，但效率是比较低的，如下面的例子所示：</p>
+  <pre class="calibre18"><code class="calibre15">var selectbox = document.forms[0]. elements["location"];
+
+//不推荐
+var text = selectbox.options[0].firstChild.nodeValue;       //选项的文本
+var value = selectbox.options[0].getAttribute("value");     //选项的值
+</code></pre>
+
+  <p class="calibre2">以上代码使用标准DOM方法，取得了选择框中第一项的文本和值。可以与下面使用选项属性的代码作一比较：</p>
+  <pre class="calibre18">var selectbox = document.forms[0]. elements["location"];
+
+<b class="calibre3">//推荐</b>
+<b class="calibre3">var text = selectbox.options[0].text;         //选项的文本</b>
+<b class="calibre3">var value = selectbox.options[0].value;       //选项的值</b>
+</pre>
+
+  <p class="calibre2">在操作选项时，我们建议最好是使用特定于选项的属性，因为所有浏览器都支持这些属性。在将表单控件作为DOM节点的情况下，实际的交互方式则会因浏览器而异。我们不推荐使用标准DOM技术修改<code class="calibre15">&lt;option&gt;</code>元素的文本或者值。</p>
+
+  <p class="calibre2">最后，我们还想提醒读者注意一点：选择框的<code class="calibre15">change</code>事件与其他表单字段的<code class="calibre15">change</code>事件触发的条件不一样。其他表单字段的<code class="calibre15">change</code>事件是在值被修改且焦点离开当前字段时触发，而选择框的<code class="calibre15">change</code>事件只要选中了选项就会触发。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 不同浏览器下，选项的<strong class="calibre3"><code class="calibre15">value</code></strong>属性返回什么值也存在差别。但是，在所有浏览器中，<strong class="calibre3"><code class="calibre15">value</code></strong>属性始终等于<strong class="calibre3"><code class="calibre15">value</code></strong>特性。在未指定<strong class="calibre3"><code class="calibre15">value</code></strong>特性的情况下，IE8会返回空字符串，而IE9+、Safari、Firefox、Chrome和Opera则会返回与<strong class="calibre3"><code class="calibre15">text</code></strong>特性相同的值。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_163"><strong class="calibre10">14.3.1　选择选项</strong></h3>
+
+  <p class="calibre2">对于只允许选择一项的选择框，访问选中项的最简单方式，就是使用选择框的<code class="calibre15">selectedIndex</code>属性，如下面的例子所示：</p>
+  <pre class="calibre18"><code class="calibre15">var selectedOption = selectbox.options[selectbox.selectedIndex];
+</code></pre>
+
+  <p class="calibre2">取得选中项之后，可以像下面这样显示该选项的信息：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var selectedIndex = selectbox.selectedIndex;
+var selectedOption = selectbox.options[selectedIndex];
+alert("Selected index: " + selectedIndex + "\nSelected text: " +
+      selectedOption.text + "\nSelected value: " + selectedOption.value);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SelectboxExample01.htm</i></p>
+
+  <p class="calibre2">这里，我们通过一个警告框显示了选中项的索引、文本和值。</p>
+
+  <p class="calibre2">对于可以选择多项的选择框，<code class="calibre15">selectedfIndex</code>属性就好像只允许选择一项一样。设置<code class="calibre15">selectedIndex</code>会导致取消以前的所有选项并选择指定的那一项，而读取<code class="calibre15">selectedIndex</code>则只会返回选中项中第一项的索引值。</p>
+
+  <p class="calibre2">另一种选择选项的方式，就是取得对某一项的引用，然后将其<code class="calibre15">selected</code>属性设置为<code class="calibre15">true</code>。例如，下面的代码会选中选择框中的第一项：</p>
+  <pre class="calibre18"><code class="calibre15">selectbox.options[0].selected = true;
+</code></pre>
+
+  <p class="calibre2">与<code class="calibre15">selectedIndex</code>不同，在允许多选的选择框中设置选项的<code class="calibre15">selected</code>属性，不会取消对其他选中项的选择，因而可以动态选中任意多个项。但是，如果是在单选选择框中，修改某个选项的<code class="calibre15">selected</code>属性则会取消对其他选项的选择。需要注意的是，将<code class="calibre15">selected</code>属性设置为<code class="calibre15">false</code>对单选选择框没有影响。</p>
+
+  <p class="calibre2">实际上，<code class="calibre15">selected</code>属性的作用主要是确定用户选择了选择框中的哪一项。要取得所有选中的项，可以循环遍历选项集合，然后测试每个选项的<code class="calibre15">selected</code>属性。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">function getSelectedOptions(selectbox){
+    var result = new Array();
+    var option = null;
+
+    for (var i=0, len=selectbox.options.length; i &lt; len; i++){
+        option = selectbox.options[i];
+        if (option.selected){
+            result.push(option);
+        }
+    }
+
+    return result;
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SelectboxExample03.htm</i></p>
+
+  <p class="calibre2">这个函数可以返回给定选择框中选中项的一个数组。首先，创建一个将包含选中项的数组，然后使用<code class="calibre15">for</code>循环迭代所有选项，同时检测每一项的<code class="calibre15">selected</code>属性。如果有选项被选中，则将其添加到<code class="calibre15">result</code>数组中。最后，返回包含选中项的数组。下面是一个使用<code class="calibre15">getSelectedOptions()</code>函数取得选中项的示例。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var selectbox = document.getElementById("selLocation");
+var selectedOptions = getSelectedOptions(selectbox);
+var message = "";
+
+for (var i=0, len=selectedOptions.length; i &lt; len; i++){
+    message += "Selected index: " + selectedOptions[i].index +
+    "\nSelected text: " + selectedOptions[i].text +
+    "\nSelected value: " + selectedOptions[i].value + "\n\n";
+}
+
+alert(message);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SelectboxExample03.htm</i></p>
+
+  <p class="calibre2">在这个例子中，我们首先从一个选择框中取得了选中项。然后，使用<code class="calibre15">for</code>循环构建了一条消息，包含所有选中项的信息：每一项的索引、文本和值。这种技术适用于单选和多选选择框。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_164"><strong class="calibre10">14.3.2　添加选项</strong></h3>
+
+  <p class="calibre2">可以使用JavaScript动态创建选项，并将它们添加到选择框中。添加选项的方式有很多，第一种方式就是使用如下所示的DOM方法。</p>
+  <pre class="calibre18"><code class="calibre15">var newOption = document.createElement("option");
+newOption.appendChild(document.createTextNode("Option text"));
+newOption.setAttribute("value", "Option value");
+
+selectbox.appendChild(newOption);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SelectboxExample04.htm</i></p>
+
+  <p class="calibre2">以上代码创建了一个新的<code class="calibre15">&lt;option&gt;</code>元素，然后为它添加了一个文本节点，并设置其<code class="calibre15">value</code>特性，最后将它添加到了选择框中。添加到选择框之后，用户立即就可以看到新选项。</p>
+
+  <p class="calibre2">第二种方式是使用<code class="calibre15">Option</code>构造函数来创建新选项，这个构造函数是DOM出现之前就有的，一直遗留到现在。<code class="calibre15">Option</code>构造函数接受两个参数：文本（<code class="calibre15">text</code>）和值（<code class="calibre15">value</code>）；第二个参数可选。虽然这个构造函数会创建一个<code class="calibre15">Object</code>的实例，但兼容DOM的浏览器会返回一个<code class="calibre15">&lt;option&gt;</code>元素。换句话说，在这种情况下，我们仍然可以使用<code class="calibre15">appendChild()</code>将新选项添加到选择框中。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var newOption = new Option("Option text", "Option value");
+selectbox.appendChild(newOption);     //在IE8及之前版本中有问题
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SelectboxExample08.htm</i></p>
+
+  <p class="calibre2">这种方式在除IE之外的浏览器中都可以使用。由于存在bug，IE在这种方式下不能正确设置新选项的文本。</p>
+
+  <p class="calibre2">第三种添加新选项的方式是使用选择框的<code class="calibre15">add()</code>方法。DOM规定这个方法接受两个参数：要添加的新选项和将位于新选项之后的选项。如果想在列表的最后添加一个选项，应该将第二个参数设置为<code class="calibre15">null</code>。在IE对<code class="calibre15">add()</code>方法的实现中，第二个参数是可选的，而且如果指定，该参数必须是新选项之后选项的索引。兼容DOM的浏览器要求必须指定第二个参数，因此要想编写跨浏览器的代码，就不能只传入一个参数。这时候，为第二个参数传入<code class="calibre15">undefined</code>，就可以在所有浏览器中都将新选项插入到列表最后了。来看一个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var newOption = new Option("Option text", "Option value");
+selectbox.add(newOption, undefined); //最佳方案
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SelectboxExample04.htm</i></p>
+
+  <p class="calibre2">在IE和兼容DOM的浏览器中，上面的代码都可以正常使用。如果你想将新选项添加到其他位置（不是最后一个），就应该使用标准的DOM技术和<code class="calibre15">insertBefore()</code>方法。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 就和在HTML中一样，此时也不一定要为选项指定值。换句话说，只为<strong class="calibre3">Option</strong>构造函数传入一个参数（选项的文本）也没有问题。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_165"><strong class="calibre10">14.3.3　移除选项</strong></h3>
+
+  <p class="calibre2">与添加选项类似，移除选项的方式也有很多种。首先，可以使用DOM的<code class="calibre15">removeChild()</code>方法，为其传入要移除的选项，如下面的例子所示：</p>
+  <pre class="calibre18"><code class="calibre15">selectbox.removeChild(selectbox.options[0]);     //移除第一个选项
+</code></pre>
+
+  <p class="calibre2">其次，可以使用选择框的<code class="calibre15">remove()</code>方法。这个方法接受一个参数，即要移除选项的索引，如下面的例子所示：</p>
+  <pre class="calibre18"><code class="calibre15">selectbox.remove(0);     //移除第一个选项
+</code></pre>
+
+  <p class="calibre2">最后一种方式，就是将相应选项设置为<code class="calibre15">null</code>。这种方式也是DOM出现之前浏览器的遗留机制。例如：</p>
+  <pre class="calibre18"><code class="calibre15">selectbox.options[0] = null;    //移除第一个选项
+</code></pre>
+
+  <p class="calibre2">要清除选择框中所有的项，需要迭代所有选项并逐个移除它们，如下面的例子所示：</p>
+  <pre class="calibre18"><code class="calibre15">function clearSelectbox(selectbox){
+    for(var i=0, len=selectbox.options.length; i &lt; len; i++){
+        selectbox.remove(i);
+    }
+}
+</code></pre>
+
+  <p class="calibre2">这个函数每次只移除选择框中的第一个选项。由于移除第一个选项后，所有后续选项都会自动向上移动一个位置，因此重复移除第一个选项就可以移除所有选项了。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_166"><strong class="calibre10">14.3.4　移动和重排选项</strong></h3>
+
+  <p class="calibre2">在DOM标准出现之前，将一个选择框中的选项移动到另一个选择框中是非常麻烦的。整个过程要涉及从第一个选择框中移除选项，然后以相同的文本和值创建新选项，最后再将新选项添加到第二个选择框中。而使用DOM的<code class="calibre15">appendChild()</code>方法，就可以将第一个选择框中的选项直接移动到第二个选择框中。我们知道，如果为<code class="calibre15">appendChild()</code>方法传入一个文档中已有的元素，那么就会先从该元素的父节点中移除它，再把它添加到指定的位置。下面的代码展示了将第一个选择框中的第一个选项移动到第二个选择框中的过程。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var selectbox1 = document.getElementById("selLocations1");
+var selectbox2 = document.getElementById("selLocations2");
+
+selectbox2.appendChild(selectbox1.options[0]);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SelectboxExample05.htm</i></p>
+
+  <p class="calibre2">移动选项与移除选项有一个共同之处，即会重置每一个选项的<code class="calibre15">index</code>属性。</p>
+
+  <p class="calibre2">重排选项次序的过程也十分类似，最好的方式仍然是使用DOM方法。要将选择框中的某一项移动到特定位置，最合适的DOM方法就是<code class="calibre15">insertBefore()</code>；<code class="calibre15">appendChild()</code>方法只适用于将选项添加到选择框的最后。要在选择框中向前移动一个选项的位置，可以使用以下代码：</p>
+  <pre class="calibre18"><code class="calibre15">var optionToMove = selectbox.options[1];
+selectbox.insertBefore(optionToMove, selectbox.options[optionToMove.index-1]);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SelectboxExample06.htm</i></p>
+
+  <p class="calibre2">以上代码首先选择了要移动的选项，然后将其插入到了排在它前面的选项之前。实际上，第二行代码对除第一个选项之外的其他选项是通用的。类似地，可以使用下列代码将选择框中的选项向后移动一个位置。</p>
+  <pre class="calibre18"><code class="calibre15">var optionToMove = selectbox.options[1];
+selectbox.insertBefore(optionToMove, selectbox.options[optionToMove.index+2]);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">SelectboxExample06.htm</i></p>
+
+  <p class="calibre2">以上代码适用于选择框中的所有选项，包括最后一个选项。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> IE7存在一个页面重绘问题，有时候会导致使用DOM方法重排的选项不能马上正确显示。</p>
+  </blockquote>
+</body>
+</html>

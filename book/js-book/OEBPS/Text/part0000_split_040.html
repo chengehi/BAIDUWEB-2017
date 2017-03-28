@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h1 class="calibre1" id="nav_point_30">第5章　引用类型</h1>
+
+  <p class="calibre2"><strong class="calibre3">本章内容</strong></p>
+
+  <ul class="calibre16">
+    <li class="calibre12">使用对象</li>
+
+    <li class="calibre12">创建并操作数组</li>
+
+    <li class="calibre12">理解基本的JavaScript类型</li>
+
+    <li class="calibre12">使用基本类型和基本包装类型 　</li>
+  </ul>
+
+  <p class="calibre2">引用类型的值（对象）是<strong class="calibre3">引用类型</strong>的一个实例。在ECMAScript中，<strong class="calibre3">引用类型</strong>是一种数据结构，用于将数据和功能组织在一起。它也常被称为<strong class="calibre3">类</strong>，但这种称呼并不妥当。尽管ECMAScript从技术上讲是一门面向对象的语言，但它不具备传统的面向对象语言所支持的类和接口等基本结构。引用类型有时候也被称为<strong class="calibre3">对象定义</strong>，因为它们描述的是一类对象所具有的属性和方法。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 虽然引用类型与类看起来相似，但它们并不是相同的概念。为避免混淆，本书将不使用类这个概念。</p>
+  </blockquote>
+
+  <p class="calibre2">如前所述，对象是某个特定引用类型的<strong class="calibre3">实例</strong>。新对象是使用<code class="calibre15">new</code>操作符后跟一个<strong class="calibre3">构造函数</strong>来创建的。构造函数本身就是一个函数，只不过该函数是出于创建新对象的目的而定义的。请看下面这行代码：</p>
+  <pre class="calibre18"><code class="calibre15">var person = new Object(); 
+</code></pre>
+
+  <p class="calibre2">这行代码创建了<code class="calibre15">Object</code>引用类型的一个新实例，然后把该实例保存在了变量<code class="calibre15">person</code>中。使用的构造函数是<code class="calibre15">Object</code>，它只为新对象定义了默认的属性和方法。ECMAScript提供了很多原生引用类型（例如<code class="calibre15">Object</code>），以便开发人员用以实现常见的计算任务。</p>
+</body>
+</html>

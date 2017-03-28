@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_164">23.2　应用缓存</h2>
+
+  <p class="calibre2">HTML5的<strong class="calibre3">应用缓存</strong>（application cache），或者简称为appcache，是专门为开发离线Web应用而设计的。Appcache就是从浏览器的缓存中分出来的一块缓存区。要想在这个缓存中保存数据，可以使用一个<strong class="calibre3">描述文件</strong>（manifest file），列出要下载和缓存的资源。下面是一个简单的描述文件示例。</p>
+  <pre class="calibre18"><code class="calibre15">CACHE MANIFEST
+#Comment
+
+file.js
+file.css
+</code></pre>
+
+  <p class="calibre2">在最简单的情况下，描述文件中列出的都是需要下载的资源，以备离线时使用。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 设置描述文件的选项非常多，本书不打算详细解释每一个选项。要了解这些选项，推荐读者阅读HTML5Doctor中的文章“Go offline with application cache”，网址为<a class="calibre6" href="http://html5doctor.com/go-offline-with-application-cache">http://html5doctor.com/go-offline-with-application-cache</a>。</p>
+  </blockquote>
+
+  <p class="calibre2">要将描述文件与页面关联起来，可以在<code class="calibre15">&lt;html&gt;</code>中的<code class="calibre15">manifest</code>属性中指定这个文件的路径，例如：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;html manifest="/offline.manifest"&gt;
+</code></pre>
+
+  <p class="calibre2">以上代码告诉页面，<code class="calibre15">/offline.manifest</code>中包含着描述文件。这个文件的MIME类型必须是<code class="calibre15">text/cache-manifest</code><sup class="calibre13">1</sup>。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><sup class="calibre13">1</sup> 描述文件的扩展名以前推荐用manifest，但现在推荐的是appcache。</p>
+  </blockquote>
+
+  <p class="calibre2">虽然应用缓存的意图是确保离线时资源可用，但也有相应的JavaScript API让你知道它都在做什么。这个API的核心是<code class="calibre15">applicationCache</code>对象，这个对象有一个<code class="calibre15">status</code>属性，属性的值是常量，表示应用缓存的如下当前状态。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">0：无缓存，即没有与页面相关的应用缓存。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">1：闲置，即应用缓存未得到更新。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">2：检查中，即正在下载描述文件并检查更新。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">3：下载中，即应用缓存正在下载描述文件中指定的资源。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">4：更新完成，即应用缓存已经更新了资源，而且所有资源都已下载完毕，可以通过<code class="calibre15">swapCache()</code>来使用了。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">5：废弃，即应用缓存的描述文件已经不存在了，因此页面无法再访问应用缓存。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">应用缓存还有很多相关的事件，表示其状态的改变。以下是这些事件。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">checking</code>：在浏览器为应用缓存查找更新时触发。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">error</code>：在检查更新或下载资源期间发生错误时触发。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">noupdate</code>：在检查描述文件发现文件无变化时触发。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">downloading</code>：在开始下载应用缓存资源时触发。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">progress</code>：在文件下载应用缓存的过程中持续不断地触发。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">updateready</code>：在页面新的应用缓存下载完毕且可以通过<code class="calibre15">swapCache()</code>使用时触发。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">cached</code>：在应用缓存完整可用时触发。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">一般来讲，这些事件会随着页面加载按上述顺序依次触发。不过，通过调用<code class="calibre15">update()</code>方法也可以手工干预，让应用缓存为检查更新而触发上述事件。</p>
+  <pre class="calibre18"><code class="calibre15">applicationCache.update();
+</code></pre>
+
+  <p class="calibre2"><code class="calibre15">update()</code>一经调用，应用缓存就会去检查描述文件是否更新（触发<code class="calibre15">checking</code>事件），然后就像页面刚刚加载一样，继续执行后续操作。如果触发了<code class="calibre15">cached</code>事件，就说明应用缓存已经准备就绪，不会再发生其他操作了。如果触发了<code class="calibre15">updateready</code>事件，则说明新版本的应用缓存已经可用，而此时你需要调用<code class="calibre15">swapCache()</code>来启用新应用缓存。</p>
+  <pre class="calibre18"><code class="calibre15">EventUtil.addHandler(applicationCache, "updateready", function(){
+    applicationCache.swapCache();
+}); 
+</code></pre>
+
+  <p class="calibre2">支持HTML5应用缓存的浏览器有Firefox 3+、Safari 4+、Opera 10.6、Chrome、iOS 3.2+版Safari及Android版WebKit。在Firefox 4及之前版本中调用<code class="calibre15">swapCache()</code>会抛出错误。</p>
+</body>
+</html>

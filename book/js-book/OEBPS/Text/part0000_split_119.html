@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_131">17.5　小结</h2>
+
+  <p class="calibre2">错误处理对于今天复杂的Web应用程序开发而言至关重要。不能提前预测到可能发生的错误，不能提前采取恢复策略，可能导致较差的用户体验，最终引发用户不满。多数浏览器在默认情况下都不会向用户报告错误，因此在开发和调试期间需要启用浏览器的错误报告功能。然而，在投入运行的产品代码中，则不应该再有诸如此类的错误报告出现。</p>
+
+  <p class="calibre2">下面是几种避免浏览器响应JavaScript错误的方法。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">在可能发生错误的地方使用<code class="calibre15">try-catch</code>语句，这样你还有机会以适当的方式对错误给出响应，而不必沿用浏览器处理错误的机制。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">使用<code class="calibre15">window.onerror</code>事件处理程序，这种方式可以接受<code class="calibre15">try-catch</code>不能处理的所有错误（仅限于IE、Firefox和Chrome）。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">另外，对任何Web应用程序都应该分析可能的错误来源，并制定处理错误的方案。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">首先，必须要明确什么是致命错误，什么是非致命错误。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">其次，再分析代码，以判断最可能发生的错误。JavaScript中发生错误的主要原因如下。</p>
+
+      <ul class="calibre33">
+        <li class="calibre12">
+          <p class="calibre2">类型转换</p>
+        </li>
+
+        <li class="calibre12">
+          <p class="calibre2">未充分检测数据类型</p>
+        </li>
+
+        <li class="calibre12">
+          <p class="calibre2">发送给服务器或从服务器接收到的数据有错误</p>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <p class="calibre2">IE、Firefox、Chrome、Opera和Safari都有JavaScript调试器，有的是内置的，有的是以需要下载的扩展形式存在的。这些调试器都支持设置断点、控制代码执行及在运行时检测变量的值。</p>
+
+  <p class="calibre5" id="calibre_pb_162" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

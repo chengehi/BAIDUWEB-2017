@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_178">25.2　Page Visibility API</h2>
+
+  <p class="calibre2">不知道用户是不是正在与页面交互，这是困扰广大Web开发人员的一个主要问题。如果页面最小化了或者隐藏在了其他标签页后面，那么有些功能是可以停下来的，比如轮询服务器或者某些动画效果。而Page Visibility API（页面可见性API）就是为了让开发人员知道页面是否对用户可见而推出的。</p>
+
+  <p class="calibre2">这个API本身非常简单，由以下三部分组成。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">document.hidden</code>：表示页面是否隐藏的布尔值。页面隐藏包括页面在后台标签页中或者浏览器最小化。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">document.visibilityState</code>：表示下列4个可能状态的值。</p>
+
+      <ul class="calibre33">
+        <li class="calibre12">
+          <p class="calibre2">页面在后台标签页中或浏览器最小化。</p>
+        </li>
+
+        <li class="calibre12">
+          <p class="calibre2">页面在前台标签页中。</p>
+        </li>
+
+        <li class="calibre12">
+          <p class="calibre2">实际的页面已经隐藏，但用户可以看到页面的预览（就像在Windows 7中，用户把鼠标移动到任务栏的图标上，就可以显示浏览器中当前页面的预览）。</p>
+        </li>
+
+        <li class="calibre12">
+          <p class="calibre2">页面在屏幕外执行预渲染处理。</p>
+        </li>
+      </ul>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">visibilitychange</code>事件：当文档从可见变为不可见或从不可见变为可见时，触发该事件。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">在编写本书时，只有IE10和Chrome支持Page Visibility API。IE的版本是在每个属性或事件前面加上ms前缀，而Chrome则是加上webkit前缀。因此<code class="calibre15">document.hidden</code>在IE的实现中就是<code class="calibre15">document.msHidden</code>，而在Chrome的实现中则是<code class="calibre15">document.webkitHidden</code>。检查浏览器是否支持这个API的最佳方式如下：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">function isHiddenSupported(){
+    return typeof (document.hidden || document.msHidden ||
+                   document.webkitHidden) != "undefined";
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">PageVisibilityAPIExample01.htm</i></p>
+
+  <p class="calibre2">类似地，使用同样的模式可以检测页面是否隐藏：</p>
+  <pre class="calibre18"><code class="calibre15">if (document.hidden || document.msHidden || document.webKitHidden){
+    //页面隐藏了
+} else {
+    //页面未隐藏
+} 
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">PageVisibilityAPIExample01.htm</i></p>
+
+  <p class="calibre2">注意，以上代码在不支持该API的浏览器中会提示页面未隐藏。这是Page Visibility API有意设计的结果，目的是为了向后兼容。</p>
+
+  <p class="calibre2">为了在页面从可见变为不可见或从不可见变为可见时收到通知，可以侦听<code class="calibre15">visibilitychange</code>事件。在IE中，这个事件叫<code class="calibre15">msvisibilitychange</code>，而在Chrome中这个事件叫<code class="calibre15">webkitvisibilitychange</code>。为了在两个浏览器中都能侦听到该事件，可以像下面的例子一样，为每个事件都指定相同的事件处理程序：</p>
+  <pre class="calibre18"><code class="calibre15">function handleVisibilityChange(){
+    var output = document.getElementById("output"),
+        msg; 
+
+    if (document.hidden || document.msHidden || document.webkitHidden){
+        msg = "Page is now hidden. " + (new Date()) + "&lt;br&gt;";
+    } else {
+        msg = "Page is now visible. " + (new Date()) + "&lt;br&gt;";
+    }
+
+    output.innerHTML += msg;
+
+}
+
+//要为两个事件都指定事件处理程序
+EventUtil.addHandler(document, "msvisibilitychange", handleVisibilityChange);
+EventUtil.addHandler(document, "webkitvisibilitychange", handleVisibilityChange);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">PageVisibilityAPIExample01.htm</i></p>
+
+  <p class="calibre2">以上代码同时适用于IE和Chrome。而且，API的这一部分已经相对稳定，因此在实际的Web开发中也可以使用以上代码。</p>
+
+  <p class="calibre2">关于这一API的实现，差异最大的是<code class="calibre15">document.visibilityState</code>属性。IE10 PR 2的<code class="calibre15">document.msVisibilityState</code>是一个表示如下4种状态的数字值。</p>
+
+  <ol class="calibre11">
+    <li class="calibre12" value="1">
+      <p class="calibre2"><code class="calibre15">document.MS_PAGE_HIDDEN</code> (0)</p>
+    </li>
+
+    <li class="calibre12" value="2">
+      <p class="calibre2"><code class="calibre15">document.MS_PAGE_VISIBLE</code> (1)</p>
+    </li>
+
+    <li class="calibre12" value="3">
+      <p class="calibre2"><code class="calibre15">document.MS_PAGE_PREVIEW</code> (2)</p>
+    </li>
+
+    <li class="calibre12" value="4">
+      <p class="calibre2"><code class="calibre15">document.MS_PAGE_PRERENDER</code> (3)</p>
+    </li>
+  </ol>
+
+  <p class="calibre2">在Chrome中，<code class="calibre15">document.webkitVisibilityState</code>可能是下列3个字符串值：</p>
+
+  <ol class="calibre11">
+    <li class="calibre12" value="1">
+      <p class="calibre2"><code class="calibre15">"hidden"</code></p>
+    </li>
+
+    <li class="calibre12" value="2">
+      <p class="calibre2"><code class="calibre15">"visible"</code></p>
+    </li>
+
+    <li class="calibre12" value="3">
+      <p class="calibre2"><code class="calibre15">"prerender"</code></p>
+    </li>
+  </ol>
+
+  <p class="calibre2">Chrome并没有给每个状态定义对应的常量，但最终的实现很可能会使用常量。</p>
+
+  <p class="calibre2">由于存在以上差异，所以建议大家先不要完全依赖带前缀的<code class="calibre15">document.visibilityState</code>，最好只使用<code class="calibre15">document.hidden</code>属性。</p>
+</body>
+</html>

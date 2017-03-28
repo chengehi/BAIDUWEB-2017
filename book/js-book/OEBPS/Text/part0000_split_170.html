@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_230"><strong class="calibre10">A.2　函数</strong></h2>
+
+  <p class="calibre2">大多数代码都是以函数方式编写的，因此Harmony从几个方面改进了函数，使其更便于使用。与Harmony中其他部分类似，对函数的改进也集中在开发人员和实现人员共同面临的难题上。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_303"><strong class="calibre10">A.2.1　剩余参数与分布参数</strong></h3>
+
+  <p class="calibre2">Harmony中不再有<code class="calibre15">arguments</code>对象，因此也就无法通过它来读取到未声明的参数。不过，使用剩余参数（rest arguments）语法，也能表示你期待给函数传入可变数量的参数。剩余参数的语法形式是三个点后跟一个标识符。使用这种语法可以定义可能会传进来的更多参数，然后把它们收集到一个数组中。来看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">function sum(num1, num2, ...nums){
+    var result = num1 + num2;
+    for (let i=0, len=nums.length; i &lt; len; i++){
+        result += nums[i];
+    } 
+    return result;
+}
+
+var result = sum(1, 2, 3, 4, 5, 6);
+</code></pre>
+
+  <p class="calibre2">以上代码定义了一个<code class="calibre15">sum()</code>函数，接收至少两个参数。这个函数还能接收更多参数，而其余参数都将保存在<code class="calibre15">nums</code>数组中。与原来的<code class="calibre15">arguments</code>对象不同，剩余参数都保存在<code class="calibre15">Array</code>的一个实例中，因此可以使用任何数组方法来操作它们。另外，即使并没有多余的参数传入函数，剩余参数对象也是<code class="calibre15">Array</code>的实例。</p>
+
+  <p class="calibre2">与剩余参数紧密相关的另一种参数语法是分布参数（spread arguments）。通过分布参数，可以向函数中传入一个数组，然后数组中的元素会映射到函数的每个参数上。分布参数的语法形式与剩余参数的语法相同，就是在值的前面加三个点。唯一的区别是分布参数在调用函数的时候使用，而剩余参数在定义函数的时候使用。比如，我们可以不给sum()函数一个一个地传入参数，而是传入分布参数：</p>
+  <pre class="calibre18"><code class="calibre15">var result = sum(...[1, 2, 3, 4, 5, 6]);
+</code></pre>
+
+  <p class="calibre2">在这里，我们将一个数组作为分布参数传给了<code class="calibre15">sum()</code>函数。以上代码在功能上与下面这行代码等价：</p>
+  <pre class="calibre18"><code class="calibre15">var result = sum.apply(this, [1, 2, 3, 4, 5, 6]);
+</code></pre>
+
+  <h3 class="calibre22" id="sigil_toc_id_304"><strong class="calibre10">A.2.2　默认参数值</strong></h3>
+
+  <p class="calibre2">ECMAScript函数中的所有参数都是可选的，因为实现不会检查传入的参数数量。不过，除了手工检查传入了哪个参数之外，你还可以为参数指定默认值。如果调用函数时没有传入该参数，那么该参数就会使用默认值。</p>
+
+  <p class="calibre2">要为参数指定默认值，可以在参数名后面直接加上等于号和默认值，就像下面这样：</p>
+  <pre class="calibre18">function sum(num1, <b class="calibre3">num2=0){</b>
+    return num1 + num2; 
+}
+
+var result1 = sum(5);
+var result2 = sum(5, 5);
+</pre>
+
+  <p class="calibre2">这个<code class="calibre15">sum()</code>函数接收两个参数，但第二个参数是可选的，因为它的默认值为0。使用可选参数的好处是开发人员不用再去检查是否给某个参数传入了值，如果没有的话就使用某个特定的值。默认参数值帮你解除了这个困扰。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_305"><strong class="calibre10">A.2.3　生成器</strong></h3>
+
+  <p class="calibre2">所谓<strong class="calibre3">生成器</strong>，其实就是一个对象，它每次能生成一系列值中的一个。对Harmony而言，要创建生成器，可以让函数通过<code class="calibre15">yield</code>操作符返回某个特殊的值。对于使用<code class="calibre15">yield</code>操作符返回值的函数，调用它时就会创建并返回一个新的<code class="calibre15">Generator</code>实例。然后，在这个实例上调用<code class="calibre15">next()</code>方法就能取得生成器的第一个值。此时，执行的是原来的函数，但执行流到<code class="calibre15">yield</code>语句就会停止，只返回特定的值。从这个角度看，<code class="calibre15">yield</code>与<code class="calibre15">return</code>很相似。如果再次调用<code class="calibre15">next()</code>方法，原来函数中位于<code class="calibre15">yield</code>语句后的代码会继续执行，直到再次遇见<code class="calibre15">yield</code>语句时停止执行，此时再返回一个新值。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">function myNumbers(){
+    for (var i=0; i &lt; 10; i++){
+        yield i * 2;
+    } 
+}
+
+var generator = myNumbers();
+
+try {
+    while(true){
+        document.write(generator.next() + "&lt;br /&gt;");
+    }
+} catch(ex){
+    //有意没有写代码
+} finally {
+    generator.close();
+}
+</code></pre>
+
+  <p class="calibre2">调用<code class="calibre15">myNumbers()</code>函数后，会得到一个生成器。<code class="calibre15">myNumbers()</code>函数本身非常简单，包含一个每次循环都产生一个值的<code class="calibre15">for</code>循环。每次调用<code class="calibre15">next()</code>方法都会执行一次<code class="calibre15">for</code>循环，然后返回下一个值。第一个值是0，第二个值是2，第三个值是4，依此类推。在<code class="calibre15">myNumbers()</code>函数完成退出而没有执行<code class="calibre15">yield</code>语句时（最后一次循环判断<code class="calibre15">i</code>不小于10的时候），生成器会抛出<code class="calibre15">StopIteration</code>错误。因此，为了输出生成器能产生的所有数值，这里用一个<code class="calibre15">try-catch</code>结构包装了一个<code class="calibre15">while</code>循环，以避免出错时中断代码执行。</p>
+
+  <p class="calibre2">如果不再需要某个生成器，最好是调用它的<code class="calibre15">close()</code>方法。这样会执行原始函数的其他部分，包括<code class="calibre15">try-catch</code>相关的<code class="calibre15">finally</code>语句块。</p>
+
+  <p class="calibre2">在需要一系列值，而每一个值又与前一个值存在某种关系的情况下，可以使用生成器。</p>
+</body>
+</html>

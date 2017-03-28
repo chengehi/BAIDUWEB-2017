@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_116">15.1　基本用法</h2>
+
+  <p class="calibre2">要使用<code class="calibre15">&lt;canvas&gt;</code>元素，必须先设置其<code class="calibre15">width</code>和<code class="calibre15">height</code>属性，指定可以绘图的区域大小。出现在开始和结束标签中的内容是后备信息，如果浏览器不支持<code class="calibre15">&lt;canvas&gt;</code>元素，就会显示这些信息。下面就是<code class="calibre15">&lt;canvas&gt;</code>元素的例子。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;canvas id="drawing" width=" 200" height="200"&gt;A drawing of something.&lt;/canvas&gt;
+</code></pre>
+
+  <p class="calibre2">与其他元素一样，<code class="calibre15">&lt;canvas&gt;</code>元素对应的DOM元素对象也有<code class="calibre15">width</code>和<code class="calibre15">height</code>属性，可以随意修改。而且，也能通过CSS为该元素添加样式，如果不添加任何样式或者不绘制任何图形，在页面中是看不到该元素的。</p>
+
+  <p class="calibre2">要在这块画布（canvas）上绘图，需要取得绘图上下文。而取得绘图上下文对象的引用，需要调用<code class="calibre15">getContext()</code>方法并传入上下文的名字。传入<code class="calibre15">"2d"</code>，就可以取得2D上下文对象。</p>
+  <pre class="calibre18"><code class="calibre15">var drawing = document.getElementById("drawing");
+
+//确定浏览器支持&lt;canvas&gt;元素
+if (drawing.getContext){
+var context = drawing.getContext("2d");
+//更多代码
+}
+</code></pre>
+
+  <p class="calibre2">在使用<code class="calibre15">&lt;canvas&gt;</code>元素之前，首先要检测<code class="calibre15">getContext()</code>方法是否存在，这一步非常重要。有些浏览器会为HTML规范之外的元素创建默认的HTML元素对象<sup class="calibre13">1</sup>。在这种情况下，即使<code class="calibre15">drawing</code>变量中保存着一个有效的元素引用，也检测不到<code class="calibre15">getContext()</code>方法。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><sup class="calibre13">1</sup> 假设你想在Firefox 3中使用<code class="calibre15">&lt;canvas&gt;</code>元素。虽然浏览器会为该标签创建一个DOM对象，而且也可以引用它，但这个对象中并没有<code class="calibre15">getContext()</code>方法。（据作者回复）</p>
+  </blockquote>
+
+  <p class="calibre2">使用<code class="calibre15">toDataURL()</code>方法，可以导出在<code class="calibre15">&lt;canvas&gt;</code>元素上绘制的图像。这个方法接受一个参数，即图像的MIME类型格式，而且适合用于创建图像的任何上下文。比如，要取得画布中的一幅PNG格式的图像，可以使用以下代码。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var drawing = document.getElementById("drawing"); 
+
+//确定浏览器支持&lt;canvas&gt;元素
+if (drawing.getContext){
+
+    <b class="calibre3">//取得图像的数据URI</b>
+    <b class="calibre3">var imgURI = drawing.toDataURL("image/png");</b>
+
+    <b class="calibre3">//显示图像</b>
+    <b class="calibre3">var image = document.createElement("img");</b>
+    <b class="calibre3">image.src = imgURI;</b>
+    <b class="calibre3">document.body.appendChild(image);</b>
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">2DDataUrlExample01.htm</i></p>
+
+  <p class="calibre2">默认情况下，浏览器会将图像编码为PNG格式（除非另行指定）。Firefox和Opera也支持基于<code class="calibre15">"image/jpeg"</code>参数的JPEG编码格式。由于这个方法是后来才追加的，所以支持<code class="calibre15">&lt;canvas&gt;</code>的浏览器也是在较新的版本中才加入了对它的支持，比如IE9、Firefox 3.5和Opera 10。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 如果绘制到画布上的图像源自不同的域，<code class="calibre15">toDataURL()</code>方法会抛出错误。本章后面还将介绍更多相关内容。</p>
+  </blockquote>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_140">19.3　其他变化</h2>
+
+  <p class="calibre2">为了与ECMAScript做到无缝集成，E4X也对语言基础进行了一些修改。其中之一就是引入了<code class="calibre15">for-each-in</code>循环，以便迭代遍历每一个属性并返回属性的值，如下面的例子所示。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var employees = &lt;employees&gt;
+                    &lt;employee position="Software Engineer"&gt;
+                        &lt;name&gt;Nicholas C. Zakas&lt;/name&gt;
+                    &lt;/employee&gt;
+                    &lt;employee position="Salesperson"&gt;
+                        &lt;name&gt;Jim Smith&lt;/name&gt;
+                    &lt;/employee&gt;
+                &lt;/employees&gt;;
+for each (var child in employees){
+    alert(child.toXMLString());
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ForEachInExample01.htm</i></p>
+
+  <p class="calibre2">在这个例子的<code class="calibre15">for-each-in</code>循环中，<code class="calibre15">&lt;employees/&gt;</code>的每个子节点会依次被赋值给<code class="calibre15">child</code>变量，其中包括注释、处理指令和/或文本节点。要想返回特性节点，则需要对一个由特性节点组成的<code class="calibre15">XMLList</code>对象进行操作，如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">for each (var attribute in employees.@*){ //遍历特性
+    alert(attribute);
+}
+</code></pre>
+
+  <p class="calibre2">虽然<code class="calibre15">for-each-in</code>循环是在E4X中定义的，但这个语句也可以用于常规的数组和对象，例如：</p>
+  <pre class="calibre18"><code class="calibre15">var colors = ["red","green","blue"];
+for each(var color in colors){
+    alert(color);
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">ForEachInExample01.htm</i></p>
+
+  <p class="calibre2">对于数组，<code class="calibre15">for-each-in</code>循环会返回数组中的每一项。对于非<code class="calibre15">XML</code>对象，这个循环返回对象每个属性的值。</p>
+
+  <p class="calibre2">E4X还添加了一个全局函数，名叫<code class="calibre15">isXMLName()</code>。这个函数接受一个字符串，并在这个字符串是元素或特性的有效内部名称的情况下返回<code class="calibre15">true</code>。在使用未知字符串构建XML数据结构时，这个函数可以为开发人员提供方便。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">alert(isXMLName("color"));           //true
+alert(isXMLName("hello world"));     //false
+</code></pre>
+
+  <p class="calibre2">如果你不确定某个字符串的来源，而又需要将该字符串用作一个内部名称，那么最好在使用它之前先通过<code class="calibre15">isXMLName()</code>检测一下是否有效，以防发生错误。</p>
+
+  <p class="calibre2">E4X对标准ECMAScript的最后一个修改是<code class="calibre15">typeof</code>操作符。在对<code class="calibre15">XML</code>对象或<code class="calibre15">XMLList</code>对象使用这个操作符时，<code class="calibre15">typeof</code>返回字符串<code class="calibre15">"xml"</code>。但在对其他对象使用这个操作符时，返回的都是<code class="calibre15">"object"</code>，例如：</p>
+  <pre class="calibre18"><code class="calibre15">var xml = new XML();
+var list = new XMLList();
+var object = {};
+
+alert(typeof xml);  //"xml"
+alert(typeof list);    //"xml"
+alert(typeof object);  //"object"
+</code></pre>
+
+  <p class="calibre2">多数情况下，都没有必要区分<code class="calibre15">XML</code>和<code class="calibre15">XMLList</code>对象。在E4X中，这两个对象都被看成是基本数据类型，因而也无法通过<code class="calibre15">instanceof</code>操作符来将它们区分开来。</p>
+</body>
+</html>

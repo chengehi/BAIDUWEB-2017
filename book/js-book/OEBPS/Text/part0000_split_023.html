@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_13">2.3　文档模式</h2>
+
+  <p class="calibre2">IE5.5引入了文档模式的概念，而这个概念是通过使用文档类型（doctype）切换实现的。最初的两种文档模式是：<strong class="calibre3">混杂模式</strong>（quirks mode）<sup class="calibre13">2</sup>和<strong class="calibre3">标准模式</strong>（standards mode）。混杂模式会让IE的行为与（包含非标准特性的）IE5相同，而标准模式则让IE的行为更接近标准行为。虽然这两种模式主要影响CSS内容的呈现，但在某些情况下也会影响到JavaScript的解释执行。本书将在必要时再讨论这些因文档模式而影响JavaScript执行的情况。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><sup class="calibre13">2</sup> 这里quirks mode的译法源自Firefox 3.5.5中文版。</p>
+  </blockquote>
+
+  <p class="calibre2">在IE引入文档模式的概念后，其他浏览器也纷纷效仿。在此之后，IE又提出一种所谓的<strong class="calibre3">准标准模式</strong>（almost standards mode）。这种模式下的浏览器特性有很多都是符合标准的，但也不尽然。不标准的地方主要体现在处理图片间隙的时候（在表格中使用图片时问题最明显）。</p>
+
+  <p class="calibre2">如果在文档开始处没有发现文档类型声明，则所有浏览器都会默认开启混杂模式。但采用混杂模式不是什么值得推荐的做法，因为不同浏览器在这种模式下的行为差异非常大，如果不使用某些hack技术，跨浏览器的行为根本就没有一致性可言。</p>
+
+  <p class="calibre2">对于标准模式，可以通过使用下面任何一种文档类型来开启：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;!-- HTML 4.01 严格型 --&gt;
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd"&gt;
+
+&lt;!-- XHTML 1.0 严格型 --&gt;
+&lt;!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+
+&lt;!-- HTML 5 --&gt;
+&lt;!DOCTYPE html&gt;
+</code></pre>
+
+  <p class="calibre2">而对于准标准模式，则可以通过使用过渡型（transitional）或框架集型（frameset）文档类型来触发，如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;!-- HTML 4.01 过渡型 --&gt;
+&lt;!DOCTYPE HTML PUBLIC
+"-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd"&gt;
+
+&lt;!-- HTML 4.01 框架集型 --&gt;
+&lt;!DOCTYPE HTML PUBLIC
+"-//W3C//DTD HTML 4.01 Frameset//EN"
+"http://www.w3.org/TR/html4/frameset.dtd"&gt;
+
+&lt;!-- XHTML 1.0 过渡型 --&gt;
+&lt;!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+
+&lt;!-- XHTML 1.0 框架集型 --&gt;
+&lt; !DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Frameset//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"&gt;
+</code></pre>
+
+  <p class="calibre2">准标准模式与标准模式非常接近，它们的差异几乎可以忽略不计。因此，当有人提到“标准模式”时，有可能是指这两种模式中的任何一种。而且，检测文档模式（本书后面将会讨论）时也不会发现什么不同。本书后面提到标准模式时，指的是除混杂模式之外的其他模式。</p>
+</body>
+</html>

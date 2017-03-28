@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_82">11.3　HTML5</h2>
+
+  <p class="calibre2">对于传统HTML而言，HTML5是一个叛逆。所有之前的版本对JavaScript接口的描述都不过三言两语，主要篇幅都用于定义标记，与JavaScript相关的内容一概交由DOM规范去定义。</p>
+
+  <p class="calibre2">而HTML5规范则围绕如何使用新增标记定义了大量JavaScript API。其中一些API与DOM重叠，定义了浏览器应该支持的DOM扩展。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 因为HTML5涉及的面非常广，本节只讨论与DOM节点相关的内容。HTML5的其他相关内容将在本书其他章节中穿插介绍。</p>
+  </blockquote>
+
+  <h3 class="calibre22" id="sigil_toc_id_120"><strong class="calibre10">11.3.1　与类相关的扩充</strong></h3>
+
+  <p class="calibre2">HTML4在Web开发领域得到广泛采用后导致了一个很大的变化，即<code class="calibre15">class</code>属性用得越来越多，一方面可以通过它为元素添加样式，另一方面还可以用它表示元素的语义。于是，自然就有很多JavaScript代码会来操作CSS类，比如动态修改类或者搜索文档中具有给定类或给定的一组类的元素，等等。为了让开发人员适应并增加对<code class="calibre15">class</code>属性的新认识，HTML5新增了很多API，致力于简化CSS类的用法。</p>
+
+  <p class="calibre2">1. <strong class="calibre3"><code class="calibre15">getElementsByClassName()</code>方法</strong></p>
+
+  <p class="calibre2">HTML5添加的<code class="calibre15">getElementsByClassName()</code>方法是最受人欢迎的一个方法，可以通过<code class="calibre15">document</code>对象及所有HTML元素调用该方法。这个方法最早出现在JavaScript库中，是通过既有的DOM功能实现的，而原生的实现具有极大的性能优势。</p>
+
+  <p class="calibre2"><code class="calibre15">getElementsByClassName()</code>方法接收一个参数，即一个包含一或多个类名的字符串，返回带有指定类的所有元素的<code class="calibre15">NodeList</code>。传入多个类名时，类名的先后顺序不重要。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">//取得所有类中包含"username"和"current"的元素，类名的先后顺序无所谓
+var allCurrentUsernames = document.getElementsByClassName("username current");
+
+//取得ID为"myDiv"的元素中带有类名"selected"的所有元素
+var selected = document.getElementById("myDiv").getElementsByClassName("selected");
+</code></pre>
+
+  <p class="calibre2">调用这个方法时，只有位于调用元素子树中的元素才会返回。在<code class="calibre15">document</code>对象上调用<code class="calibre15">getElementsByClassName()</code>始终会返回与类名匹配的所有元素，在元素上调用该方法就只会返回后代元素中匹配的元素。</p>
+
+  <p class="calibre2">使用这个方法可以更方便地为带有某些类的元素添加事件处理程序，从而不必再局限于使用ID或标签名。不过别忘了，因为返回的对象是<code class="calibre15">NodeList</code>，所以使用这个方法与使用<code class="calibre15">getElementsByTagName()</code>以及其他返回<code class="calibre15">NodeList</code>的DOM方法都具有同样的性能问题。</p>
+
+  <p class="calibre2">支持<code class="calibre15">getElementsByClassName()</code>方法的浏览器有IE 9+、Firefox 3+、Safari 3.1+、Chrome和Opera 9.5+。</p>
+
+  <p class="calibre2">2. <strong class="calibre3"><code class="calibre15">classList</code>属性</strong></p>
+
+  <p class="calibre2">在操作类名时，需要通过<code class="calibre15">className</code>属性添加、删除和替换类名。因为<code class="calibre15">className</code>中是一个字符串，所以即使只修改字符串一部分，也必须每次都设置整个字符串的值。比如，以下面的HTML代码为例。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;div class="bd user disabled"&gt;...&lt;/div&gt;
+</code></pre>
+
+  <p class="calibre2">这个<code class="calibre15">&lt;div&gt;</code>元素一共有三个类名。要从中删除一个类名，需要把这三个类名拆开，删除不想要的那个，然后再把其他类名拼成一个新字符串。请看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">//删除"user"类
+
+//首先，取得类名字符串并拆分成数组
+var classNames = div.className.split(/\s+/);
+
+//找到要删的类名
+var pos = -1, 
+    i,
+    len;
+for (i=0, len=classNames.length; i &lt; len; i++){
+    if (classNames[i] == "user"){
+        pos = i;
+        break;
+    }
+}
+
+//删除类名
+classNames.splice(i,1);
+
+//把剩下的类名拼成字符串并重新设置
+div.className = classNames.join(" ");
+</code></pre>
+
+  <p class="calibre2">为了从<code class="calibre15">&lt;div&gt;</code>元素的<code class="calibre15">class</code>属性中删除<code class="calibre15">"user"</code>，以上这些代码都是必需的。必须得通过类似的算法替换类名并确认元素中是否包含该类名。添加类名可以通过拼接字符串完成，但必须要通过检测确定不会多次添加相同的类名。很多JavaScript库都实现了这个方法，以简化这些操作。</p>
+
+  <p class="calibre2">HTML5新增了一种操作类名的方式，可以让操作更简单也更安全，那就是为所有元素添加<code class="calibre15">classList</code>属性。这个<code class="calibre15">classList</code>属性是新集合类型<code class="calibre15">DOMTokenList</code>的实例。与其他DOM集合类似，<code class="calibre15">DOMTokenList</code>有一个表示自己包含多少元素的<code class="calibre15">length</code>属性，而要取得每个元素可以使用<code class="calibre15">item()</code>方法，也可以使用方括号语法。此外，这个新类型还定义如下方法。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">add(<em class="calibre7">value</em>)</code>：将给定的字符串值添加到列表中。如果值已经存在，就不添加了。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">contains(<em class="calibre7">value</em>)</code>：表示列表中是否存在给定的值，如果存在则返回<code class="calibre15">true</code>，否则返回<code class="calibre15">false</code>。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">remove(<em class="calibre7">value</em>)</code>：从列表中删除给定的字符串。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">toggle(<em class="calibre7">value</em>)</code>：如果列表中已经存在给定的值，删除它；如果列表中没有给定的值，添加它。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">这样，前面那么多行代码用下面这一行代码就可以代替了：</p>
+  <pre class="calibre18"><code class="calibre15">div.classList.remove("user");
+</code></pre>
+
+  <p class="calibre2">以上代码能够确保其他类名不受此次修改的影响。其他方法也能极大地减少类似基本操作的复杂性，如下面的例子所示。</p>
+  <pre class="calibre18"><code class="calibre15">//删除"disabled"类
+div.classList.remove("disabled");
+
+//添加"current"类
+div.classList.add("current");
+
+//切换"user"类
+div.classList.toggle("user");
+
+//确定元素中是否包含既定的类名
+if (div.classList.contains("bd") &amp;&amp; !div.classList.contains("disabled")){
+    //执行操作
+)
+
+//迭代类名
+for (var i=0, len=div.classList.length; i &lt; len; i++){
+    doSomething(div.classList[i]);
+}
+</code></pre>
+
+  <p class="calibre2">有了<code class="calibre15">classList</code>属性，除非你需要全部删除所有类名，或者完全重写元素的<code class="calibre15">class</code>属性，否则也就用不到<code class="calibre15">className</code>属性了。</p>
+
+  <p class="calibre2">支持<code class="calibre15">classList</code>属性的浏览器有Firefox 3.6+和Chrome。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_121"><strong class="calibre10">11.3.2　焦点管理</strong></h3>
+
+  <p class="calibre2">HTML5也添加了辅助管理DOM焦点的功能。首先就是<code class="calibre15">document.activeElement</code>属性，这个属性始终会引用DOM中当前获得了焦点的元素。元素获得焦点的方式有页面加载、用户输入（通常是通过按Tab键）和在代码中调用<code class="calibre15">focus()</code>方法。来看几个例子。</p>
+  <pre class="calibre18"><code class="calibre15">var button = document.getElementById("myButton");
+button.focus();
+alert(document.activeElement === button);   //true
+</code></pre>
+
+  <p class="calibre2">默认情况下，文档刚刚加载完成时，<code class="calibre15">document.activeElement</code>中保存的是<code class="calibre15">document.body</code>元素的引用。文档加载期间，<code class="calibre15">document.activeElement</code>的值为<code class="calibre15">null</code>。</p>
+
+  <p class="calibre2">另外就是新增了<code class="calibre15">document.hasFocus()</code>方法，这个方法用于确定文档是否获得了焦点。</p>
+  <pre class="calibre18"><code class="calibre15">var button = document.getElementById("myButton");
+button.focus();
+alert(document.hasFocus());  //true
+</code></pre>
+
+  <p class="calibre2">通过检测文档是否获得了焦点，可以知道用户是不是正在与页面交互。</p>
+
+  <p class="calibre2">查询文档获知哪个元素获得了焦点，以及确定文档是否获得了焦点，这两个功能最重要的用途是提高Web应用的无障碍性。无障碍Web应用的一个主要标志就是恰当的焦点管理，而确切地知道哪个元素获得了焦点是一个极大的进步，至少我们不用再像过去那样靠猜测了。</p>
+
+  <p class="calibre2">实现了这两个属性的浏览器的包括IE 4+、Firefox 3+、Safari 4+、Chrome和Opera 8+。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_122"><strong class="calibre10">11.3.3　<code class="calibre30">HTMLDocument</code>的变化</strong></h3>
+
+  <p class="calibre2">HTML5扩展了<code class="calibre15">HTMLDocument</code>，增加了新的功能。与HTML5中新增的其他DOM扩展类似，这些变化同样基于那些已经得到很多浏览器完美支持的专有扩展。所以，尽管这些扩展被写入标准的时间相对不长，但很多浏览器很早就已经支持这些功能了。</p>
+
+  <p class="calibre2">1. <strong class="calibre3"><code class="calibre15">readyState</code>属性</strong></p>
+
+  <p class="calibre2">IE4最早为<code class="calibre15">document</code>对象引入了<code class="calibre15">readyState</code>属性。然后，其他浏览器也都陆续添加这个属性，最终HTML5把这个属性纳入了标准当中。<code class="calibre15">Document</code>的<code class="calibre15">readyState</code>属性有两个可能的值：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">loading</code>，正在加载文档；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">complete</code>，已经加载完文档。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">使用<code class="calibre15">document.readyState</code>的最恰当方式，就是通过它来实现一个指示文档已经加载完成的指示器。在这个属性得到广泛支持之前，要实现这样一个指示器，必须借助<code class="calibre15">onload</code>事件处理程序设置一个标签，表明文档已经加载完毕。<code class="calibre15">document.readyState</code>属性的基本用法如下。</p>
+  <pre class="calibre18"><code class="calibre15">if (document.readyState == "complete"){ 
+    //执行操作
+}
+</code></pre>
+
+  <p class="calibre2">支持<code class="calibre15">readyState</code>属性的浏览器有IE4+、Firefox 3.6+、Safari、Chrome和Opera 9+。</p>
+
+  <p class="calibre2">2. <strong class="calibre3">兼容模式</strong></p>
+
+  <p class="calibre2">自从IE6开始区分渲染页面的模式是标准的还是混杂的，检测页面的兼容模式就成为浏览器的必要功能。IE为此给<code class="calibre15">document</code>添加了一个名为<code class="calibre15">compatMode</code>的属性，这个属性就是为了告诉开发人员浏览器采用了哪种渲染模式。就像下面例子中所展示的那样，在标准模式下，<code class="calibre15">document.compatMode</code>的值等于<code class="calibre15">"CSS1Compat"</code>，而在混杂模式下，<code class="calibre15">document.compatMode</code>的值等于<code class="calibre15">"BackCompat"</code>。</p>
+  <pre class="calibre18"><code class="calibre15">if (document.compatMode == "CSS1Compat"){
+    alert("Standards mode");
+} else {
+    alert("Quirks mode");
+}
+</code></pre>
+
+  <p class="calibre2">后来，陆续实现这个属性的浏览器有Firefox、Safari 3.1+、Opera和Chrome。最终，HTML5也把这个属性纳入标准，对其实现做出了明确规定。</p>
+
+  <p class="calibre2">3. <strong class="calibre3"><code class="calibre15">head</code>属性</strong></p>
+
+  <p class="calibre2">作为对<code class="calibre15">document.body</code>引用文档的<code class="calibre15">&lt;body&gt;</code>元素的补充，HTML5新增了<code class="calibre15">document.head</code>属性，引用文档的<code class="calibre15">&lt;head&gt;</code>元素。要引用文档的<code class="calibre15">&lt;head&gt;</code>元素，可以结合使用这个属性和另一种后备方法。</p>
+  <pre class="calibre18"><code class="calibre15">var head = document.head || document.getElementsByTagName("head")[0];
+</code></pre>
+
+  <p class="calibre2">如果可用，就使用<code class="calibre15">document.head</code>，否则仍然使用<code class="calibre15">getElementsByTagName()</code>方法。</p>
+
+  <p class="calibre2">实现<code class="calibre15">document.head</code>属性的浏览器包括Chrome和Safari 5。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_123"><strong class="calibre10">11.3.4　字符集属性</strong></h3>
+
+  <p class="calibre2">HTML5新增了几个与文档字符集有关的属性。其中，<code class="calibre15">charset</code>属性表示文档中实际使用的字符集，也可以用来指定新字符集。默认情况下，这个属性的值为<code class="calibre15">"UTF-16"</code>，但可以通过<code class="calibre15">&lt;meta&gt;</code>元素、响应头部或直接设置<code class="calibre15">charset</code>属性修改这个值。来看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">alert(document.charset); //"UTF-16"
+document.charset = "UTF-8";
+</code></pre>
+
+  <p class="calibre2">另一个属性是<code class="calibre15">defaultCharset</code>，表示根据默认浏览器及操作系统的设置，当前文档默认的字符集应该是什么。如果文档没有使用默认的字符集，那<code class="calibre15">charset</code>和<code class="calibre15">defaultCharset</code>属性的值可能会不一样，例如：</p>
+  <pre class="calibre18"><code class="calibre15">if (document.charset != document.defaultCharset){ 
+    alert("Custom character set being used.");
+}
+</code></pre>
+
+  <p class="calibre2">通过这两个属性可以得到文档使用的字符编码的具体信息，也能对字符编码进行准确地控制。运行适当的情况下，可以保证用户正常查看页面或使用应用。</p>
+
+  <p class="calibre2">支持<code class="calibre15">document.charset</code>属性的浏览器有IE、Firefox、Safari、Opera和Chrome。支持<code class="calibre15">document.defaultCharset</code>属性的浏览器有IE、Safari和Chrome。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_124"><strong class="calibre10">11.3.5　自定义数据属性</strong></h3>
+
+  <p class="calibre2">HTML5规定可以为元素添加非标准的属性，但要添加前缀<code class="calibre15">data-</code>，目的是为元素提供与渲染无关的信息，或者提供语义信息。这些属性可以任意添加、随便命名，只要以<code class="calibre15">data-</code>开头即可。来看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;div id="myDiv" data-appId="12345" data-myname="Nicholas"&gt;&lt;/div&gt;
+</code></pre>
+
+  <p class="calibre2">添加了自定义属性之后，可以通过元素的<code class="calibre15">dataset</code>属性来访问自定义属性的值。<code class="calibre15">dataset</code>属性的值是<code class="calibre15">DOMStringMap</code>的一个实例，也就是一个名值对儿的映射。在这个映射中，每个<code class="calibre15">data-name</code>形式的属性都会有一个对应的属性，只不过属性名没有<code class="calibre15">data-</code>前缀（比如，自定义属性是<code class="calibre15">data-myname</code>，那映射中对应的属性就是<code class="calibre15">myname</code>）。还是看一个例子吧。</p>
+  <pre class="calibre18"><code class="calibre15">//本例中使用的方法仅用于演示
+
+var div = document.getElementById("myDiv");
+
+//取得自定义属性的值
+var appId = div.dataset.appId;
+var myName = div.dataset.myname;
+
+//设置值
+div.dataset.appId = 23456;
+div.dataset.myname = "Michael";
+
+//有没有"myname"值呢？
+if (div.dataset.myname){
+    alert("Hello, " + div.dataset.myname);
+}
+</code></pre>
+
+  <p class="calibre2">如果需要给元素添加一些不可见的数据以便进行其他处理，那就要用到自定义数据属性。在跟踪链接或混搭应用中，通过自定义数据属性能方便地知道点击来自页面中的哪个部分。</p>
+
+  <p class="calibre2">在编写本书时，支持自定义数据属性的浏览器有Firefox 6+和Chrome。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_125"><strong class="calibre10">11.3.6　插入标记</strong></h3>
+
+  <p class="calibre2">虽然DOM为操作节点提供了细致入微的控制手段，但在需要给文档插入大量新HTML标记的情况下，通过DOM操作仍然非常麻烦，因为不仅要创建一系列DOM节点，而且还要小心地按照正确的顺序把它们连接起来。相对而言，使用插入标记的技术，直接插入HTML字符串不仅更简单，速度也更快。以下与插入标记相关的DOM扩展已经纳入了HTML5规范。</p>
+
+  <p class="calibre2">1. <strong class="calibre3"><code class="calibre15">innerHTML</code>属性</strong></p>
+
+  <p class="calibre2">在读模式下，<code class="calibre15">innerHTML</code>属性返回与调用元素的所有子节点（包括元素、注释和文本节点）对应的HTML标记。在写模式下，<code class="calibre15">innerHTML</code>会根据指定的值创建新的DOM树，然后用这个DOM树完全替换调用元素原先的所有子节点。下面是一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;div id="content"&gt; 
+    &lt;p&gt;This is a &lt;strong&gt;paragraph&lt;/strong&gt; with a list following it.&lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Item 1&lt;/li&gt;
+        &lt;li&gt;Item 2&lt;/li&gt;
+        &lt;li&gt;Item 3&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p class="calibre2">对于上面的<code class="calibre15">&lt;div&gt;</code>元素来说，它的<code class="calibre15">innerHTML</code>属性会返回如下字符串。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;p&gt;This is a &lt;strong&gt;paragraph&lt;/strong&gt; with a list following it.&lt;/p&gt; 
+&lt;ul&gt;
+    &lt;li&gt;Item 1&lt;/li&gt;
+    &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;li&gt;Item 3&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+  <p class="calibre2">但是，不同浏览器返回的文本格式会有所不同。IE和Opera会将所有标签转换为大写形式，而Safari、Chrome和Firefox则会原原本本地按照原先文档中（或指定这些标签时）的格式返回HTML，包括空格和缩进。不要指望所有浏览器返回的<code class="calibre15">innerHTML</code>值完全相同。</p>
+
+  <p class="calibre2">在写模式下，<code class="calibre15">innerHTML</code>的值会被解析为DOM子树，替换调用元素原来的所有子节点。因为它的值被认为是HTML，所以其中的所有标签都会按照浏览器处理HTML的标准方式转换为元素（同样，这里的转换结果也因浏览器而异）。如果设置的值仅是文本而没有HTML标签，那么结果就是设置纯文本，如下所示。</p>
+  <pre class="calibre18"><code class="calibre15">div.innerHTML = "Hello world!";
+</code></pre>
+
+  <p class="calibre2">为<code class="calibre15">innerHTML</code>设置的包含HTML的字符串值与解析后<code class="calibre15">innerHTML</code>的值大不相同。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">div.innerHTML = "Hello &amp; welcome, &lt;b&gt;\"reader\"!&lt;/b&gt;";
+</code></pre>
+
+  <p class="calibre2">以上操作得到的结果如下：</p>
+  <pre class="calibre18"><code class="calibre15">&lt;div id="content"&gt;Hello &amp;amp; welcome, &lt;b&gt;&amp;quot;reader&amp;quot;!&lt;/b&gt;&lt;/div&gt;
+</code></pre>
+
+  <p class="calibre2">设置了<code class="calibre15">innerHTML</code>之后，可以像访问文档中的其他节点一样访问新创建的节点。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> 为<code class="calibre15">innerHTML</code>设置HTML字符串后，浏览器会将这个字符串解析为相应的DOM树。因此设置了<code class="calibre15">innerHTML</code>之后，再从中读取HTML字符串，会得到与设置时不一样的结果。原因在于返回的字符串是根据原始HTML字符串创建的DOM树经过序列化之后的结果。</p>
+  </blockquote>
+
+  <p class="calibre2">使用<code class="calibre15">innerHTML</code>属性也有一些限制。比如，在大多数浏览器中，通过<code class="calibre15">innerHTML</code>插入<code class="calibre15">&lt;script&gt;</code>元素并不会执行其中的脚本。IE8及更早版本是唯一能在这种情况下执行脚本的浏览器，但必须满足一些条件。一是必须为<code class="calibre15">&lt;script&gt;</code>元素指定<code class="calibre15">defer</code>属性，二是<code class="calibre15">&lt;script&gt;</code>元素必须位于（微软所谓的）“有作用域的元素”（scoped element）之后。<code class="calibre15">&lt;script&gt;</code>元素被认为是“无作用域的元素”（NoScope element），也就是在页面中看不到的元素，与<code class="calibre15">&lt;style&gt;</code>元素或注释类似。如果通过<code class="calibre15">innerHTML</code>插入的字符串开头就是一个“无作用域的元素”，那么IE会在解析这个字符串前先删除该元素。换句话说，以下代码达不到目的：</p>
+  <pre class="calibre18"><code class="calibre15">div.innerHTML = "&lt;script defer&gt;alert('hi');&lt;\/script&gt;"; //无效
+</code></pre>
+
+  <p class="calibre2">此时，<code class="calibre15">innerHTML</code>字符串一开始（而且整个）就是一个“无作用域的元素”，所以这个字符串会变成空字符串。如果想插入这段脚本，必须在前面添加一个“有作用域的元素”，可以是一个文本节点，也可以是一个没有结束标签的元素如<code class="calibre15">&lt;input&gt;</code>。例如，下面这几行代码都可以正常执行：</p>
+  <pre class="calibre18"><code class="calibre15">div.innerHTML = "_&lt;script defer&gt;alert('hi');&lt;\/script&gt;";
+div.innerHTML = "&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;script defer&gt;alert('hi');&lt;\/script&gt;";
+div.innerHTML = "&lt;input type=\"hidden\"&gt;&lt;script defer&gt;alert('hi');&lt;\/script&gt;";
+</code></pre>
+
+  <p class="calibre2">第一行代码会在<code class="calibre15">&lt;script&gt;</code>元素前插入一个文本节点。事后，为了不影响页面显示，你可能需要移除这个文本节点。第二行代码采用的方法类似，只不过使用的是一个包含非换行空格的<code class="calibre15">&lt;div&gt;</code>元素。如果仅仅插入一个空的<code class="calibre15">&lt;div&gt;</code>元素，还是不行；必须要包含一点儿内容，浏览器才会创建文本节点。同样，为了不影响页面布局，恐怕还得移除这个节点。第三行代码使用的是一个隐藏的<code class="calibre15">&lt;input&gt;</code>域，也能达到相同的效果。不过，由于隐藏的<code class="calibre15">&lt;input&gt;</code>域不影响页面布局，因此这种方式在大多数情况下都是首选。</p>
+
+  <p class="calibre2">大多数浏览器都支持以直观的方式通过<code class="calibre15">innerHTML</code>插入<code class="calibre15">&lt;style&gt;</code>元素，例如：</p>
+  <pre class="calibre18"><code class="calibre15">div.innerHTML = "&lt;style type=\"text/css\"&gt;body {background-color: red; }&lt;/style&gt;";
+</code></pre>
+
+  <p class="calibre2">但在IE8及更早版本中，<code class="calibre15">&lt;style&gt;</code>也是一个“没有作用域的元素”，因此必须像下面这样给它前置一个“有作用域的元素”：</p>
+  <pre class="calibre18"><code class="calibre15">div.innerHTML = "_&lt;style type=\"text/css\"&gt;body {background-color: red; }&lt;/style&gt;";
+div.removeChild(div.firstChild);
+</code></pre>
+
+  <p class="calibre2">并不是所有元素都支持<code class="calibre15">innerHTML</code>属性。不支持<code class="calibre15">innerHTML</code>的元素有：<code class="calibre15">&lt;col&gt;</code>、<code class="calibre15">&lt;colgroup&gt;</code>、<code class="calibre15">&lt;frameset&gt;</code>、<code class="calibre15">&lt;head&gt;</code>、<code class="calibre15">&lt;html&gt;</code>、<code class="calibre15">&lt;style&gt;</code>、<code class="calibre15">&lt;table&gt;</code>、<code class="calibre15">&lt;tbody&gt;</code>、<code class="calibre15">&lt;thead&gt;</code>、<code class="calibre15">&lt;tfoot&gt;</code>和<code class="calibre15">&lt;tr&gt;</code>。此外，在IE8及更早版本中，<code class="calibre15">&lt;title&gt;</code>元素也没有<code class="calibre15">innerHTML</code>属性。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> Firefox对在内容类型为application/xhtml+xml的XHTML文档中设置<code class="calibre15">innerHTML</code>有严格的限制。在XHTML文档中使用<code class="calibre15">innerHTML</code>时，XHTML代码必须完全符合要求。如果代码格式不正确，设置<code class="calibre15">innerHTML</code>将会静默地失败。</p>
+  </blockquote>
+
+  <p class="calibre2">无论什么时候，只要使用<code class="calibre15">innerHTML</code>从外部插入HTML，都应该首先以可靠的方式处理HTML。IE8为此提供了<code class="calibre15">window.toStaticHTML()</code>方法，这个方法接收一个参数，即一个HTML字符串；返回一个经过无害处理后的版本——从源HTML中删除所有脚本节点和事件处理程序属性。下面就是一个例子：</p>
+  <pre class="calibre18"><code class="calibre15">var text = "&lt;a href=\"#\" onclick=\"alert('hi')\"&gt;Click Me&lt;/a&gt;";
+var sanitized = window.toStaticHTML(text);       //Internet Explorer 8 only
+alert(sanitized);   //"&lt;a href=\"#\"&gt;Click Me&lt;/a&gt;"
+</code></pre>
+
+  <p class="calibre2">这个例子将一个HTML链接字符串传给了<code class="calibre15">toStaticHTML()</code>方法，得到的无害版本中去掉了<code class="calibre15">onclick</code>属性。虽然目前只有IE8原生支持这个方法，但我们还是建议读者在通过<code class="calibre15">innerHTML</code>插入代码之前，尽可能先手工检查一下其中的文本内容。</p>
+
+  <p class="calibre2">2. <strong class="calibre3"><code class="calibre15">outerHTML</code>属性</strong></p>
+
+  <p class="calibre2">在读模式下，<code class="calibre15">outerHTML</code>返回调用它的元素及所有子节点的HTML标签。在写模式下，<code class="calibre15">outerHTML</code>会根据指定的HTML字符串创建新的DOM子树，然后用这个DOM子树完全替换调用元素。下面是一个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">&lt;div id="content"&gt;
+    &lt;p&gt;This is a &lt;strong&gt;paragraph&lt;/strong&gt; with a list following it.&lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Item 1&lt;/li&gt;
+        &lt;li&gt;Item 2&lt;/li&gt;
+        &lt;li&gt;Item 3&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">OuterHTMLExample01.htm</i></p>
+
+  <p class="calibre2">如果在<code class="calibre15">&lt;div&gt;</code>元素上调用<code class="calibre15">outer</code>HTML，会返回与上面相同的代码，包括<code class="calibre15">&lt;div&gt;</code>本身。不过，由于浏览器解析和解释HTML标记的不同，结果也可能会有所不同。（这里的不同与使用<code class="calibre15">innerHTML</code>属性时存在的差异性质是一样的。）</p>
+
+  <p class="calibre2">使用<code class="calibre15">outerHTML</code>属性以下面这种方式设置值：</p>
+  <pre class="calibre18"><code class="calibre15">div.outerHTML = "&lt;p&gt;This is a paragraph.&lt;/p&gt;";
+</code></pre>
+
+  <p class="calibre2">这行代码完成的操作与下面这些DOM脚本代码一样：</p>
+  <pre class="calibre18"><code class="calibre15">var p = document.createElement("p");
+p.appendChild(document.createTextNode("This is a paragraph."));
+div.parentNode.replaceChild(p, div);
+</code></pre>
+
+  <p class="calibre2">结果，就是新创建的<code class="calibre15">&lt;p&gt;</code>元素会取代DOM树中的<code class="calibre15">&lt;div&gt;</code>元素。</p>
+
+  <p class="calibre2">支持<code class="calibre15">outerHTML</code>属性的浏览器有IE4+、Safari 4+、Chrome和Opera 8+。Firefox 7及之前版本都不支持<code class="calibre15">outerHTML</code>属性。</p>
+
+  <p class="calibre2">3. <strong class="calibre3"><code class="calibre15">insertAdjacentHTML()</code>方法</strong></p>
+
+  <p class="calibre2">插入标记的最后一个新增方式是<code class="calibre15">insertAdjacentHTML()</code>方法。这个方法最早也是在IE中出现的，它接收两个参数：插入位置和要插入的HTML文本。第一个参数必须是下列值之一：</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">"beforebegin"</code>，在当前元素之前插入一个紧邻的同辈元素；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">"afterbegin"</code>，在当前元素之下插入一个新的子元素或在第一个子元素之前再插入新的子元素；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">"beforeend"</code>，在当前元素之下插入一个新的子元素或在最后一个子元素之后再插入新的子元素；</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">"afterend"</code>，在当前元素之后插入一个紧邻的同辈元素。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">注意，这些值都必须是小写形式。第二个参数是一个HTML字符串（与<code class="calibre15">innerHTML</code>和<code class="calibre15">outerHTML</code>的值相同），如果浏览器无法解析该字符串，就会抛出错误。以下是这个方法的基本用法示例。</p>
+  <pre class="calibre18"><code class="calibre15">//作为前一个同辈元素插入
+element.insertAdjacentHTML("beforebegin", "&lt;p&gt;Hello world!&lt;/p&gt;");
+
+//作为第一个子元素插入
+element.insertAdjacentHTML("afterbegin", "&lt;p&gt;Hello world!&lt;/p&gt;");
+
+//作为最后一个子元素插入
+element.insertAdjacentHTML("beforeend", "&lt;p&gt;Hello world!&lt;/p&gt;");
+
+//作为后一个同辈元素插入
+element.insertAdjacentHTML("afterend", "&lt;p&gt;Hello world!&lt;/p&gt;");
+</code></pre>
+
+  <p class="calibre2">支持<code class="calibre15">insertAdjacentHTML()</code>方法的浏览器有IE、Firefox 8+、Safari、Opera和Chrome。</p>
+
+  <p class="calibre2">4. <strong class="calibre3">内存与性能问题</strong></p>
+
+  <p class="calibre2">使用本节介绍的方法替换子节点可能会导致浏览器的内存占用问题，尤其是在IE中，问题更加明显。在删除带有事件处理程序或引用了其他JavaScript对象子树时，就有可能导致内存占用问题。假设某个元素有一个事件处理程序（或者引用了一个JavaScript对象作为属性），在使用前述某个属性将该元素从文档树中删除后，元素与事件处理程序（或JavaScript对象）之间的绑定关系在内存中并没有一并删除。如果这种情况频繁出现，页面占用的内存数量就会明显增加。因此，在使用<code class="calibre15">innerHTML</code>、<code class="calibre15">outerHTML</code>属性和<code class="calibre15">insertAdjacentHTML()</code>方法时，最好先手工删除要被替换的元素的所有事件处理程序和JavaScript对象属性（第13章将进一步讨论事件处理程序）。</p>
+
+  <p class="calibre2">不过，使用这几个属性——特别是使用<code class="calibre15">innerHTML</code>，仍然还是可以为我们提供很多便利的。一般来说，在插入大量新HTML标记时，使用<code class="calibre15">innerHTML</code>属性与通过多次DOM操作先创建节点再指定它们之间的关系相比，效率要高得多。这是因为在设置<code class="calibre15">innerHTML</code>或<code class="calibre15">outerHTML</code>时，就会创建一个HTML解析器。这个解析器是在浏览器级别的代码（通常是C++编写的）基础上运行的，因此比执行JavaScript快得多。不可避免地，创建和销毁HTML解析器也会带来性能损失，所以最好能够将设置<code class="calibre15">innerHTML</code>或<code class="calibre15">outerHTML</code>的次数控制在合理的范围内。例如，下列代码使用<code class="calibre15">innerHTML</code>创建了很多列表项：</p>
+  <pre class="calibre18"><code class="calibre15">for (var i=0, len=values.length; i &lt; len; i++){ 
+    ul.innerHTML += "&lt;li&gt;" + values[i] + "&lt;/li&gt;"; //要避免这种频繁操作！！
+}
+</code></pre>
+
+  <p class="calibre2">这种每次循环都设置一次<code class="calibre15">innerHTML</code>的做法效率很低。而且，每次循环还要从<code class="calibre15">innerHTML</code>中读取一次信息，就意味着每次循环要访问两次<code class="calibre15">innerHTML</code>。最好的做法是单独构建字符串，然后再一次性地将结果字符串赋值给<code class="calibre15">innerHTML</code>，像下面这样：</p>
+  <pre class="calibre18"><b class="calibre3">var itemsHtml = "";</b>
+for (var i=0, len=values.length; i &lt; len; i++){
+    <b class="calibre3">itemsHtml += "&lt;li&gt;" + values[i] + "&lt;/li&gt;";</b>
+}
+<b class="calibre3">ul.innerHTML = itemsHtml;</b>
+</pre>
+
+  <p class="calibre2">这个例子的效率要高得多，因为它只对<code class="calibre15">innerHTML</code>执行了一次赋值操作。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_126"><strong class="calibre10">11.3.7　scrollIntoView()方法</strong></h3>
+
+  <p class="calibre2">如何滚动页面也是DOM规范没有解决的一个问题。为了解决这个问题，浏览器实现了一些方法，以方便开发人员更好地控制页面滚动。在各种专有方法中，HTML5最终选择了<code class="calibre15">scrollIntoView()</code>作为标准方法。</p>
+
+  <p class="calibre2"><code class="calibre15">scrollIntoView()</code>可以在所有HTML元素上调用，通过滚动浏览器窗口或某个容器元素，调用元素就可以出现在视口中。如果给这个方法传入<code class="calibre15">true</code>作为参数，或者不传入任何参数，那么窗口滚动之后会让调用元素的顶部与视口顶部尽可能平齐。如果传入<code class="calibre15">false</code>作为参数，调用元素会尽可能全部出现在视口中，（可能的话，调用元素的底部会与视口顶部平齐。）不过顶部不一定平齐，例如：</p>
+  <pre class="calibre18"><code class="calibre15">//让元素可见
+document.forms[0].scrollIntoView();
+</code></pre>
+
+  <p class="calibre2">当页面发生变化时，一般会用这个方法来吸引用户的注意力。实际上，为某个元素设置焦点也会导致浏览器滚动并显示出获得焦点的元素。</p>
+
+  <p class="calibre2">支持<code class="calibre15">scrollIntoView()</code>方法的浏览器有IE、Firefox、Safari和Opera。</p>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h1 class="calibre1" id="nav_point_147">第21章　Ajax与Comet</h1>
+
+  <p class="calibre2"><strong class="calibre3">本章内容</strong></p>
+
+  <ul class="calibre16">
+    <li class="calibre12">使用<code class="calibre15">XMLHttpRequest</code>对象</li>
+
+    <li class="calibre12">使用<code class="calibre15">XMLHttpRequest</code>事件</li>
+
+    <li class="calibre12">跨域Ajax通信的限制 　</li>
+  </ul>
+
+  <p class="calibre2">2005年，Jesse James Garrett发表了一篇在线文章，题为“Ajax: A new Approach to Web Applications”（<a class="calibre6" href="http://www.adaptivepath.com/ideas/essays/archives/000385.php">http://www.adaptivepath.com/ideas/essays/archives/000385.php</a>）。他在这篇文章里介绍了一种技术，用他的话说，就叫Ajax，是对Asynchronous JavaScript + XML的简写。这一技术能够向服务器请求额外的数据而无须卸载页面，会带来更好的用户体验。Garrett还解释了怎样使用这一技术改变自从Web诞生以来就一直沿用的“单击，等待”的交互模式。</p>
+
+  <p class="calibre2">Ajax技术的核心是<code class="calibre15">XMLHttpRequest</code>对象（简称XHR），这是由微软首先引入的一个特性，其他浏览器提供商后来都提供了相同的实现。在XHR出现之前，Ajax式的通信必须借助一些hack手段来实现，大多数是使用隐藏的框架或内嵌框架。XHR为向服务器发送请求和解析服务器响应提供了流畅的接口。能够以异步方式从服务器取得更多信息，意味着用户单击后，可以不必刷新页面也能取得新数据。也就是说，可以使用XHR对象取得新数据，然后再通过DOM将新数据插入到页面中。另外，虽然名字中包含XML的成分，但Ajax通信与数据格式无关；这种技术就是无须刷新页面即可从服务器取得数据，但不一定是XML数据。</p>
+
+  <p class="calibre2">实际上，Garrett提到的这种技术已经存在很长时间了。在Garrett撰写那篇文章之前，人们通常将这种技术叫做<strong class="calibre3">远程脚本</strong>（remote scripting），而且早在1998年就有人采用不同的手段实现了这种浏览器与服务器的通信。再往前推，JavaScript需要通过Java applet或Flash电影等中间层向服务器发送请求。而XHR则将浏览器原生的通信能力提供给了开发人员，简化了实现同样操作的任务。</p>
+
+  <p class="calibre2">在重命名为Ajax之后，大约是2005年底2006年初，这种浏览器与服务器的通信技术可谓红极一时。人们对JavaScript和Web的全新认识，催生了很多使用原有特性的新技术和新模式。就目前来说，熟练使用XHR对象已经成为所有Web开发人员必须掌握的一种技能。</p>
+</body>
+</html>

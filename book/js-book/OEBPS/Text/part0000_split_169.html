@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_229"><strong class="calibre10">A.1　一般性变化</strong></h2>
+
+  <p class="calibre2">Harmony为ECMAScript引入了一些基本的变化。对这门语言来说，这些虽然不算是大的变化，但的确也弥补了它功能上的一些缺憾。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_301"><strong class="calibre10">A.1.1　常量</strong></h3>
+
+  <p class="calibre2">没有正式的常量是JavaScript的一个明显缺陷。为了弥补这个缺陷，标准制定者为Harmony增加了用<code class="calibre15">const</code>关键字声明常量的语法。使用方式与<code class="calibre15">var</code>类似，但<code class="calibre15">const</code>声明的变量在初始赋值后，就不能再重新赋值了。来看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">const MAX_SIZE = 25;
+</code></pre>
+
+  <p class="calibre2">可以像声明变量一样在任何地方声明常量。但在同一作用域中，常量名不能与其他变量或函数名重名，因此下列声明会导致错误：</p>
+  <pre class="calibre18"><code class="calibre15">const FLAG = true;
+var FLAG = false; //错误！
+</code></pre>
+
+  <p class="calibre2">除了值不能修改之外，可以像使用任何变量一样使用常量。修改常量的值，不会有任何效果，如下所示：</p>
+  <pre class="calibre18"><code class="calibre15">const FLAG = true;
+FLAG = false;
+alert(FLAG); //正确
+</code></pre>
+
+  <p class="calibre2">支持常量的浏览器有Firefox、Safari 3+、Opera 9+和Chrome。在Safari和Opera中，<code class="calibre15">const</code>与<code class="calibre15">var</code>的作用一样，因为前者定义的常量的值是可以修改的。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_302"><strong class="calibre10">A.1.2　块级作用域及其他作用域</strong></h3>
+
+  <p class="calibre2">本书时不时就会提醒读者一句：JavaScript没有块级作用域。换句话说，在语句块中定义的变量与在包含函数中定义的变量共享相同的作用域。Harmony新增了定义块级作用域的语法：使用<code class="calibre15">let</code>关键字。</p>
+
+  <p class="calibre2">与<code class="calibre15">const</code>和<code class="calibre15">var</code>类似，可以使用<code class="calibre15">let</code>在任何地方定义变量并为变量赋值。区别在于，使用<code class="calibre15">let</code>定义的变量在定义它的代码块之外没有定义。比如说吧，下面是一个非常常见的代码块：</p>
+  <pre class="calibre18"><code class="calibre15">for (var i=0; i &lt; 10; i++) {
+    //执行某些操作
+} 
+
+alert(i); //10
+</code></pre>
+
+  <p class="calibre2">在上面的代码块中，变量<code class="calibre15">i</code>是作为代码块所在函数的局部变量来声明的。也就是说，在<code class="calibre15">for</code>循环执行完毕后，仍然能够读取<code class="calibre15">i</code>的值。如果在这里使用<code class="calibre15">let</code>代替<code class="calibre15">var</code>，则循环之后，变量<code class="calibre15">i</code>将不复存在。看下面的例子。</p>
+  <pre class="calibre18"><b class="calibre3">for (let i=0; i &lt; 10; i++) {</b>
+    //执行某些操作
+}
+
+<b class="calibre3">alert(i); //错误！变量i没有定义</b>
+</pre>
+
+  <p class="calibre2">以上代码执行到最后一行的时候，就会出现错误，因为<code class="calibre15">for</code>循环一结束，变量<code class="calibre15">i</code>就已经没有定义了。因为不能对没有定义的变量执行操作，所以发生错误是自然的。</p>
+
+  <p class="calibre2">还有另外一种使用<code class="calibre15">let</code>的方式，即创建<code class="calibre15">let</code>语句，在其中定义只能在后续代码块中使用的变量，像下面的例子这样：</p>
+  <pre class="calibre18"><code class="calibre15">var num = 5;
+
+let (num=10, multiplier=2){
+    alert(num * multiplier); //20
+} 
+
+alert(num); //5
+</code></pre>
+
+  <p class="calibre2">以上代码通过<code class="calibre15">let</code>语句定义了一个区域，这个区域中的变量<code class="calibre15">num</code>等于10，<code class="calibre15">multiplier</code>等于2。此时的<code class="calibre15">num</code>覆盖了前面用<code class="calibre15">var</code>声明的同名变量，因此在<code class="calibre15">let</code>语句块中，<code class="calibre15">num</code>乘以<code class="calibre15">multiplier</code>等于20。而出了<code class="calibre15">let</code>语句块之后，<code class="calibre15">num</code>变量的值仍然是5。这是因为<code class="calibre15">let</code>语句创建了自己的作用域，这个作用域里的变量与外面的变量无关。</p>
+
+  <p class="calibre2">使用同样的语法还可以创建<code class="calibre15">let</code>表达式，其中的变量只在表达式中有定义。再看一个例子。</p>
+  <pre class="calibre18"><code class="calibre15">var result = let(num=10, multiplier=2) num * multiplier;
+alert(result); //20
+</code></pre>
+
+  <p class="calibre2">这里的<code class="calibre15">let</code>表达式使用两个变量计算后得到一个值，保存在变量<code class="calibre15">result</code>中。执行表达式之后，<code class="calibre15">num</code>和<code class="calibre15">multiplier</code>变量就不存在了。</p>
+
+  <p class="calibre2">在JavaScript中使用块级作用域，可以更精细地控制代码执行过程中变量的存废。</p>
+</body>
+</html>

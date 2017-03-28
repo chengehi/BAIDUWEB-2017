@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="calibre_pb_235"><strong class="calibre10">A.5　类</strong></h2>
+
+  <p class="calibre2">开发人员一直吵着要在JavaScript中增加一种语法，用于定义类似于Java的类。ECMAScript 6最终确实定义了这种语法。但JavaScript中的类只是一种语法糖，覆盖在目前基于构造函数和基于原型的方式和类型之上。先看看下面的类型定义。</p>
+  <pre class="calibre18"><code class="calibre15">function Person(name, age){
+    this.name = name;
+    this.age = age;
+}
+
+Person.prototype.sayName = function(){
+    alert(this.name);
+};
+
+Person.prototype.getOlder = function(years){
+    this.age += years;
+};
+</code></pre>
+
+  <p class="calibre2">再看看使用新语法定义的类：</p>
+  <pre class="calibre18"><code class="calibre15">class Person {
+
+    constructor(name, age){
+        public name = name;
+        public age = age;
+    }
+
+    sayName(){
+        alert(this.name);
+    }
+
+    getOlder(years){
+        this.age += years;
+     }
+
+}
+</code></pre>
+
+  <p class="calibre2">新语法以关键字<code class="calibre15">class</code>开头，然后就是类型名，而花括号中定义的是属性和方法。定义方法不必再使用<code class="calibre15">function</code>关键字，有方法名和圆括号就可以。如果把方法命名为<code class="calibre15">constructor</code>，那它就是这个类的构造函数（与前一个例子中的<code class="calibre15">Person</code>函数一样）。在这个类中定义的方法和属性都会添加到原型上，具体来说，<code class="calibre15">sayName()</code>和<code class="calibre15">getOlder()</code>都是在<code class="calibre15">Person.prototype</code>上定义的。</p>
+
+  <p class="calibre2">在构造函数中，<code class="calibre15">public</code>和<code class="calibre15">private</code>关键字用于创建对象的实例属性。这个例子中的<code class="calibre15">name</code>和<code class="calibre15">age</code>都是公有属性。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_313"><strong class="calibre10">A.5.1　私有成员</strong></h3>
+
+  <p class="calibre2">关于类语法的建议是默认支持私有成员的，包括实例中的私有成员和原型中的私有成员。<code class="calibre15">private</code>关键字表示成员是私有的，不能在类方法之外访问。要访问私有成员，可以使用一种特殊的语法，即调用<code class="calibre15">private()</code>函数并传入<code class="calibre15">this</code>对象，然后再访问私有成员。例如，下面这个例子把<code class="calibre15">Person</code>类的<code class="calibre15">age</code>改成为私有属性：</p>
+  <pre class="calibre18">class Person {
+
+    constructor(name, age){
+        public name = name;
+        <b class="calibre3">private age = age;</b>
+    }
+
+    sayName(){
+        alert(this.name);
+    }
+
+    getOlder(years){
+        <b class="calibre3">private(this).age</b> += years;
+     }
+
+}
+</pre>
+
+  <p class="calibre2">这种用于访问私有成员的语法还没有定论，将来很可能会改变。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_314"><strong class="calibre10">A.5.2　<code class="calibre30">getter</code>和<code class="calibre30">setter</code></strong></h3>
+
+  <p class="calibre2">新的类语法支持直接为属性定义<code class="calibre15">getter</code>和<code class="calibre15">setter</code>，从而避免了调用<code class="calibre15">Object.defineProperty()</code>的麻烦。为属性定义<code class="calibre15">getter</code>和<code class="calibre15">setter</code>与定义方法类似，只不过要在方法名前加上<code class="calibre15">get</code>和<code class="calibre15">set</code>关键字。例如：</p>
+  <pre class="calibre18">class Person {
+
+    constructor(name, age){
+        public name = name;
+        public age = age;
+        <b class="calibre3">private innerTitle = "";</b>
+
+        <b class="calibre3">get title(){</b>
+            <b class="calibre3">return innerTitle;</b>
+        <b class="calibre3">}</b>
+
+        <b class="calibre3">set title(value){</b>
+            <b class="calibre3">innerTitle = value;</b>
+        <b class="calibre3">}</b>
+    }
+    sayName(){
+        alert(this.name);
+    }
+
+    getOlder(years){
+        this.age += years;
+    }
+}
+</pre>
+
+  <p class="calibre2">这个<code class="calibre15">Person</code>类为<code class="calibre15">title</code>属性定义了一个<code class="calibre15">getter</code>和一个<code class="calibre15">setter</code>。这两个操作<code class="calibre15">innerTitle</code>变量的函数都定义在了构造函数中。要为原型属性定义<code class="calibre15">getter</code>和<code class="calibre15">setter</code>，语法相同，但要在构造函数外部定义。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_315"><strong class="calibre10">A.5.3　继承</strong></h3>
+
+  <p class="calibre2">使用类语法而不是过去那种JavaScript语法，最大的好处是容易实现继承。有了类语法，只要使用与其他语言相同的<code class="calibre15">extends</code>关键字就能实现继承，而不必去考虑借用构造函数或者原型连缀。例如：</p>
+  <pre class="calibre18"><code class="calibre15">class Employee extends Person {
+    constructor(name, age){
+        super(name,age);
+    }
+} 
+</code></pre>
+
+  <p class="calibre2">以上代码创建了一个新类<code class="calibre15">Employee</code>，它继承了<code class="calibre15">Person</code>类。在简单的语法背后，已经自动实现了原型连缀，而且通过使用<code class="calibre15">super()</code>函数，也正式支持了借用构造函数。从逻辑上看，上面的代码与下面的代码是等价的：</p>
+  <pre class="calibre18"><code class="calibre15">function Employee(name, age){
+    Person.call(this, name, age);
+}
+Employee.prototype = new Person();
+</code></pre>
+
+  <p class="calibre2">除了这种风格的继承，类语法还允许直接将对象指定为其原型，方法就是用<code class="calibre15">prototype</code>关键字代替<code class="calibre15">extends</code>：</p>
+  <pre class="calibre18"><code class="calibre15">var basePerson = {
+    sayName: function(){
+        alert(this.name);
+    },
+
+    getOlder: function(years){
+        this.age += years;
+    }
+};
+
+class Employee prototype basePerson {
+    constructor(name, age){
+        public name = name;
+        public age = age;
+    }
+}
+</code></pre>
+
+  <p class="calibre2">这个例子将<code class="calibre15">basePerson</code>对象直接指定为<code class="calibre15">Employee.prototype</code>，从而实现了与目前使用<code class="calibre15">Object.create()</code>实现的一样的继承。</p>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_154">21.7　小结</h2>
+
+  <p class="calibre2">Ajax是无需刷新页面就能够从服务器取得数据的一种方法。关于Ajax，可以从以下几方面来总结一下。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2">负责Ajax运作的核心对象是<code class="calibre15">XMLHttpRequest</code>（XHR）对象。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">XHR对象由微软最早在IE5中引入，用于通过JavaScript从服务器取得XML数据。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">在此之后，Firefox、Safari、Chrome和Opera都实现了相同的特性，使XHR成为了Web的一个事实标准。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2">虽然实现之间存在差异，但XHR对象的基本用法在不同浏览器间还是相对规范的，因此可以放心地用在Web开发当中。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">同源策略是对XHR的一个主要约束，它为通信设置了“相同的域、相同的端口、相同的协议”这一限制。试图访问上述限制之外的资源，都会引发安全错误，除非采用被认可的跨域解决方案。这个解决方案叫做CORS（Cross-Origin Resource Sharing，跨源资源共享），IE8通过XDomainRequest对象支持CORS，其他浏览器通过XHR对象原生支持CORS。图像Ping和JSONP是另外两种跨域通信的技术，但不如CORS稳妥。</p>
+
+  <p class="calibre2">Comet是对Ajax的进一步扩展，让服务器几乎能够实时地向客户端推送数据。实现Comet的手段主要有两个：长轮询和HTTP流。所有浏览器都支持长轮询，而只有部分浏览器原生支持HTTP流。SSE（Server-Sent Events，服务器发送事件）是一种实现Comet交互的浏览器API，既支持长轮询，也支持HTTP流。</p>
+
+  <p class="calibre2">Web Sockets是一种与服务器进行全双工、双向通信的信道。与其他方案不同，Web Sockets不使用HTTP协议，而使用一种自定义的协议。这种协议专门为快速传输小数据设计。虽然要求使用不同的Web服务器，但却具有速度上的优势。</p>
+
+  <p class="calibre2">各方面对Ajax和Comet的鼓吹吸引了越来越多的开发人员学习JavaScript，人们对Web开发的关注也再度升温。与Ajax有关的概念都还相对比较新，这些概念会随着时间推移继续发展。</p>
+
+  <blockquote class="calibre14">
+    <p class="calibre2"><img alt="" class="calibre17" src="../Images/00002.gif" /> Ajax是一个非常庞大的主题，完整地讨论这个主题超出了本书的范围。要想了解有关Ajax的更多信息，请读者参考《Ajax高级程序设计（第2版）》。</p>
+  </blockquote>
+
+  <p class="calibre5" id="calibre_pb_193" style="margin:0pt; border:0pt; height:1em">&nbsp;</p>
+</body>
+</html>

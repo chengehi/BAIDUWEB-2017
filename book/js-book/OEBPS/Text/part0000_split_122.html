@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>未知</title>
+  <link href="../Styles/Style.css" rel="stylesheet" type="text/css" />
+  <link href="../Styles/custom.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="calibre">
+  <h2 class="calibre9" id="nav_point_134">18.2　浏览器对XPath的支持</h2>
+
+  <p class="calibre2">XPath是设计用来在DOM文档中查找节点的一种手段，因而对XML处理也很重要。但是，DOM3级以前的标准并没有就XPath的API作出规定；XPath是在DOM3级XPath模块中首次跻身推荐标准行列的。很多浏览器都实现了这个推荐标准，但IE则以自己的方式实现了XPath。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_222"><strong class="calibre10">18.2.1　DOM3级XPath</strong></h3>
+
+  <p class="calibre2">DOM3级XPath规范定义了在DOM中对XPath表达式求值的接口。要确定某浏览器是否支持DOM3级XPath，可以使用以下JavaScript代码：</p>
+  <pre class="calibre18"><code class="calibre15">var supportsXPath = document.implementation.hasFeature("XPath", "3.0");
+</code></pre>
+
+  <p class="calibre2">在DOM3级XPath规范定义的类型中，最重要的两个类型是<code class="calibre15">XPathEvaluator</code>和<code class="calibre15">XPathResult</code>。<code class="calibre15">XPathEvaluator</code>用于在特定的上下文中对XPath表达式求值。这个类型有下列3个方法。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">createExpression(<em class="calibre7">expression, nsresolver</em>)</code>：将XPath表达式及相应的命名空间信息转换成一个<code class="calibre15">XPathExpression</code>，这是查询的编译版。在多次使用同一个查询时很有用。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">createNSResolver(<em class="calibre7">node</em>)</code>：根据<code class="calibre15">node</code>的命名空间信息创建一个新的<code class="calibre15">XPathNSResolver</code>对象。在基于使用命名空间的XML文档求值时，需要使用XPathNSResolver对象。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">evaluate(<em class="calibre7">expression, context, nsresolver, type, result</em>)</code>：在给定的上下文中，基于特定的命名空间信息来对XPath表达式求值。剩下的参数指定如何返回结果。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">在Firefox、Safari、Chrome和Opera中，<code class="calibre15">Document</code>类型通常都是与<code class="calibre15">XPathEvaluator</code>接口一起实现的。换句话说，在这些浏览器中，既可以创建<code class="calibre15">XPathEvaluator</code>的新实例，也可以使用<code class="calibre15">Document</code>实例中的方法（XML或HTML文档均是如此）。</p>
+
+  <p class="calibre2">在上面这三个方法中，<code class="calibre15">evaluate()</code>是最常用的。这个方法接收5个参数：XPath表达式、上下文节点、命名空间求解器、返回结果的类型和保存结果的<code class="calibre15">XPathResult</code>对象（通常是<code class="calibre15">null</code>，因为结果也会以函数值的形式返回）。其中，第三个参数（命名空间求解器）只在XML代码中使用了XML命名空间时有必要指定；如果XML代码中没有使用命名空间，则这个参数应该指定为<code class="calibre15">null</code>。第四个参数（返回结果的类型）的取值范围是下列常量之一。</p>
+
+  <ul class="calibre16">
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.ANY_TYPE</code>：返回与XPath表达式匹配的数据类型。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.NUMBER_TYPE</code>：返回数值。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.STRING_TYPE</code>：返回字符串值。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.BOOLEAN_TYPE</code>：返回布尔值。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.UNORDERED_NODE_ITERATOR_TYPE</code>：返回匹配的节点集合，但集合中节点的次序不一定与它们在文档中的次序一致。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.ORDERED_NODE_ITERATOR_TYPE</code>：返回匹配的节点集合，集合中节点的次序与它们在文档中的次序一致。这是最常用的结果类型。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE</code>：返回节点集合的快照，由于是在文档外部捕获节点，因此对文档的后续操作不会影响到这个节点集合。集合中节点的次序不一定与它们在文档中的次序一致。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.ORDERED_NODE_SNAPSHOT_TYPE</code>：返回节点集合的快照，由于是在文档外部捕获节点，因此对文档的后续操作不会影响到这个节点集合。集合中节点的次序与它们在文档中的次序一致。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.ANY_UNORDERED_NODE_TYPE</code>：返回匹配的节点集合，但集合中节点的次序不一定与它们在文档中的次序一致。</p>
+    </li>
+
+    <li class="calibre12">
+      <p class="calibre2"><code class="calibre15">XPathResult.FIRST_ORDERED_NODE_TYPE</code>：返回只包含一个节点的节点集合，包含的这个节点就是文档中第一个匹配的节点。</p>
+    </li>
+  </ul>
+
+  <p class="calibre2">指定的结果类型决定了如何取得结果的值。下面来看一个典型的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var result = xmldom.evaluate("employee/name", xmldom.documentElement, null,
+                                  XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+if (result !== null) {
+    var node = result.iterateNext();
+    while(node) {
+        alert(node.tagName);
+        node = node.iterateNext();
+    }
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">DomXPathExample01.htm</i></p>
+
+  <p class="calibre2">这个例子中为返回结果指定的是<code class="calibre15">XPathResult.ORDERED_NODE_ITERATOR_TYPE</code>，也是最常用的结果类型。如果没有节点匹配XPath表达式，<code class="calibre15">evaluate()</code>返回<code class="calibre15">null</code>；否则，它会返回一个<code class="calibre15">XPathResult</code>对象。这个<code class="calibre15">XPathResult</code>对象带有的属性和方法，可以用来取得特定类型的结果。如果节点是一个节点迭代器，无论是次序一致还是次序不一致的，都必须要使用<code class="calibre15">iterateNext()</code>方法从节点中取得匹配的节点。在没有更多的匹配节点时，<code class="calibre15">iterateNext()</code>返回<code class="calibre15">null</code>。</p>
+
+  <p class="calibre2">如果指定的是快照结果类型（不管是次序一致还是次序不一致的），就必须使用<code class="calibre15">snapshotItem()</code>方法和<code class="calibre15">snapshotLength</code>属性，例如：</p>
+  <pre class="calibre18">var result = xmldom.evaluate("employee/name", xmldom.documentElement, null,
+                                  <b class="calibre3">XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);</b>
+<b class="calibre3">if (result !== null) {</b>
+    <b class="calibre3">for (var i=0, len=result.snapshotLength; i &lt; len; i++) {</b>
+        <b class="calibre3">alert(result.snapshotItem(i).tagName);</b>
+    <b class="calibre3">}</b>
+<b class="calibre3">}</b>
+</pre>
+
+  <p class="calibre8"><i class="calibre7">DomXPathExample02.htm</i></p>
+
+  <p class="calibre2">这里，<code class="calibre15">snapshotLength</code>返回的是快照中节点的数量，而<code class="calibre15">snapshotItem()</code>则返回快照中给定位置的节点（与<code class="calibre15">NodeList</code>中的<code class="calibre15">length</code>和<code class="calibre15">item()</code>相似）。</p>
+
+  <p class="calibre2">1. <strong class="calibre3">单节点结果</strong></p>
+
+  <p class="calibre2">指定常量<code class="calibre15">XPathResult.FIRST_ORDERED_NODE_TYPE</code>会返回第一个匹配的节点，可以通过结果的<code class="calibre15">singleNodeValue</code>属性来访问该节点。例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18">var result = xmldom.evaluate("employee/name", xmldom.documentElement, null,
+                                  <b class="calibre3">XPathResult.FIRST_ORDERED_NODE_TYPE, null);</b>
+
+if (result !== null) {
+    <b class="calibre3">alert(result.singleNodeValue.tagName);</b>
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">DomXPathExample03.htm</i></p>
+
+  <p class="calibre2">与前面的查询一样，在没有匹配节点的情况下，<code class="calibre15">evaluate()</code>返回<code class="calibre15">null</code>。如果有节点返回，那么就可以通过<code class="calibre15">singleNodeValue</code>属性来访问它。</p>
+
+  <p class="calibre2">2. <strong class="calibre3">简单类型结果</strong></p>
+
+  <p class="calibre2">通过XPath也可以取得简单的非节点数据类型，这时候就要使用<code class="calibre15">XPathResult</code>的布尔值、数值和字符串类型了。这几个结果类型分别会通过<code class="calibre15">booleanValue</code>、<code class="calibre15">numberValue</code>和<code class="calibre15">stringValue</code>属性返回一个值。对于布尔值类型，如果至少有一个节点与XPath表达式匹配，则求值结果返回<code class="calibre15">true</code>，否则返回<code class="calibre15">false</code>。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var result = xmldom.evaluate("employee/name", xmldom.documentElement, null,
+                                  XPathResult.BOOLEAN_TYPE, null);
+alert(result.booleanValue);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">DomXPathExample04.htm</i></p>
+
+  <p class="calibre2">在这个例子中，如果有节点匹配<code class="calibre15">"employee/name"</code>，则<code class="calibre15">booleanValue</code>属性的值就是<code class="calibre15">true</code>。</p>
+
+  <p class="calibre2">对于数值类型，必须在XPath表达式参数的位置上指定一个能够返回数值的XPath函数，例如计算与给定模式匹配的所有节点数量的<code class="calibre15">count()</code>。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var result = xmldom.evaluate("count(employee/name)", xmldom.documentElement,
+                                  null, XPathResult.NUMBER_TYPE, null);
+alert(result.numberValue);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">DomXPathExample05.htm</i></p>
+
+  <p class="calibre2">以上代码会输出与<code class="calibre15">"employee/name"</code>匹配的节点数量（即<code class="calibre15">2</code>）。如果使用这个方法的时候没有指定与前例类似的XPath函数，那么<code class="calibre15">numberValue</code>的值将等于<code class="calibre15">NaN</code>。</p>
+
+  <p class="calibre2">对于字符串类型，<code class="calibre15">evaluate()</code>方法会查找与XPath表达式匹配的第一个节点，然后返回其第一个子节点的值（实际上是假设第一个子节点为文本节点）。如果没有匹配的节点，结果就是一个空字符串。来看一个例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var result = xmldom.evaluate("employee/name", xmldom.documentElement, null,
+                                  XPathResult.STRING_TYPE, null);
+alert(result.stringValue);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">DomXPathExample06.htm</i></p>
+
+  <p class="calibre2">这个例子的输出结果中包含着与<code class="calibre15">"element/name"</code>匹配的第一个元素的第一个子节点中包含的字符串。</p>
+
+  <p class="calibre2">3. <strong class="calibre3">默认类型结果</strong></p>
+
+  <p class="calibre2">所有XPath表达式都会自动映射到特定的结果类型。像前面那样设置特定的结果类型，可以限制表达式的输出。而使用<code class="calibre15">XPathResult.ANY_TYPE</code>常量可以自动确定返回结果的类型。一般来说，自动选择的结果类型可能是布尔值、数值、字符串值或一个次序不一致的节点迭代器。要确定返回的是什么结果类型，可以检测结果的<code class="calibre15">resultType</code>属性，如下面的例子所示。</p>
+  <pre class="calibre18">var result = xmldom.evaluate("employee/name", xmldom.documentElement, null,
+                                  <b class="calibre3">XPathResult.ANY_TYPE, null);</b>
+
+if (result !== null) {
+    <b class="calibre3">switch(result.resultType) {</b>
+        <b class="calibre3">case XPathResult.STRING_TYPE:</b>
+            <b class="calibre3">//处理字符串类型</b>
+            <b class="calibre3">break;</b>
+
+        <b class="calibre3">case XPathResult.NUMBER_TYPE:</b>
+            <b class="calibre3">//处理数值类型</b>
+            <b class="calibre3">break;</b>
+
+        <b class="calibre3">case XPathResult.BOOLEAN_TYPE:</b>
+            <b class="calibre3">//处理布尔值类型</b>
+            <b class="calibre3">break;</b>
+
+        <b class="calibre3">case XPathResult.UNORDERED_NODE_ITERATOR_TYPE:</b>
+            <b class="calibre3">//处理次序不一致的节点迭代器类型</b>
+            <b class="calibre3">break;</b>
+
+        <b class="calibre3">default:</b>
+            <b class="calibre3">//处理其他可能的结果类型</b>
+
+    <b class="calibre3">}</b>
+}
+</pre>
+
+  <p class="calibre2">显然，<code class="calibre15">XPathResult.ANY_TYPE</code>可以让我们更灵活地使用XPath，但是却要求有更多的处理代码来处理返回的结果。</p>
+
+  <p class="calibre2">4. <strong class="calibre3">命名空间支持</strong></p>
+
+  <p class="calibre2">对于利用了命名空间的XML文档，<code class="calibre15">XPathEvaluator</code>必须知道命名空间信息，然后才能正确地进行求值。处理命名空间的方法也不止一种。我们以下面的XML代码为例。</p>
+  <pre class="calibre18"><code class="calibre15">&lt;?xml version="1.0" ?&gt;
+&lt;wrox:books xmlns:wrox="http://www.wrox.com/"&gt;
+    &lt;wrox:book&gt;
+        &lt;wrox:title&gt;Professional JavaScript for Web Developers&lt;/wrox:title&gt;
+        &lt;wrox:author&gt;Nicholas C. Zakas&lt;/wrox:author&gt;
+    &lt;/wrox:book&gt;
+    &lt;wrox:book&gt;
+        &lt;wrox:title&gt;Professional Ajax&lt;/wrox:title&gt;
+        &lt;wrox:author&gt;Nicholas C. Zakas&lt;/wrox:author&gt;
+        &lt;wrox:author&gt;Jeremy McPeak&lt;/wrox:author&gt;
+        &lt;wrox:author&gt;Joe Fawcett&lt;/wrox:author&gt;
+    &lt;/wrox:book&gt;
+&lt;/wrox:books&gt;
+</code></pre>
+
+  <p class="calibre2">在这个XML文档中，所有元素定义都来自<code class="calibre15">http://www.wrox.com/</code>命名空间，以前缀<code class="calibre15">wrox</code>标识。如果要对这个文档使用XPath，就需要定义要使用的命名空间；否则求值将会失败。</p>
+
+  <p class="calibre2">处理命名空间的第一种方法是通过<code class="calibre15">createNSResolver()</code>来创建<code class="calibre15">XPathNSResolver</code>对象。这个方法接受一个参数，即文档中包含命名空间定义的节点。对于前面的XML文档来说，这个节点就是文档元素<code class="calibre15">&lt;wrox:books&gt;</code>，它的<code class="calibre15">xmlns</code>特性定义了命名空间。可以把这个节点传递给<code class="calibre15">createNSResolver()</code>，然后可以像下面这样在<code class="calibre15">evaluate()</code>中使用返回的结果。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var nsresolver = xmldom.createNSResolver(xmldom.documentElement);
+
+var result = xmldom.evaluate("wrox:book/wrox:author",
+                             xmldom.documentElement, nsresolver,
+                             XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+
+alert(result.snapshotLength);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">DomXPathExample07.htm</i></p>
+
+  <p class="calibre2">在将<code class="calibre15">nsresolver</code>对象传入到<code class="calibre15">evaluate()</code>之后，就可以确保它能够理解XPath表达式中使用的<code class="calibre15">wrox</code>前缀。读者可以试一试使用相同的表达式，如果不使用<code class="calibre15">XPathNSResolver</code>的话，就会导致错误。</p>
+
+  <p class="calibre2">处理命名空间的第二种方法就是定义一个函数，让它接收一个命名空间前缀，返回关联的URI，例如：</p>
+  <pre class="calibre18"><b class="calibre3">var nsresolver = function(prefix){</b>
+    <b class="calibre3">switch(prefix){</b>
+        <b class="calibre3">case "wrox": return "http://www.wrox.com/";</b>
+        <b class="calibre3">//其他前缀</b>
+    <b class="calibre3">}</b>
+<b class="calibre3">};</b>
+
+var result = xmldom.evaluate("count(wrox:book/wrox:author)",
+                xmldom.documentElement, nsresolver, XPathResult.NUMBER_TYPE, null);
+
+alert(result.numberValue);
+</pre>
+
+  <p class="calibre8"><i class="calibre7">DomXPathExample08.htm</i></p>
+
+  <p class="calibre2">在不确定文档中的哪个节点包含命名空间定义的情况下，这个命名空间解析函数就可以派上用场了。只要你知道前缀和URI，就可以定义一个返回该信息的函数，然后将它作为第三个参数传递给<code class="calibre15">evaluate()</code>即可。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_223"><strong class="calibre10">18.2.2　IE中的XPath</strong></h3>
+
+  <p class="calibre2">IE对XPath的支持是内置在基于ActiveX的XML DOM文档对象中的，没有使用<code class="calibre15">DOMParser</code>返回的DOM对象。因此，为了在IE9及之前的版本中使用XPath，必须使用基于ActiveX的实现。这个接口在每个节点上额外定义了两个的方法：<code class="calibre15">selectSingleNode()</code>和<code class="calibre15">selectNodes()</code>。其中，<code class="calibre15">selectSingleNode()</code>方法接受一个XPath模式，在找到匹配节点时返回第一个匹配的节点，如果没有找到匹配的节点就返回<code class="calibre15">null</code>。例如：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var element = xmldom.documentElement.selectSingleNode("employee/name");
+
+if (element !== null){
+    alert(element.xml);
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEXPathExample01.htm</i></p>
+
+  <p class="calibre2">这里，会返回匹配<code class="calibre15">"employee/name"</code>的第一个节点。上下文节点是<code class="calibre15">xmldom.documentElement</code>，因此就调用了该节点上的<code class="calibre15">selectSingleNode()</code>。由于调用这个方法可能会返回<code class="calibre15">null</code>值，因而有必要在使用返回的节点之前，先检查确定它不是<code class="calibre15">null</code>。</p>
+
+  <p class="calibre2">另一个方法<code class="calibre15">selectNodes()</code>也接收一个XPath模式作为参数，但它返回与模式匹配的所有节点的<code class="calibre15">NodeList</code>（如果没有匹配的节点，则返回一个包含零项的<code class="calibre15">NodeList</code>）。来看下面的例子。</p>
+  <pre class="calibre18"><code class="calibre15">var elements = xmldom.documentElement.selectNodes("employee/name");
+alert(elements.length);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEXPathExample02.htm</i></p>
+
+  <p class="calibre2">对这个例子而言，匹配<code class="calibre15">"employee/name"</code>的所有元素都会通过<code class="calibre15">NodeList</code>返回。由于不可能返回<code class="calibre15">null</code>值，因此可以放心地使用返回的结果。但要记住，既然结果是<code class="calibre15">NodeList</code>，而其包含的元素可能会动态变化，所以每次访问它都有可能得到不同的结果。</p>
+
+  <p class="calibre2">IE对XPath的支持非常简单。除了能够取得一个节点或一个<code class="calibre15">NodeList</code>外，不可能取得其他结果类型。</p>
+
+  <p class="calibre2"><strong class="calibre3">IE对命名空间的支持</strong></p>
+
+  <p class="calibre2">要在IE中处理包含命名空间的XPath表达式，你必须知道自己使用的命名空间，并按照下列格式创建一个字符串：</p>
+  <pre class="calibre18"><code class="calibre15">"xmlns:prefix1='uri1' xmlns:prefix2='uri2' xmlns:prefix3='uri3'"
+</code></pre>
+
+  <p class="calibre2">然后，必须将这个字符串传入到XML DOM文档对象的特殊方法<code class="calibre15">setProperty()</code>中，这个方法接收两个参数：要设置的属性名和属性值。在这里，属性名应该是<code class="calibre15">"SelectionNamespaces"</code>，属性值就是按照前面格式创建的字符串。下面来看一个在DOM XPath命名空间中对XML文档求值的例子。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">xmldom.setProperty("SelectionNamespaces", "xmlns:wrox=’http://www.wrox.com/’");
+
+var result = xmldom.documentElement.selectNodes("wrox:book/wrox:author");
+alert(result.length);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">IEXPathExample03.htm</i></p>
+
+  <p class="calibre2">对于这个DOM XPath的例子来说，如果不提供命名空间解析信息，就会在对表达式求值时导致一个错误。</p>
+
+  <h3 class="calibre22" id="sigil_toc_id_224"><strong class="calibre10">18.2.3　跨浏览器使用XPath</strong></h3>
+
+  <p class="calibre2">鉴于IE对XPath功能的支持有限，因此跨浏览器XPath只能保证达到IE支持的功能。换句话说，也就是要在其他使用DOM3级XPath对象的浏览器中，重新创建<code class="calibre15">selectSingleNode()</code>和<code class="calibre15">selectNodes()</code>方法。第一个函数是<code class="calibre15">selectSingleNode()</code>，它接收三个参数：上下文节点、XPath表达式和可选的命名空间对象。命名空间对象应该是下面这种字面量的形式。</p>
+  <pre class="calibre18"><code class="calibre15">{
+    prefix1: "uri1",
+    prefix2: "uri2",
+    prefix3: "uri3"
+}
+</code></pre>
+
+  <p class="calibre2">以这种方式提供的命名空间信息，可以方便地转换为针对特定浏览器的命名空间解析格式。下面给出了<code class="calibre15">selectSingleNode()</code>函数的完整代码。</p>
+  <pre class="calibre18"><code class="calibre15">function selectSingleNode(context, expression, namespaces){
+    var doc = (context.nodeType != 9 ? context.ownerDocument : context);
+
+    if (typeof doc.evaluate != "undefined"){
+        var nsresolver = null;
+        if (namespaces instanceof Object){
+            nsresolver = function(prefix){
+                return namespaces[prefix];
+            };
+        }
+
+        var result = doc.evaluate(expression, context, nsresolver, 
+                                  XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        return (result !== null ? result.singleNodeValue : null);
+
+    } else if (typeof context.selectSingleNode != "undefined"){
+
+        //创建命名空间字符串
+        if (namespaces instanceof Object){
+            var ns = "";
+            for (var prefix in namespaces){
+                if (namespaces.hasOwnProperty(prefix)){
+                    ns += "xmlns:" + prefix + "='" + namespaces[prefix] + "' ";
+                }
+            }
+            doc.setProperty("SelectionNamespaces", ns);
+        }
+        return context.selectSingleNode(expression);
+    } else {
+        throw new Error("No XPath engine found.");
+    }
+}
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserXPathExample01.htm</i></p>
+
+  <p class="calibre2">这个函数首先要确定XML文档，以便基于该文档对表达式求值。由于上下文节点可能是文档，所以必须要检测<code class="calibre15">nodeType</code>属性。此后，变量<code class="calibre15">doc</code>中就会保存对XML文档的引用。然后，可以检测文档中是否存在<code class="calibre15">evaluate()</code>方法，即是否支持DOM3级XPath。如果支持，接下来就是检测传入的<code class="calibre15">namespaces</code>对象。在这里使用<code class="calibre15">instanceof</code>操作符而不是<code class="calibre15">typeof</code>，是因为后者对<code class="calibre15">null</code>也返回<code class="calibre15">"object"</code>。然后将<code class="calibre15">nsresolver</code>变量初始化为<code class="calibre15">null</code>，如果提供了命名空间信息的话，就将其改为一个函数。这个函数是一个闭包，它使用传入的<code class="calibre15">namespaces</code>对象来返回命名空间的URI。此后，调用<code class="calibre15">evaluate()</code>方法，并对其结果进行检测，在确定是节点之后再返回该结果。</p>
+
+  <p class="calibre2">在这个函数针对IE的分支中，需要检查<code class="calibre15">context</code>节点中是否存在<code class="calibre15">selectSingleNode()</code>方法。与DOM分支一样，这里的第一步是有选择地构建命名空间信息。如果传入了<code class="calibre15">namespaces</code>对象，则迭代其属性并以适当格式创建一个字符串。注意，这里使用了<code class="calibre15">hasOwnProperty()</code>方法来确保对<code class="calibre15">Object.prototype</code>的任何修改都不会影响到当前函数。最后，调用原生的<code class="calibre15">selectSingleNode()</code>方法并返回结果。</p>
+
+  <p class="calibre2">如果前面两种方法都没有得到支持，这个函数就会抛出一个错误，表示找不到XPath处理引擎。下面是使用<code class="calibre15">selectSingleNode()</code>函数的示例。</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var result = selectSingleNode(xmldom.documentElement, "wrox:book/wrox:author",
+                              { wrox: "http://www.wrox.com/" });
+alert(serializeXml(result));
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserXPathExample01.htm</i></p>
+
+  <p class="calibre2">类似地，也可以创建一个跨浏览器的<code class="calibre15">selectNodes()</code>函数。这个函数接收与<code class="calibre15">selectSingleNode()</code>相同的三个参数，而且大部分逻辑都相似。为了便于看清楚，我们用加粗字体突出了这两个函数的差别所在。</p>
+  <pre class="calibre18"><b class="calibre3">function selectNodes(context, expression, namespaces){</b>
+    var doc = (context.nodeType != 9 ? context.ownerDocument : context);
+
+    if (typeof doc.evaluate != "undefined"){
+        var nsresolver = null;
+        if (namespaces instanceof Object){
+            nsresolver = function(prefix){
+                return namespaces[prefix];
+            };
+        }
+
+        <b class="calibre3">var result = doc.evaluate(expression, context, nsresolver,</b>
+                                  <b class="calibre3">XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);</b>
+        <b class="calibre3">var nodes = new Array();</b>
+
+        <b class="calibre3">if (result !== null){</b>
+            <b class="calibre3">for (var i=0, len=result.snapshotLength; i &lt; len; i++){</b>
+                <b class="calibre3">nodes.push(result.snapshotItem(i));</b>
+            <b class="calibre3">}</b>
+        <b class="calibre3">}</b>
+
+        <b class="calibre3">return nodes;</b>
+    } else if (typeof context.selectNodes != "undefined"){
+
+        //创建命名空间字符串
+        if (namespaces instanceof Object){
+            var ns = "";
+            for (var prefix in namespaces){
+                if (namespaces.hasOwnProperty(prefix)){
+                    ns += "xmlns:" + prefix + "='" + namespaces[prefix] + "' ";
+                }
+            }
+            doc.setProperty("SelectionNamespaces", ns);
+        }
+        <b class="calibre3">var result = context.selectNodes(expression);</b>
+        <b class="calibre3">var nodes = new Array();</b>
+
+        <b class="calibre3">for (var i=0,len=result.length; i &lt; len; i++){</b>
+            <b class="calibre3">nodes.push(result[i]);</b>
+        <b class="calibre3">}</b>
+
+        <b class="calibre3">return nodes;</b>
+    } else {
+        throw new Error("No XPath engine found.");
+    }
+}
+</pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserXPathExample02.htm</i></p>
+
+  <p class="calibre2">很明显，其中有很多逻辑都与<code class="calibre15">selectSingleNode()</code>方法相同。在函数针对DOM的部分，使用了有序快照结果类型，然后将结果保存在了一个数组中。为了与IE的实现看齐，这个函数应该在没找到匹配项的情况下也返回一个数组，因而最终都要返回数组<code class="calibre15">nodes</code>。在函数针对IE的分支中，调用了<code class="calibre15">selectNodes()</code>方法并将结果复制到了一个数组中。因为IE返回的是一个<code class="calibre15">NodeList</code>，所以最好将节点都复制到一个数组中，这样就可以确保在不同浏览器下，函数都能返回相同的数据类型。使用这个函数的示例如下：</p>
+
+  <p class="p-img"><img alt="" class="calibre17" src="../Images/00003.gif" /></p>
+  <pre class="calibre18"><code class="calibre15">var result = selectNodes(xmldom.documentElement, "wrox:book/wrox:author",
+                               { wrox: "http://www.wrox.com/" });
+alert(result.length);
+</code></pre>
+
+  <p class="calibre8"><i class="calibre7">CrossBrowserXPathExample02.htm</i></p>
+
+  <p class="calibre2">为了求得最佳的浏览器兼容性，我们建议在JavaScript中使用XPath时，只考虑使用这两个方法。</p>
+</body>
+</html>
