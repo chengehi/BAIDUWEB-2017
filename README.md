@@ -23,3 +23,4 @@
 * [任务六：基础JavaScript练习（三）](https://chengehi.github.io/BAIDUWEB-2017/binbin/task_2_19_1.html)
 * [任务七：JavaScript和树（一）](https://chengehi.github.io/BAIDUWEB-2017/binbin/task_2_22_1.html)
 * [任务八：JavaScript和树（二）](https://chengehi.github.io/BAIDUWEB-2017/binbin/task_2_23_1/index.html)
+* [任务九：JavaScript和树（三）](https://chengehi.github.io/BAIDUWEB-2017/binbin/task_2_24_1/index.html)

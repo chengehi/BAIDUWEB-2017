@@ -141,5 +141,41 @@
 		}
 	}
 
+	
+	var divs =document.getElementsByTagName("div");
+	var delBtn = document.getElementById("delBtn")
+	var addInput =document.getElementById("addInput");
+	var addBtn = document.getElementById("addBtn");
+	var arrs =[];
+
+	// 选择边框变色
+	for(var i=0;i<divs.length;i++){
+		divs[i].onclick = function(event){
+		event.target.style.borderColor = "green";
+		arrs.push(event.target);
+		event.stopPropagation();
+		}
+	}
+	// 删除
+	delBtn.onclick = function(){
+		for(var i=0;i<arrs.length;i++){
+			var node = arrs[i];
+			var parent = arrs[i].parentNode;
+			var n = Array.prototype.indexOf.call(parent.children,arrs[i]);
+			parent.removeChild(arrs[i]);
+		}
+		arrs = [];
+	}
+	// 添加
+	addBtn.onclick = function(){
+		if(!!arrs[0]){
+			var addValue = addInput.value;
+			var node = document.createElement("div");
+			node.innerText = addValue;
+			node.className = "c4";
+			arrs[0].appendChild(node);
+		}
+		
+	}
 
 	
