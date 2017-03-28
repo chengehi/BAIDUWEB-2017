@@ -16,9 +16,6 @@
 			width: 500px;
 			height: 100px;
 		}
-		.bc-blue{
-			background-color: blue;
-		}
 	</style>
 </head>
 <body>
@@ -45,13 +42,18 @@
 		</div>
 	</div>
 	<br>
-	<input type="button" value="前序" onclick= "qianxu()">
-	<input type="button" value="中序" onclick= "zhongxu()">
-	<input type="button" value="后序" onclick= "houxu()">
+	<input type="button" value="前序">
+	<input type="button" value="中序">
+	<input type="button" value="后序">
 
 	<script>
-	var count = 0;
 	var rootNode = document.getElementById("root");
+	var btns = document.getElementsByTagName("input");
+	var preBtn = btns[0];
+	var inBtn = btns[1];
+	var postBtn = btns[2];
+	var indexArr = [];
+	var timeer = null;
 
 	// 前序搜索
 	function preOrder(callback,rootNode){
@@ -84,81 +86,69 @@
 		})(rootNode);
 	}
 
+	//变色
+	function changeColor(){
+		var i = 0;
+		indexArr[i].style.backgroundColor = "blue";	
+		var step = function(){
+			i++;
+			if(i<indexArr.length){
+				indexArr[i-1].style.backgroundColor = "#fff";
+				indexArr[i].style.backgroundColor = "blue";
+			}else{
+				indexArr[i-1].style.backgroundColor = "#fff";
+				clearInterval(timeer);
+			}
+
+		}
+		timeer = setInterval(step,1000)
+	}
 
 	// callback函数,获得节点数组
-	function index(node){
+	function arr(node){
 		indexArr.push(node);
 	}
 
-	//变色
-
-	function qianxu(){
+	// 复位
+	function resect(){
 		indexArr = [];
-		preOrder(index,rootNode);//获得节点数组indexArr
-		var step = function(){
-			var arr = indexArr;
-			(function changeColor(arr){
-				if(count==0){
-					arr[count].style.backgroundColor = "blue";
-					count++;
-				}else if(count>0&&count<arr.length){
-					arr[count-1].style.backgroundColor = "";
-					arr[count].style.backgroundColor = "blue";
-					count++;
-				}else{
-					arr[count-1].style.backgroundColor = "";
-					clearInterval(intervalId);
-				}	
-			})(arr)
-		};
-		var intervalId = setInterval(step,1000);
+		clearInterval(timeer);
+		var divs = document.getElementsByTagName("div");
+		for(var i=0;i<divs.length;i++){
+			divs[i].style.backgroundColor = "#fff";
+		}
 	}
 
-	function zhongxu(){
-		indexArr = [];
-		inOrder(index,rootNode);//获得节点数组indexArr
-		var step = function(){
-			var arr = indexArr;
-			(function changeColor(arr){
-				if(count==0){
-					arr[count].style.backgroundColor = "blue";
-					count++;
-				}else if(count>0&&count<arr.length){
-					arr[count-1].style.backgroundColor = "";
-					arr[count].style.backgroundColor = "blue";
-					count++;
-				}else{
-					arr[count-1].style.backgroundColor = "";
-					clearInterval(intervalId);
-				}	
-			})(arr)
-		};
-		var intervalId = setInterval(step,1000);
+	// 兼容的绑定事件
+	function addEvent(element,event,listener){
+		if(element.addEventListener){
+			element.addEventListener(event,listener,false);
+		}else if(element.attachEvent){
+			element.attachEvent("on"+event,listener);
+		}else{
+			element["on"+event]=listener;
+		}
 	}
 
-	function houxu(){
-		indexArr = [];
-		postOrder(index,rootNode);//获得节点数组indexArr
-		var step = function(){
-			var arr = indexArr;
-			(function changeColor(arr){
-				if(count==0){
-					arr[count].style.backgroundColor = "blue";
-					count++;
-				}else if(count>0&&count<arr.length){
-					arr[count-1].style.backgroundColor = "";
-					arr[count].style.backgroundColor = "blue";
-					count++;
-				}else{
-					arr[count-1].style.backgroundColor = "";
-					clearInterval(intervalId);
-				}	
-			})(arr)
-		};
-		var intervalId = setInterval(step,1000);
-	}
-
-
+	// 加载
+	addEvent(window,"load",function(){
+		addEvent(preBtn,"click",function(){
+			resect();
+			preOrder(arr,rootNode);
+			changeColor();
+		});
+		addEvent(inBtn,"click",function(){
+			resect();
+			inOrder(arr,rootNode);
+			changeColor();
+		});
+		addEvent(postBtn,"click",function(){
+			resect();
+			postOrder(arr,rootNode);
+			changeColor();
+		})
+	})
+	
 	</script>
 </body>
 </html>
