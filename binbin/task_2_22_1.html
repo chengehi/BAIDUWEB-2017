@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务七：JavaScript和树（一）</title>
+	<style>
+		.c1,.c2,.c3,.c4{
+			display: flex;
+			flex: 1 0 0;
+			padding: 10px;
+			margin: 2px;
+			border: 1px solid #000;
+			background-color: #fff;
+		}
+		.c1{
+			width: 500px;
+			height: 100px;
+		}
+		.bc-blue{
+			background-color: blue;
+		}
+	</style>
+</head>
+<body>
+	<div class="c1" id="root">
+		<div class="c2">
+			<div class="c3">
+				<div class="c4"></div>
+				<div class="c4"></div>
+			</div>
+			<div class="c3">
+				<div class="c4"></div>
+				<div class="c4"></div>
+			</div>
+		</div>
+		<div class="c2">
+			<div class="c3">
+				<div class="c4"></div>
+				<div class="c4"></div>
+			</div>
+			<div class="c3">
+				<div class="c4"></div>
+				<div class="c4"></div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<input type="button" value="前序" onclick= "qianxu()">
+	<input type="button" value="中序" onclick= "zhongxu()">
+	<input type="button" value="后序" onclick= "houxu()">
+
+	<script>
+	var count = 0;
+	var rootNode = document.getElementById("root");
+
+	// 前序搜索
+	function preOrder(callback,rootNode){
+		(function recurse(currentNode){
+			callback(currentNode);
+			for(var i=0,length=currentNode.children.length;i<length;i++){
+				recurse(currentNode.children[i]);
+			}		
+		})(rootNode);
+	}
+
+	// 中序搜索
+	function inOrder(callback,rootNode){
+		(function recurse(currentNode){
+			if(!(currentNode == null)){
+				recurse(currentNode.children[0]);
+				callback(currentNode);
+				recurse(currentNode.children[1]);
+			}
+		})(rootNode);
+	}
+
+	// 深度搜索-后序
+	function postOrder(callback,rootNode){
+		(function recurse(currentNode){
+			for(var i=0,length=currentNode.children.length;i<length;i++){
+				recurse(currentNode.children[i]);
+			}
+			callback(currentNode);	
+		})(rootNode);
+	}
+
+
+	// callback函数,获得节点数组
+	function index(node){
+		indexArr.push(node);
+	}
+
+	//变色
+
+	function qianxu(){
+		indexArr = [];
+		preOrder(index,rootNode);//获得节点数组indexArr
+		var step = function(){
+			var arr = indexArr;
+			(function changeColor(arr){
+				if(count==0){
+					arr[count].style.backgroundColor = "blue";
+					count++;
+				}else if(count>0&&count<arr.length){
+					arr[count-1].style.backgroundColor = "";
+					arr[count].style.backgroundColor = "blue";
+					count++;
+				}else{
+					arr[count-1].style.backgroundColor = "";
+					clearInterval(intervalId);
+				}	
+			})(arr)
+		};
+		var intervalId = setInterval(step,1000);
+	}
+
+	function zhongxu(){
+		indexArr = [];
+		inOrder(index,rootNode);//获得节点数组indexArr
+		var step = function(){
+			var arr = indexArr;
+			(function changeColor(arr){
+				if(count==0){
+					arr[count].style.backgroundColor = "blue";
+					count++;
+				}else if(count>0&&count<arr.length){
+					arr[count-1].style.backgroundColor = "";
+					arr[count].style.backgroundColor = "blue";
+					count++;
+				}else{
+					arr[count-1].style.backgroundColor = "";
+					clearInterval(intervalId);
+				}	
+			})(arr)
+		};
+		var intervalId = setInterval(step,1000);
+	}
+
+	function houxu(){
+		indexArr = [];
+		postOrder(index,rootNode);//获得节点数组indexArr
+		var step = function(){
+			var arr = indexArr;
+			(function changeColor(arr){
+				if(count==0){
+					arr[count].style.backgroundColor = "blue";
+					count++;
+				}else if(count>0&&count<arr.length){
+					arr[count-1].style.backgroundColor = "";
+					arr[count].style.backgroundColor = "blue";
+					count++;
+				}else{
+					arr[count-1].style.backgroundColor = "";
+					clearInterval(intervalId);
+				}	
+			})(arr)
+		};
+		var intervalId = setInterval(step,1000);
+	}
+
+
+	</script>
+</body>
+</html>
