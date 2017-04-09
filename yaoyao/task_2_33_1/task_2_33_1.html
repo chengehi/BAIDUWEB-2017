@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.m-demo{display: flex;flex-flow: row wrap;border:1px solid #000;width: 500px;height: 500px;position: relative;margin:40px 0 0 40px; }
+		.m-demo div{width:50px;height: 50px;box-sizing: border-box;border-right:1px solid #999;border-bottom: 1px solid #999;}
+		.m-demo div:nth-child(10n){border-right: 0;}
+		.m-demo div:nth-child(n+91){border-bottom: 0;}
+
+
+		.m-demo .biaochi {position: absolute;border: 0;}
+		.m-demo .b1{width: 502px;height: 40px;top:-40px;left: 0px;}
+		.m-demo .b2{width: 40px;height: 502px;top: 0;left: -40px;}
+		.m-demo .biaochi span{display: inline-block;float: left;width: 50px;text-align: center;font: 16px/16px "微软雅黑";padding-top: 20px;}
+		.m-demo .b2 span{height: 50px;width: 35px;text-align: right;padding:0;font: 16px/50px "微软雅黑";}
+	
+		.m-demo .tips{border:0;width: 50px;height: 50px;position: absolute;top: 0;bottom: 0;background-color: red;border-right: 15px solid blue;}
+		#input{margin-left: 40px;}
+	</style>
+</head>
+<body>
+	<div class="m-demo">
+		<div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> <div></div> 
+	<div class="biaochi b1"><span>1</span> <span>2</span><span>3</span> <span>4</span> <span>5</span> <span>6</span> <span>7</span> <span>8</span> <span>9</span> <span>10</span></div> 
+	<div class="biaochi b2"><span>1</span> <span>2</span><span>3</span> <span>4</span> <span>5</span> <span>6</span> <span>7</span> <span>8</span> <span>9</span> <span>10</span></div>
+	
+	<div class="tips" id="tips"></div>
+	</div>
+	<br>
+	<input type="text" id="input" value="GO"><input type="button" value="执行" id="btn">
+	<span>TUN LEF</span>
+	<span>UN RIG</span>
+	<span>UN BAC</span>
+	
+	<script>
+		var tips = document.getElementById("tips"),
+			input = document.getElementById("input"),
+			btn = document.getElementById("btn"),
+			sign = 0,
+			dirNum = 0;
+
+
+		function direction(num){
+			dirNum =(dirNum+num)%360;
+			tips.style.transform = "rotate("+dirNum+"deg)";
+		} 
+
+		// 规定自右,下,左,上,依次为0,1,2,3
+		function go(){
+			sign = sign%4;
+			var top = tips.offsetTop,
+				left = tips.offsetLeft;
+			switch(sign){
+				case 0 :
+					if(left<=400){
+						tips.style.left = left+50+"px";
+					};break;	
+				case 1 :
+					if(top<=400){
+						tips.style.top = top+50+"px";
+					};break;
+				case 2 :
+					if(left>=50){
+						tips.style.left = left-50+"px";
+					};break;
+				case 3 :
+					if(top>=50){
+						tips.style.top = top-50+"px";
+					};break;
+			}
+		}
+
+		btn.onclick = function(){
+			var value = input.value;
+				switch(value){
+					case "TUN LEF":direction(-90);sign+=3;break;
+					case "UN RIG" :direction(90);sign+=1;break;
+					case "UN BAC" :direction(180);sign+=2;break;
+					case "GO" :go();break;
+				}
+		}
+
+	</script>
+</body>
+</html>
