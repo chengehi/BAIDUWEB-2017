@@ -28,3 +28,4 @@
 
 ### 导师耀耀
 * [任务一：表单（一）单个表单项的检验](https://chengehi.github.io/BAIDUWEB-2017/yaoyao/task_2_29_1/task_2_29_1.html)
+* [任务二：表单（二）多个表单项的动态校验](https://chengehi.github.io/BAIDUWEB-2017/yaoyao/task_2_30_1/task_2_30_1.html)

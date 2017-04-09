@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		.m-form fieldset{border:0;}
+		.m-form input{border:1px solid #CCC;border-radius: 2px;box-shadow: 0 0 0.5px 0;}
+		.m-form button{border-radius: 2px;background-color: #2F79BA;color: #fff;border:0;cursor: pointer;}
+		.m-form span{color: #ccc;margin-left: 90px;font:12px/2em "微软雅黑";}
+
+		/*状态样式*/
+		.m-form .j-suc-col{color:green;}
+		.m-form .j-suc-border{border-color: green;}
+		.m-form .j-err-col{color: red;}
+		.m-form .j-err-border{border-color: red;}
+	</style>
+</head>
+<body>
+	<form action="" name="m-form" id="m-form" class="m-form">
+		<fieldset>
+			<div>
+				<label for="username">&nbsp&nbsp名称&nbsp</label>
+				<input type="text" id="username">
+				<br>
+				<span class="msg"></span>
+			</div>
+			<div>
+				<label for="password">&nbsp&nbsp密码&nbsp</label>
+				<input type="text" id="password">
+				<br>
+				<span class="msg"></span>
+			</div>
+			<div>
+				<label for="passwordConfirm">密码确认&nbsp</label>
+				<input type="text" id="passwordConfirm">
+				<br>
+				<span class="msg"></span>
+			</div>
+			<div>
+				<label for="mail">&nbsp&nbsp邮箱&nbsp</label>
+				<input type="text" id="mail">
+				<br>
+				<span class="msg"></span>
+			</div>
+			<div>
+				<label for="telephone">&nbsp&nbsp手机&nbsp</label>
+				<input type="text" id="telephone">
+				<br>
+				<span class="msg"></span>
+			</div>
+			<button id="btn">验证</button>
+		</fieldset>
+	</form>
+
+	<script>
+	var iptUsername = $("username"),
+		iptPassword = $("password"),
+		iptPdCm = $("passwordConfirm"),
+		iptMail = $("mail"),
+		iptTel = $("telephone"),
+		msgs = document.getElementsByClassName("msg"),
+		btn = $("btn"),
+		password = "";
+
+	function $(id){
+		return document.getElementById(id);
+	}
+
+	function message(str,node){
+		node.textContent = str;
+	}
+
+	// 处理信息逻辑
+	function isASCII(str){
+		return str.codePointAt()<=0xff;
+	}
+
+	function getStrLen(str){
+		var len = 0;
+		for(let ch of str.trim()){
+			if(isASCII(ch)){
+				len++;
+			}else{
+				len+=2;
+			}
+		}
+		return len;
+	}
+
+	// 添加样式逻辑
+	function reset(ipt,msg){
+		ipt.classList.remove("j-err-border","j-suv-border");
+		msg.classList.remove("j-err-col","j-suv-col");
+	}
+
+	function err(ipt,msg){
+		reset(ipt,msg);
+		ipt.classList.add("j-err-border");
+		msg.classList.add("j-err-col");
+	}
+
+	function suc(ipt,msg){
+		reset(ipt,msg);
+		ipt.classList.add("j-suc-border");
+		msg.classList.add("j-suc-col");
+	}
+
+	// 验证名称
+	function testUsername(){
+		var value = iptUsername.value,
+			len = getStrLen(value);
+		if(!value){
+			message("姓名不能为空",msgs[0]);
+			err(iptUsername,msgs[0]);
+		}else if(len<4||len>16){
+			message("字符数为4~16位",msgs[0]);
+			err(iptUsername,msgs[0]);
+		}else{
+			message("格式正确",msgs[0]);
+			suc(iptUsername,msgs[0]);
+		}			
+	}
+	// 验证密码
+	function testPassword(){
+		var value = iptPassword.value.trim();
+		if(value.length<8){
+			message("长度大于8",msgs[1]);	
+			err(iptPassword,msgs[1]);
+		}else if(!/[\d]/.test(value)||!/[A-Za-z]/.test(value)){
+			message("母加数字",msgs[1]);
+			err(iptPassword,msgs[1]);
+		}else{
+			message("密码可用",msgs[1]);
+			suc(iptPassword,msgs[1]);
+			password = value;			
+		}
+	}
+	// 验证重复输入密码
+	function testPdCm(){
+		var value = iptPdCm.value.trim();
+		if(!password||password!=value){
+			message("两次输入不一致",msgs[2]);
+			err(iptPdCm,msgs[2]);
+		}else if(password === value){
+			message("输入正确",msgs[2]);
+			suc(iptPdCm,msgs[2]);
+		}
+	}
+	// 验证邮箱
+	function testMail(){
+		var value = iptMail.value.trim();
+		if(!/[\w]+@[\w]+\.[A-Za-z]+/.test(value)){
+			message("输入正确邮箱格式",msgs[3]);
+			err(iptMail,msgs[3]);
+		}else{
+			message("输入正确",msgs[3]);
+			suc(iptMail,msgs[3]);
+		}
+	}
+
+	// 验证手机号
+	function testTel(){
+		var value = iptTel.value.trim(),
+			num = parseInt(value);
+		if(!num||value.length!=11){
+			message("输入正确手机号",msgs[4]);
+			err(iptTel,msgs[4]);
+		}else{
+			message("输入正确",msgs[4]);
+			suc(iptTel,msgs[4]);
+		}
+	}
+
+	// 获得焦点与失去焦点时
+	// username
+	iptUsername.onfocus = function(){
+		message("必填,长度为4~16个字符",msgs[0]);
+	}
+	iptUsername.onblur = function(){
+		testUsername();
+	}
+	// password
+	iptPassword.onfocus = function(){
+		message("必填,长度大于8,字母加数字",msgs[1]);
+	}
+	iptPassword.onblur = function(){
+		testPassword();
+	}
+	// passwordConfirm
+	iptPdCm.onfocus = function(){
+		message("重复输入密码",msgs[2]);
+	}
+	iptPdCm.onblur = function(){
+		testPdCm();
+	}
+	// mail
+	iptMail.onfocus = function(){
+		message("输入正确邮箱格式",msgs[3]);
+	}
+	iptMail.onblur = function(){
+		testMail();
+	}
+	// telephone
+	iptTel.onfocus = function(){
+		message("输入正确手机号",msgs[4]);
+	}
+	iptTel.onblur = function(){
+		testTel();
+	}
+
+
+	// 点击事件
+	btn.onclick = function(event){
+		for(let a of msgs){
+			if(Array.prototype.indexOf.call(a.classList,"j-err-col")!=-1||!iptUsername.value){
+				alert("输入有误");
+				event.preventDefault();
+				return;
+			}
+		}
+		alert("输入正确");
+	};
+
+	</script>
+</body>
+</html>
