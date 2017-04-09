@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#isStudent{border-color: blue}
+		.m-form .j-display-none{
+			display: none;
+		}
+		
+	</style>
+</head>
+<body>
+	<form action="" name="demo" class="m-form">
+		<div>
+			<label><input type="radio" id="isStudent">在校生</label>
+			<label><input type="radio" id="noStudent">非在校生</label>
+			<div id="isStudent-1">
+				<label for="school">学校</label>
+				<select name="city" id="city"></select>
+				<select name="school" id="school"><option value="">北京大学</option></select>
+			</div>
+			<div id="noStudent-1" class="j-display-none">
+				<label>就业单位 <input type="text"></label>
+			</div>
+		</div>
+	</form>
+	<script>
+	var data = {
+		city:["北京","四川","河南"],
+		school:{
+			0:['北京大学','北京理工','清华大学'],
+			1:['四川大学','西南科技大学','电子科大'],
+			2:['河南大学','郑州大学','河南科技大学']
+		}
+	}
+
+	var form = document.forms.demo,
+		city  = $("city"),
+		school = $("school"),
+		isStudent = $("isStudent"),
+		noStudent =$("noStudent"),
+		isStudent1 = $("isStudent-1"),
+		noStudent1 =$("noStudent-1");
+
+	function $(id){
+		return document.getElementById(id);
+	}
+
+	// 增加选项
+	function addOption(node,arr){
+		node.innerHTML = "";
+		for(var i=0;i<arr.length;i++){
+			var n = document.createElement("option");
+			n.value = i;
+			n.textContent = arr[i];
+			node.appendChild(n);
+		}
+	}
+
+	function clear(){
+		noStudent1.classList.remove("j-display-none");
+		isStudent1.classList.remove("j-display-none");
+	}
+
+	// 注册事件
+	city.onchange =function(event){
+		var n = event.target.value;
+		addOption(school,data.school[n]);
+	}
+	isStudent.onclick= function(){
+		noStudent.checked = false;
+		clear();
+		noStudent1.classList.add("j-display-none");
+	}
+	noStudent.onclick=function(){
+		isStudent.checked = false;
+		clear();
+		isStudent1.classList.add("j-display-none");
+	}
+
+	// 初始化
+	addOption(city,data.city);
+	addOption(school,data.school[0]);
+
+
+	</script>
+</body>
+</html>
