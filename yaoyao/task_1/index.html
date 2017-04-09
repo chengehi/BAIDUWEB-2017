@@ -3,12 +3,81 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<style>	
+		.message{
+			margin-left: 40px;
+			font-size: 12px;
+			color: #999;
+		}
+
+		.border-red{border-color: red;border-style: solid;}
+		.border-green{border-color: green;border-style: solid;}
+		.font-color-red{color: red;}
+		.font-color-green{color: green;}
+	</style>
 </head>
 <body>
-	<form action="">
-		<label for="">名称</label>
-		<input type="text">
-		<input type="button">
+	<form action="" name="demo">
+		<label for="user">名称 </label>
+		<input type="text" name="user" id="input">	
+		<input type="button" value="验证" name="btn">
+		<br>
+		<span class="message" id="message"></span>
 	</form>
+
+	<script>	
+		var form = document.forms.demo,
+			input =form.user,
+			btn = form.btn,
+			message = document.getElementById("message");
+
+		// 验证
+		function test(str){
+			if(/[^\s]{4,16}/.test(str)){
+				input.classList.add("border-green");
+				message.classList.add("font-color-green");
+				message.innerText = "格式正确";
+				return 0;
+			}else{
+				input.classList.add("border-red");
+				message.classList.add("font-color-red");
+				message.innerText = "请输入4~16个字符"
+				return 1;
+			}
+		}
+
+		// 清除效果
+		function resect(){
+			input.classList.remove("border-red","border-green");
+			input.value = "";
+			message.classList.remove("font-color-red","font-color-green");
+			message.innerText = "必填,长度为4~16个字符";
+		}
+
+		
+/********************************************************************************/
+		// 获得焦点,清除样式
+		input.onfocus = function(){
+			resect();
+		}
+
+		// 失去焦点
+		input.onblur = function(){
+			var str = input.value;
+			test(str);
+		}
+
+		// 点击按钮
+		btn.onclick = function(){
+			var str = input.value;
+			var f = test(str);
+			if(f == 0){
+				alert("格式正确");
+			}else{
+				alert("输入有误");
+			}
+		}
+	</script>
+
 </body>
 </html>

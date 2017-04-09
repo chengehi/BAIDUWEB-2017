@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		.m-form fieldset{border:0;}
+		.m-form input{border:1px solid #CCC;border-radius: 2px;box-shadow: 0 0 0.5px 0;}
+		.m-form button{border-radius: 2px;background-color: #2F79BA;color: #fff;border:0;cursor: pointer;}
+		.m-form span{color: #ccc;margin-left: 55px;font:12px/2em "微软雅黑";}
+
+		/*状态样式*/
+		.m-form .j-suc-col{color:green;}
+		.m-form .j-suc-border{border-color: green;}
+		.m-form .j-err-col{color: red;}
+		.m-form .j-err-border{border-color: red;}
+	</style>
+</head>
+<body>
+	<form action="" name="m-form" id="m-form" class="m-form">
+		<fieldset>
+			<label for="username">名称&nbsp</label>
+			<input type="text" id="username">
+			<button id="btn">验证</button><br>
+			<span id="msg"></span>
+		</fieldset>
+	</form>
+
+	<script>
+	var ipt = document.getElementById("username"),
+		btn = document.getElementById("btn"),
+		msg = document.getElementById("msg");
+
+	function message(str){
+		msg.textContent = str;
+	}
+
+	// 处理信息逻辑
+	function isASCII(str){
+		return str.codePointAt()<=0xff;
+	}
+
+	function getStrLen(str){
+		var len = 0;
+		for(let ch of str.trim()){
+			if(isASCII(ch)){
+				len++;
+			}else{
+				len+=2;
+			}
+		}
+		return len;
+	}
+	// 添加样式逻辑
+	function reset(){
+		ipt.classList.remove("j-err-border","j-suv-border");
+		msg.classList.remove("j-err-col","j-suv-col");
+	}
+
+	function err(){
+		reset();
+		ipt.classList.add("j-err-border");
+		msg.classList.add("j-err-col");
+	}
+
+	function suc(){
+		reset();
+		ipt.classList.add("j-suc-border");
+		msg.classList.add("j-suc-col");
+	}
+
+	// 点击事件
+	btn.onclick = function(event){
+		event.preventDefault();
+		var value = ipt.value,
+			len = getStrLen(value);
+
+		if(!value){
+			message("姓名不能为空");
+			err();
+		}else if(len<4||len>16){
+			message("字符数为4~16位");
+			err();
+		}else{
+			message("格式正确");
+			suc();
+		}	
+}
+
+	</script>
+</body>
+</html>
