@@ -16,7 +16,10 @@
 		.m-demo .u-demo .b2 span{height: 50px;width: 35px;text-align: right;padding:0;font: 16px/50px "微软雅黑";}
 	
 		.m-demo .u-demo .tips{border:0;width: 50px;height: 50px;position: absolute;top: 0;bottom: 0;background-color: red;border-right: 15px solid blue;}
-		#input{margin-left: 40px;}
+		.m-demo .u-btns{margin-left: 40px;}
+
+		/*动画*/
+		.m-demo .transition{transition: all,1s;}
 	</style>
 </head>
 <body>
@@ -30,10 +33,23 @@
 			<div class="tips" id="tips"></div>
 		</div>
 		<br>
-		<input type="text" id="input" value="GO"><input type="button" value="执行" id="btn">
-		<button id="lef">TUN LEF</button>
-		<button id="rig">UN RIG</button>
-		<button id="bac">UN BAC</button>
+		<div class="u-btns">
+			<input type="text" id="input" value="GO"><input type="button" value="执行" id="btn">
+			<br>
+			<button id="lef">TUN LEF</button>
+			<button id="rig">UN RIG</button>
+			<button id="bac">UN BAC</button>
+			<br>
+			<button>TRA LEF</button>
+			<button>TRA TOP</button>
+			<button>TRA RIG</button>
+			<button>TRA BOT</button>
+			<br>
+			<button>MOV LEF</button>
+			<button>MOV TOP</button>
+			<button>MOV RIG</button>
+			<button>MOV BOT</button>
+		</div>
 	</div>
 	
 	<script>
@@ -44,23 +60,26 @@
 			btnRig = $("rig"),
 			btnBac = $("bac"),
 			sign = 0,
-			dirNum = 0;
+			dirNum = 0,
+			btns = document.getElementsByTagName("button");
 
 		function $(id){
 			return document.getElementById(id);
 		}
 		// 旋转角度
 		function direction(num){
-			dirNum =(dirNum+num)%360;
+			dirNum =dirNum+num;
 			tips.style.transform = "rotate("+dirNum+"deg)";
 		} 
-
-		// 规定自右,下,左,上,依次为0,1,2,3
-		function go(){
+		// 对sign取余,判断方向
+		function remainder(){
 			sign = sign%4;
+		}
+		// 移动
+		function move(n){
 			var top = tips.offsetTop,
 				left = tips.offsetLeft;
-			switch(sign){
+			switch(n){
 				case 0 :
 					if(left<=400){
 						tips.style.left = left+50+"px";
@@ -79,19 +98,44 @@
 					};break;
 			}
 		}
-		// 左移
+		// 左转90
 		function lef(){
 			direction(-90);sign+=3;
+			addAnim(tips);
 		}
-		// 右移
+		// 右转90
 		function rig(){
 			direction(90);sign+=1;
+			addAnim(tips);
 		}
 		// 旋转180
 		function bac(){
 			direction(180);sign+=2;
+			addAnim(tips);
+		}
+		// 规定自右,下,左,上,依次为0,1,2,3
+		function go(){
+			remainder();
+			move(sign);
+			addAnim(tips);
 		}
 
+		// 转向,left为2,top为3,right为0,bottom为1
+		function turn(num){
+			remainder();
+			console.log(sign);
+			var dg = num-sign>=0?(num-sign)*90:(num-sign+4)*90;
+			direction(dg);
+			sign = num;
+		}
+		// 动画
+		function addAnim(node){
+			node.classList.remove("transition");
+			node.classList.add("transition");
+		}
+		function removeAnim(node){
+			node.classList.remove("transition");
+		}
 		// 注册事件
 		btn.onclick = function(){
 			var value = input.value;
@@ -100,17 +144,49 @@
 					case "UN RIG" :rig();break;
 					case "UN BAC" :bac();break;
 					case "GO" :go();break;
+					case "TRA LEF" :move(2);break;
+					case "TRA TOP" :move(3);break;
+					case "TRA RIG" :move(0);break;
+					case "TRA BOT" :move(1);break;
+					case "MOV LEF" :turn(2);move(2);break;
+					case "MOV TOP" :turn(3);move(3);break;
+					case "MOV RIG" :turn(0);move(0);break;
+					case "MOV BOT" :turn(1);move(1);break;
 				}
 		}
 		btnLef.onclick = function(){
 			lef();
 		}
 		btnRig.onclick = function(){
-			lef();
+			rig();
 		}
 		btnBac.onclick = function(){
-			lef();
+			bac();
 		}
+		btns[3].onclick = function(){
+			move(2);
+		};
+		btns[4].onclick = function(){
+			move(3);
+		};
+		btns[5].onclick = function(){
+			move(0);
+		};
+		btns[6].onclick = function(){
+			move(1);
+		};
+		btns[7].onclick = function(){
+			turn(2);move(2);
+		};
+		btns[8].onclick = function(){
+			turn(3);move(3);
+		};
+		btns[9].onclick = function(){
+			turn(0);move(0);
+		};
+		btns[10].onclick = function(){
+			turn(1);move(1);
+		};
 	</script>
 </body>
 </html>

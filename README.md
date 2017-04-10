@@ -31,3 +31,4 @@
 * [任务二：表单（二）多个表单项的动态校验](https://chengehi.github.io/BAIDUWEB-2017/yaoyao/task_2_30_1/task_2_30_1.html)
 * [任务三：表单（三）联动](https://chengehi.github.io/BAIDUWEB-2017/yaoyao/task_2_31_1/task_2_31_1.html)
 * [任务四：听指令的小方块（一）](https://chengehi.github.io/BAIDUWEB-2017/yaoyao/task_2_33_1/task_2_33_1.html)
+* [任务五：听指令的小方块（二）](https://chengehi.github.io/BAIDUWEB-2017/yaoyao/task_2_34_1/task_2_34_1.html)
