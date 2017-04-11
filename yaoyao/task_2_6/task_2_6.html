@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="animate.css">
+	<style>
+		html,body{margin: 0;padding: 0;}
+		#demo{display: block;width: 80px;height: 20px;margin: 60px auto;}
+
+		.m-mask{position: fixed;width: 100%;height: 100%;top: 0;left: 0;background-color: rgba(132,132,132,0.5);text-align: center;}
+		.m-mask .align{display: inline-block;height: 100%;width: 1px;vertical-align: middle;}
+		.m-mask .wrap{display: inline-block;width: 400px;border: 1px solid #000;font: 16px/1em "微软雅黑";text-align: left;vertical-align: middle;}
+		.m-mask .wrap .head{padding: 10px;background-color: #848484;color: #fff;border-bottom: 1px solid #000;}
+		.m-mask .wrap .body{padding:30px 10px;background-color: #fff;}
+		.m-mask .wrap .foot{text-align: right;padding: 10px;background-color: #fff;}
+		.m-mask .wrap .btn{display: inline-block;width: 100px;height: 30px;line-height: 30px;text-align: center;background-color: #848484;color: #fff;cursor: pointer;}
+
+	</style>
+</head>
+<body>
+	<button id="demo">按钮</button>
+	<script src="animate.js"></script>
+	<script src="js.js"></script>
+	<script>
+
+		var modal = new Modal({
+			lenged:"标题,可自定义",
+			content:"内容",
+			animate:{
+				enter:"bounceInLeft",
+				outer:"bounceOutRight"
+			}
+		})
+
+		var btn = document.getElementById("demo");
+		btn.onclick = function(){
+			modal.show();
+		}
+
+	</script>
+</body>
+</html>
+
