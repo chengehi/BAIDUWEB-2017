@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		table{
+			border-left: 1px solid #ddd;
+			border-top: 1px solid #ddd;
+			text-align: center;
+		}
+		th,td{
+			border-right: 1px solid #ddd;
+			border-bottom: 1px solid #ddd;
+		}
+		th{
+			background-color: #5B5B5B;
+			color: #fff;
+			line-height: 2em;
+			position: relative;
+		}
+		th p{
+			position: absolute;
+			display: block;
+			width: 15px;
+			height: 30px;
+			top:4px;
+			right: 5px;
+			margin: 0;
+			padding: 0;
+		}
+		th p span{
+			display: block;
+			width: 15px;
+			height: 10px;
+		}
+		th p span:hover{
+			cursor: pointer;
+		}
+		th p span:first-child{
+			background:url(icon/icon.png) -2px -3px;
+			margin-bottom: 5px;
+		}
+		th p span:last-child{
+			background:url(icon/icon.png) -2px -16px;
+		}
+		td{
+			color: #5B5B5B;
+		}
+	</style>	
+</head>
+<body>
+
+	<div id="m-table">
+		<p is="table-component" v-bind:items="items" total="total"></p>
+	</div>
+
+	<script src="jquery-3.2.1.js"></script>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script>
+	// 创建组件
+	Vue.component('table-component',{
+		props:["items","total"],
+		template:
+			"<table cellspacing='0' width = '500px'>\
+				<thead>\
+					<th>姓名</th><th class='chinese'>语文<p><span></span><span></span></p></th>\
+					<th class='math'>数学<p><span></span><span></span></p></th>\
+					<th class='english'>英语<p><span></span><span></span></p></th>\
+					<th class='total'>总分<p><span></span><span></span></p></th>\
+				</thead>\
+				<tbody>\
+					<tr v-for='(item,index) in items'>\
+						<td>{{item.name}}</td>\
+						<td>{{item.chinese}}</td>\
+						<td>{{item.math}}</td>\
+						<td>{{item.english}}</td>\
+						<td>{{total[index]}}</td>\
+					</tr>\
+				</tbody>\
+			</table>",
+		computed:{
+			// 总分计算逻辑
+			total:function(){
+				var arr=[];
+				var items= this.items;
+				for(var i=0;i<items.length;i++){
+					var sum = 0;
+					for(var k in items[i]){
+						if(k!="name"&&k!="total"){
+							sum+=items[i][k];
+						}	
+					}
+					items[i]["total"]=sum;
+					arr.push(sum);
+				}
+				return arr;
+			}
+		}
+	})
+	// 挂载
+	var vm = new Vue({
+		el:"#m-table",
+		data:{
+			items:
+				[
+					{
+						name:"小明",
+						chinese:80,
+						math:90,
+						english:70
+					},
+					{
+						name:"小红",
+						chinese:90,
+						math:60,
+						english:90
+					},
+					{
+						name:"小亮",
+						chinese:60,
+						math:100,
+						english:70
+					}
+				]
+		},
+
+	});
+		
+		// 从小到大排
+		$("thead p span:first-child").click(function(event){
+			var str = $(this).parents("th").attr("class");
+			vm.items.sort(function(a,b){
+				return a[str]-b[str];
+			});
+		});
+		$("thead p span:last-child").click(function(event){
+			var str = $(this).parents("th").attr("class");
+			vm.items.sort(function(a,b){
+				return b[str]-a[str];
+			});
+		});
+
+	</script>
+</body>
+</html>
