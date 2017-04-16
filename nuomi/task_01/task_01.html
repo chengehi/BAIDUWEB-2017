@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		h2,p{margin: 0;padding: 0;}
+		.f-pr{position: relative;}
+		.f-pa{position: absolute;}
+
+		.m-demo{
+			width: 200px;
+			height: 200px;
+			overflow: hidden;
+		}
+		.m-demo .pic,.m-demo .wrap{
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+		.m-demo .pic img{
+			width: 100%;
+			height: 100%;
+		}
+		.m-demo .wrap .tex{
+			text-align: center;
+			margin:60px 10px;
+			padding: 10px;
+			opacity: 0;
+			transition: all 2s ease;
+		}
+		/*流光字实现*/
+		.m-demo h2,.m-demo p{
+			color: transparent;
+			background-size: 200% 100%;
+			-webkit-background-clip: text;
+			animation: streamer 5s infinite linear; 
+		}
+		.m-demo h2{
+			background-image: -webkit-linear-gradient(left,#A4E501,#00E0FC 25%,#AE20FF 50%,#00E0FC 75%,#A4E501 100%);			
+		}
+		.m-demo p{
+			background-image: -webkit-linear-gradient(left,green,red 25%,#AE20FF 50%,red 75%,green 100%);			
+		}
+		
+		/*边框动画*/
+		.m-demo .tex::before {
+		  content: '';
+		  position: absolute;
+		  left: 0;
+		  top: 50%;
+		  width: 100%;
+		  height: 0;
+		  border: 3px solid ghostwhite;
+		  border-width: 0 3px;
+		  overflow: hidden;
+		  visibility: hidden;
+		  transition: all .8s;
+		  box-sizing: border-box;
+		}
+
+		.m-demo .tex::after {
+		  content: '';
+		  position: absolute;
+		  left: 50%;
+		  top: 0;
+		  width: 0;
+		  height: 100%;
+		  border: 3px solid ghostwhite;
+		  border-width: 3px 0;
+		  overflow: hidden;
+		  visibility: hidden;
+		  transition: all .8s;
+		  box-sizing: border-box;
+		}
+
+		.m-demo:hover .tex {
+		  opacity: 1
+		}
+
+		.m-demo:hover .tex::before {
+		  height: 100%;
+		  visibility: visible;
+		  top: 0;
+		}
+
+		.m-demo:hover .tex::after {
+		  width: 100%;
+		  visibility: visible;
+		  left: 0;
+		}
+
+
+		.m-demo:hover .pic img{
+			-webkit-filter: blur(2px);
+            -moz-filter: blur(2px);
+            -o-filter: blur(2px);
+            -ms-filter: blur(2px);
+            filter: blur(2px);
+		}
+
+		@keyframes streamer{
+			from{
+				background-position: 0 0;
+			}
+			to{
+				background-position: -100% 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="m-demo f-pr">
+		<div class="pic f-pa">
+			<img src="吴倩.jpeg" alt="">
+		</div>
+		<div class="wrap f-pa">
+			<div class="tex f-pr">
+				<h2>今晚吃什么?</h2>
+				<p>火锅</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

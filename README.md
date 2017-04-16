@@ -34,3 +34,6 @@
 * [任务五：听指令的小方块（二）](https://chengehi.github.io/BAIDUWEB-2017/yaoyao/task_2_34_1/task_2_34_1.html)
 * [任务六：UI组件之浮出层 ](https://chengehi.github.io/BAIDUWEB-2017/yaoyao/task_6/task_6.html)
 * [任务七：UI组件之排序表格](https://chengehi.github.io/BAIDUWEB-2017/yaoyao/task_7/task_7.html)
+
+###糯米
+* [有趣的鼠标悬浮模糊效果](https://chengehi.github.io/BAIDUWEB-2017/nuomi/task_01/task_01.html)
