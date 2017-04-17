@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		html,body,h2,h3,ul{margin: 0;border: 0;padding: 0;}
+		h2,h3{line-height: 2em}
+		li{list-style: none;}
+		.f-fl{float:left;}
+		.f-fr{float: right;}
+		.g-main{
+			width: 500px;
+			margin: 0 auto;
+		}
+		body{
+			background-color: #efe;
+		}
+		.m-nav{
+			background-color: #E8583C;
+			color: #fff;
+		}
+		.u-add input{
+			width: 100%;
+			margin-bottom: 10px;
+		}
+		.u-add .message{
+			text-align: right;
+			margin: 0 10px;
+			font:14px '微软雅黑';
+			color: #666;
+		}
+		.u-add .message .btn{
+			display: inline-block;
+			border: 1px solid #efe;	
+			padding: 0 10px;
+		}
+		.u-add .message .btn:hover{
+			border-color: #999;
+			background-color: #fff;
+			cursor: pointer;
+		}
+
+		.u-list .completed{
+			text-decoration: line-through;
+		}
+		.u-list .msg{
+			font :14px '微软雅黑';
+			color: #666;
+			margin-left: 10px;
+		}
+		.u-list li{
+			padding: 5px 0;
+			background-color: #fff;
+			margin-bottom: 1px;
+		}
+		.u-list li:hover{
+			background-color: #efe;
+		}
+		.u-list li:hover .close{
+			display: block;
+			width: 19px;
+			height: 19px;
+			background:url(icon.png) -1px -1px/18px 18px;
+		}
+		.close:hover{
+			cursor: pointer;
+		}
+	</style>
+	<script src="./vue/vue.js"></script>
+</head>
+<body>
+	<!-- 标题 -->
+	<div class="m-nav">
+		<div class="g-main">
+			<h2>任务计划列表</h2>
+		</div>
+	</div>
+	<div class="m-body">
+		<div class="g-main">
+			<!-- 添加任务区 -->
+			<div class="u-add">
+				<h3>添加任务:</h3>
+				<input 
+					type="text"
+					v-model="todo"
+					v-on:keyup.enter="addTodo"
+					placeholder="提示:回车会添加任务" 
+				>
+				<!-- 按钮区 -->
+				<div class="message">
+					<span class="msg f-fl">{{message}}{{msgNum}}个任务</span>
+					<div class="btn" v-on:click="total">所有任务</div>
+					<div class="btn" v-on:click="unfinish">未完成</div>
+					<div class="btn" v-on:click="finish">已完成</div>
+				</div>
+			</div>
+			<!-- 任务列表 -->
+			<div class="u-list">
+				<h3>任务列表:</h3>
+				<span v-show="!list.length" class="msg">未添加任务</span>
+				<ul>
+					<li v-for="(item,index) in list" :class="{completed:item.isChecked}">
+						<input type="checkbox" v-on:check="" v-model="item.isChecked">
+						<label for="">{{item.title}}</label>
+						<span class="f-fr close" v-on:click="deleteTodo(index)"></span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script src="./app.js"></script>
+</body>
+</html>

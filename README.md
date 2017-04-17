@@ -3,6 +3,7 @@
 
 [3D盒子](https://chengehi.github.io/BAIDUWEB-2017/3D-box.html)
 [JS_基础知识](https://chengehi.github.io/BAIDUWEB-2017/book/js-book/OEBPS/part0000_split_001.html)
+[便签](https://chengehi.github.io/BAIDUWEB-2017/bianqian/index.html)
 
 ### 小薇学院
 * [任务一：零基础HTML编码](https://chengehi.github.io/BAIDUWEB-2017/xiaowei/task_1_1_1/task_1_1_1.html)
