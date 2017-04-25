@@ -2,7 +2,7 @@
 百度前端学院学习-2017
 
 [3D盒子](https://chengehi.github.io/BAIDUWEB-2017/3D-box.html)
-[JS_基础知识](https://chengehi.github.io/BAIDUWEB-2017/book/js-book/OEBPS/part0000_split_001.html)
+[deom](https://chengehi.github.io/BAIDUWEB-2017/demo/index.heml)
 [便签](https://chengehi.github.io/BAIDUWEB-2017/bianqian/index.html)
 
 ### 小薇学院
